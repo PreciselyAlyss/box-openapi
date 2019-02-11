@@ -149,7 +149,7 @@
                   "code": {
                     "type": "string",
                     "format": "token",
-                    "description": "The client-side authorization code passed to your application by\nBox in the browser redirect afte the user has successfully\ngranted your application permission to make API calls on their \nbehalf.\n\nUsed in combination with `authorization_code` as the `grant_type`.",
+                    "description": "The client-side authorization code passed to your application by\nBox in the browser redirect after the user has successfully\ngranted your application permission to make API calls on their \nbehalf.\n\nUsed in combination with `authorization_code` as the `grant_type`.",
                     "example": "n22JPxrh18m4Y0wIZPIqYZK7VRrsMTWW"
                   },
                   "refresh_token": {
