@@ -19,10 +19,6 @@
     {
       "url": "https://api.box.com",
       "description": "Box Platform API server"
-    },
-    {
-      "url": "https://accounts.box.com",
-      "description": "Account Platform API server"
     }
   ],
   "paths": {
@@ -35,6 +31,7 @@
           "Authorization",
           "Client Side"
         ],
+        "security": [],
         "servers": [
           {
             "url": "https://account.box.com/api/oauth2",
@@ -115,96 +112,12 @@
           "Authorization",
           "AccessToken"
         ],
+        "security": [],
         "requestBody": {
           "content": {
             "application/x-www-form-urlencoded": {
               "schema": {
-                "required": [
-                  "grant_type"
-                ],
-                "properties": {
-                  "grant_type": {
-                    "type": "string",
-                    "format": "urn",
-                    "description": "The type of request being made, either using a client-side obtained \nauthorization code, a refresh token, a JWT assertion, or another access\ntoken for the purpose of downscoping a token.",
-                    "enum": [
-                      "authorization_code",
-                      "refresh_token",
-                      "urn:ietf:params:oauth:grant-type:jwt-bearer",
-                      "urn:ietf:params:oauth:grant-type:token-exchange"
-                    ]
-                  },
-                  "client_id": {
-                    "type": "string",
-                    "format": "token",
-                    "description": "The Client ID of the application requesting an access token.\n\nUsed in combination with `authorization_code` or \n`urn:ietf:params:oauth:grant-type:jwt-bearer` as the `grant_type`.",
-                    "example": "ly1nj6n11vionaie65emwzk575hnnmrk"
-                  },
-                  "client_secret": {
-                    "type": "string",
-                    "format": "token",
-                    "description": "The client secret of the application requesting an access token.\n\nUsed in combination with `authorization_code` or \n`urn:ietf:params:oauth:grant-type:jwt-bearer` as the `grant_type`.",
-                    "example": "hOzsTeFlT6ko0dme22uGbQal04SBPYc1"
-                  },
-                  "code": {
-                    "type": "string",
-                    "format": "token",
-                    "description": "The client-side authorization code passed to your application by\nBox in the browser redirect after the user has successfully\ngranted your application permission to make API calls on their \nbehalf.\n\nUsed in combination with `authorization_code` as the `grant_type`.",
-                    "example": "n22JPxrh18m4Y0wIZPIqYZK7VRrsMTWW"
-                  },
-                  "refresh_token": {
-                    "type": "string",
-                    "format": "token",
-                    "description": "A refresh token used to get a new access token with.\n\nUsed in combination with `refresh_token` as the `grant_type`.",
-                    "example": "c3FIOG9vSGV4VHo4QzAyg5T1JvNnJoZ3ExaVNyQWw6WjRsanRKZG5lQk9qUE1BVQ"
-                  },
-                  "assertion": {
-                    "type": "string",
-                    "format": "jwt",
-                    "description": "A JWT assertion for which to request a new access token.\n\nUsed in combination with `urn:ietf:params:oauth:grant-type:jwt-bearer` \nas the `grant_type`. ",
-                    "example": "xxxxx.yyyyy.zzzzz"
-                  },
-                  "subject_token": {
-                    "type": "string",
-                    "format": "token",
-                    "description": "The token to exchange for a downscoped token. This can be a regular \naccess token, a JWT assertion, or an app token.\n\nUsed in combination with `urn:ietf:params:oauth:grant-type:token-exchange` \nas the `grant_type`.",
-                    "example": "c3FIOG9vSGV4VHo4QzAyg5T1JvNnJoZ3ExaVNyQWw6WjRsanRKZG5lQk9qUE1BVQ"
-                  },
-                  "subject_token_type": {
-                    "type": "string",
-                    "format": "urn",
-                    "description": "The type of `subject_token` passed in.\n\nUsed in combination with `urn:ietf:params:oauth:grant-type:token-exchange` \nas the `grant_type`.",
-                    "enum": [
-                      "urn:ietf:params:oauth:token-type:access_token"
-                    ]
-                  },
-                  "actor_token": {
-                    "type": "string",
-                    "format": "token",
-                    "description": "The actor token used to create an annotator token. This is a JWT assertion.\n\nUsed in combination with `urn:ietf:params:oauth:grant-type:token-exchange` \nas the `grant_type`.",
-                    "example": "c3FIOG9vSGV4VHo4QzAyg5T1JvNnJoZ3ExaVNyQWw6WjRsanRKZG5lQk9qUE1BVQ"
-                  },
-                  "actor_token_type": {
-                    "type": "string",
-                    "format": "urn",
-                    "description": "The type of `actor_token` passed in.\n\nUsed in combination with `urn:ietf:params:oauth:grant-type:token-exchange` \nas the `grant_type`.",
-                    "enum": [
-                      "urn:ietf:params:oauth:token-type:id_token"
-                    ]
-                  },
-                  "scope": {
-                    "type": "string",
-                    "format": "space_delimited_list",
-                    "description": "The space-delimited list of scopes that you want apply to the \nnew access token.\n\nThe `subject_token` will need to have all of these scopes or\nthe call will error with **401 Unauthorized**.",
-                    "example": "item_upload item_preview base_explorer"
-                  },
-                  "resource": {
-                    "type": "string",
-                    "format": "uri",
-                    "description": "Full URL for the file that the token should be generated for.",
-                    "example": "https://api.box.com/2.0/files/123456"
-                  }
-                }
+                "$ref": "#/components/schemas/TokenRequest"
               }
             }
           }
@@ -215,108 +128,53 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "access_token": {
-                      "type": "string",
-                      "format": "token",
-                      "example": "c3FIOG9vSGV4VHo4QzAyg5T1JvNnJoZ3ExaVNyQWw6WjRsanRKZG5lQk9qUE1BVQ",
-                      "description": "The requested access token."
-                    },
-                    "expires_in": {
-                      "type": "integer",
-                      "format": "int64",
-                      "example": 3600,
-                      "description": "The time in seconds in seconds by which this token will expire."
-                    },
-                    "token_type": {
-                      "type": "string",
-                      "enum": [
-                        "bearer"
-                      ],
-                      "example": "bearer",
-                      "description": "The type of access token returned."
-                    },
-                    "refresh_token": {
-                      "type": "string",
-                      "format": "token",
-                      "example": "c3FIOG9vSGV4VHo4QzAyg5T1JvNnJoZ3ExaVNyQWw6WjRsanRKZG5lQk9qUE1BVQ",
-                      "description": "The refresh token for this access token, which can be used\nto request a new access token when the current one expires."
-                    },
-                    "issued_token_type": {
-                      "type": "string",
-                      "example": "urn:ietf:params:oauth:token-type:access_token",
-                      "enum": [
-                        "urn:ietf:params:oauth:token-type:access_token"
-                      ],
-                      "description": "The type of downscoped access token returned. This is only \nreturned if an access token has been downscoped."
-                    },
-                    "restricted_to": {
-                      "type": "array",
-                      "description": "The permissions that this access token permits, \nproviding a list of resources (files, folders, etc) \nand the scopes permitted for each of those resources.",
-                      "items": {
-                        "properties": {
-                          "object": {
-                            "description": "File",
-                            "type": "object",
-                            "properties": {
-                              "type": {
-                                "type": "string",
-                                "example": "file",
-                                "description": "The type of object returned.",
-                                "enum": [
-                                  "file"
-                                ]
-                              },
-                              "id": {
-                                "type": "string",
-                                "example": 5391641209,
-                                "description": "The Box ID for this file"
-                              },
-                              "name": {
-                                "type": "string",
-                                "example": "example.txt",
-                                "description": "The name of this file"
-                              },
-                              "sequence_id": {
-                                "type": "string",
-                                "example": "0",
-                                "description": "A unique ID for use with the `/events` endpoint"
-                              },
-                              "etag": {
-                                "type": "string",
-                                "example": "3",
-                                "description": "The entity tag of this file object. Used with `If-Match` headers."
-                              },
-                              "sha1": {
-                                "type": "string",
-                                "format": "hash",
-                                "example": "85136C79CBF9FE36BB9D05D0639C70C265C18D37",
-                                "description": "The SHA1 hash of the file."
-                              }
-                            }
-                          },
-                          "scope": {
-                            "type": "string",
-                            "enum": [
-                              "annotation_edit",
-                              "annotation_view_all",
-                              "annotation_view_self",
-                              "base_explorer",
-                              "base_picker",
-                              "base_preview",
-                              "base_upload",
-                              "item_delete",
-                              "item_download",
-                              "item_preview",
-                              "item_rename",
-                              "item_share",
-                              "item_upload"
-                            ]
-                          }
-                        }
-                      }
-                    }
-                  }
+                  "$ref": "#/components/schemas/AccessToken"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A generic authentication error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuth2Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/oauth2/revoke": {
+      "post": {
+        "operationId": "post_oauth2_revoke",
+        "summary": "Revoke an Access Token",
+        "description": "This is the URL of the Box revoke endpoint, the endpoint that revokes access\ntokens, or to put it another way, the endpoint that ends sessions, logging\nusers out.",
+        "tags": [
+          "Authorization",
+          "AccessToken"
+        ],
+        "security": [],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/TokenRevocationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The access token has been revoked"
+          },
+          "400": {
+            "description": "An OAuth2 error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuth2Error"
                 }
               }
             }
@@ -326,6 +184,266 @@
     }
   },
   "components": {
-    "securitySchemes": {}
-  }
+    "securitySchemes": {
+      "OAuth2Security": {
+        "type": "oauth2",
+        "flows": {
+          "authorizationCode": {
+            "authorizationUrl": "https://account.box.com/api/oauth2/authorize",
+            "tokenUrl": "https://api.box.com/oauth2/token",
+            "scopes": {
+              "root_readonly": "Read all files and folders stored in Box",
+              "root_readwrite": "Read and write all files and folders stored in Box",
+              "manage_app_users": "Provision and manage app users",
+              "manage_managed_users": "Provision and manage managed users",
+              "manage_groups": "Manage an enterprise's groups",
+              "manage_webhook": "Create webhooks programmatically through the API",
+              "manage_enterprise_properties": "Manage enterprise properties",
+              "manage_data_retention": "Manage data retention polices",
+              "manage_legal_hold": "Manage Legal Holds"
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "OAuth2Error": {
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "invalid_client",
+            "description": "The type of the error returned."
+          },
+          "error_description": {
+            "type": "string",
+            "example": "The client credentials are invalid",
+            "description": "The type of the error returned."
+          }
+        }
+      },
+      "AccessToken": {
+        "properties": {
+          "access_token": {
+            "type": "string",
+            "format": "token",
+            "example": "c3FIOG9vSGV4VHo4QzAyg5T1JvNnJoZ3ExaVNyQWw6WjRsanRKZG5lQk9qUE1BVQ",
+            "description": "The requested access token."
+          },
+          "expires_in": {
+            "type": "integer",
+            "format": "int64",
+            "example": 3600,
+            "description": "The time in seconds in seconds by which this token will expire."
+          },
+          "token_type": {
+            "type": "string",
+            "enum": [
+              "bearer"
+            ],
+            "example": "bearer",
+            "description": "The type of access token returned."
+          },
+          "refresh_token": {
+            "type": "string",
+            "format": "token",
+            "example": "c3FIOG9vSGV4VHo4QzAyg5T1JvNnJoZ3ExaVNyQWw6WjRsanRKZG5lQk9qUE1BVQ",
+            "description": "The refresh token for this access token, which can be used\nto request a new access token when the current one expires."
+          },
+          "issued_token_type": {
+            "type": "string",
+            "example": "urn:ietf:params:oauth:token-type:access_token",
+            "enum": [
+              "urn:ietf:params:oauth:token-type:access_token"
+            ],
+            "description": "The type of downscoped access token returned. This is only \nreturned if an access token has been downscoped."
+          },
+          "restricted_to": {
+            "type": "array",
+            "description": "The permissions that this access token permits, \nproviding a list of resources (files, folders, etc) \nand the scopes permitted for each of those resources.",
+            "items": {
+              "properties": {
+                "object": {
+                  "$ref": "#/components/schemas/File"
+                },
+                "scope": {
+                  "type": "string",
+                  "enum": [
+                    "annotation_edit",
+                    "annotation_view_all",
+                    "annotation_view_self",
+                    "base_explorer",
+                    "base_picker",
+                    "base_preview",
+                    "base_upload",
+                    "item_delete",
+                    "item_download",
+                    "item_preview",
+                    "item_rename",
+                    "item_share",
+                    "item_upload"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "File": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "file",
+            "description": "The type of object returned.",
+            "enum": [
+              "file"
+            ]
+          },
+          "id": {
+            "type": "string",
+            "example": 5391641209,
+            "description": "The Box ID for this file"
+          },
+          "name": {
+            "type": "string",
+            "example": "example.txt",
+            "description": "The name of this file"
+          },
+          "sequence_id": {
+            "type": "string",
+            "example": "0",
+            "description": "A unique ID for use with the `/events` endpoint"
+          },
+          "etag": {
+            "type": "string",
+            "example": "3",
+            "description": "The entity tag of this file object. Used with `If-Match` headers."
+          },
+          "sha1": {
+            "type": "string",
+            "format": "hash",
+            "example": "85136C79CBF9FE36BB9D05D0639C70C265C18D37",
+            "description": "The SHA1 hash of the file."
+          }
+        }
+      },
+      "TokenRequest": {
+        "required": [
+          "grant_type"
+        ],
+        "properties": {
+          "grant_type": {
+            "type": "string",
+            "format": "urn",
+            "description": "The type of request being made, either using a client-side obtained \nauthorization code, a refresh token, a JWT assertion, or another access\ntoken for the purpose of downscoping a token.",
+            "enum": [
+              "authorization_code",
+              "refresh_token",
+              "urn:ietf:params:oauth:grant-type:jwt-bearer",
+              "urn:ietf:params:oauth:grant-type:token-exchange"
+            ]
+          },
+          "client_id": {
+            "type": "string",
+            "format": "token",
+            "description": "The Client ID of the application requesting an access token.\n\nUsed in combination with `authorization_code` or \n`urn:ietf:params:oauth:grant-type:jwt-bearer` as the `grant_type`.",
+            "example": "ly1nj6n11vionaie65emwzk575hnnmrk"
+          },
+          "client_secret": {
+            "type": "string",
+            "format": "token",
+            "description": "The client secret of the application requesting an access token.\n\nUsed in combination with `authorization_code` or \n`urn:ietf:params:oauth:grant-type:jwt-bearer` as the `grant_type`.",
+            "example": "hOzsTeFlT6ko0dme22uGbQal04SBPYc1"
+          },
+          "code": {
+            "type": "string",
+            "format": "token",
+            "description": "The client-side authorization code passed to your application by\nBox in the browser redirect after the user has successfully\ngranted your application permission to make API calls on their \nbehalf.\n\nUsed in combination with `authorization_code` as the `grant_type`.",
+            "example": "n22JPxrh18m4Y0wIZPIqYZK7VRrsMTWW"
+          },
+          "refresh_token": {
+            "type": "string",
+            "format": "token",
+            "description": "A refresh token used to get a new access token with.\n\nUsed in combination with `refresh_token` as the `grant_type`.",
+            "example": "c3FIOG9vSGV4VHo4QzAyg5T1JvNnJoZ3ExaVNyQWw6WjRsanRKZG5lQk9qUE1BVQ"
+          },
+          "assertion": {
+            "type": "string",
+            "format": "jwt",
+            "description": "A JWT assertion for which to request a new access token.\n\nUsed in combination with `urn:ietf:params:oauth:grant-type:jwt-bearer` \nas the `grant_type`. ",
+            "example": "xxxxx.yyyyy.zzzzz"
+          },
+          "subject_token": {
+            "type": "string",
+            "format": "token",
+            "description": "The token to exchange for a downscoped token. This can be a regular \naccess token, a JWT assertion, or an app token.\n\nUsed in combination with `urn:ietf:params:oauth:grant-type:token-exchange` \nas the `grant_type`.",
+            "example": "c3FIOG9vSGV4VHo4QzAyg5T1JvNnJoZ3ExaVNyQWw6WjRsanRKZG5lQk9qUE1BVQ"
+          },
+          "subject_token_type": {
+            "type": "string",
+            "format": "urn",
+            "description": "The type of `subject_token` passed in.\n\nUsed in combination with `urn:ietf:params:oauth:grant-type:token-exchange` \nas the `grant_type`.",
+            "enum": [
+              "urn:ietf:params:oauth:token-type:access_token"
+            ]
+          },
+          "actor_token": {
+            "type": "string",
+            "format": "token",
+            "description": "The actor token used to create an annotator token. This is a JWT assertion.\n\nUsed in combination with `urn:ietf:params:oauth:grant-type:token-exchange` \nas the `grant_type`.",
+            "example": "c3FIOG9vSGV4VHo4QzAyg5T1JvNnJoZ3ExaVNyQWw6WjRsanRKZG5lQk9qUE1BVQ"
+          },
+          "actor_token_type": {
+            "type": "string",
+            "format": "urn",
+            "description": "The type of `actor_token` passed in.\n\nUsed in combination with `urn:ietf:params:oauth:grant-type:token-exchange` \nas the `grant_type`.",
+            "enum": [
+              "urn:ietf:params:oauth:token-type:id_token"
+            ]
+          },
+          "scope": {
+            "type": "string",
+            "format": "space_delimited_list",
+            "description": "The space-delimited list of scopes that you want apply to the \nnew access token.\n\nThe `subject_token` will need to have all of these scopes or\nthe call will error with **401 Unauthorized**.",
+            "example": "item_upload item_preview base_explorer"
+          },
+          "resource": {
+            "type": "string",
+            "format": "uri",
+            "description": "Full URL for the file that the token should be generated for.",
+            "example": "https://api.box.com/2.0/files/123456"
+          }
+        }
+      },
+      "TokenRevocationRequest": {
+        "required": [
+          "grant_type"
+        ],
+        "properties": {
+          "client_id": {
+            "type": "string",
+            "format": "token",
+            "description": "The Client ID of the application requesting to revoke the\naccess token.",
+            "example": "ly1nj6n11vionaie65emwzk575hnnmrk"
+          },
+          "client_secret": {
+            "type": "string",
+            "format": "token",
+            "description": "The client secret of the application requesting to revoke\nan access token.",
+            "example": "hOzsTeFlT6ko0dme22uGbQal04SBPYc1"
+          },
+          "token": {
+            "type": "string",
+            "format": "token",
+            "description": "The access token to revoke.",
+            "example": "n22JPxrh18m4Y0wIZPIqYZK7VRrsMTWW"
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "OAuth2Security": []
+    }
+  ]
 }
