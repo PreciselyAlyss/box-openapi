@@ -43,6 +43,7 @@
             "name": "response_type",
             "description": "The string value `\"code\"` is the only current value we support\nfor the OAuth2 grant type.",
             "in": "query",
+            "example": "5idyGSFuf54zrvKm",
             "required": true,
             "schema": {
               "type": "string",
@@ -55,6 +56,7 @@
             "name": "client_id",
             "description": "The Client ID of the application that is requesting to authenticate\nthe user. To get the Client ID for your application, log in to your\nBox developer console and click the **Edit Application** link for\nthe application you're working with. In the OAuth2 Parameters section\nof the configuration page, find the item labeled **client_id**. The\ntext of that item is your application's Client ID.",
             "in": "query",
+            "example": "ly1nj6n11vionaie65emwzk575hnnmrk",
             "required": true,
             "schema": {
               "type": "string"
@@ -64,6 +66,7 @@
             "name": "redirect_uri",
             "description": "The URL to which Box redirects the browser after the user has granted\nor rejected the application permission. This URL must match the\nredirect URL in the configuration of your application. It must be a\nvalid HTTPS URL and it needs to be able to handle the redirection to\ncomplete the next step in the OAuth2 flow.",
             "in": "query",
+            "example": "http://example.com/auth/callback",
             "required": true,
             "schema": {
               "type": "string"
@@ -73,6 +76,7 @@
             "name": "state",
             "description": "A custom string of your choice. Box will pass the same string to\nthe redirect URL when authentication is complete. This parameter\ncan be used to identify a user on redirect, as well as protect\nagainst hijacked sessions and other attacks.",
             "in": "query",
+            "example": "my_state",
             "required": false,
             "schema": {
               "type": "string"
@@ -82,6 +86,7 @@
             "name": "scope",
             "description": "A comma-separated list of application scopes you'd like to\nauthenticate the user for. This defaults to all the scopes configured\nfor the application in its configuration page.",
             "in": "query",
+            "example": "admin_readwrite",
             "required": false,
             "schema": {
               "type": "string"
@@ -255,11 +260,12 @@
             "enum": [
               "urn:ietf:params:oauth:token-type:access_token"
             ],
-            "description": "The type of downscoped access token returned. This is only \nreturned if an access token has been downscoped."
+            "description": "The type of downscoped access token returned. This is only\nreturned if an access token has been downscoped."
           },
           "restricted_to": {
             "type": "array",
-            "description": "The permissions that this access token permits, \nproviding a list of resources (files, folders, etc) \nand the scopes permitted for each of those resources.",
+            "example": "[{ object: <File...>, scope: \"annotation_view_self\"}]",
+            "description": "The permissions that this access token permits,\nproviding a list of resources (files, folders, etc)\nand the scopes permitted for each of those resources.",
             "items": {
               "properties": {
                 "object": {
@@ -334,7 +340,8 @@
           "grant_type": {
             "type": "string",
             "format": "urn",
-            "description": "The type of request being made, either using a client-side obtained \nauthorization code, a refresh token, a JWT assertion, or another access\ntoken for the purpose of downscoping a token.",
+            "example": "authorization_code",
+            "description": "The type of request being made, either using a client-side obtained\nauthorization code, a refresh token, a JWT assertion, or another access\ntoken for the purpose of downscoping a token.",
             "enum": [
               "authorization_code",
               "refresh_token",
@@ -345,19 +352,19 @@
           "client_id": {
             "type": "string",
             "format": "token",
-            "description": "The Client ID of the application requesting an access token.\n\nUsed in combination with `authorization_code` or \n`urn:ietf:params:oauth:grant-type:jwt-bearer` as the `grant_type`.",
+            "description": "The Client ID of the application requesting an access token.\n\nUsed in combination with `authorization_code` or\n`urn:ietf:params:oauth:grant-type:jwt-bearer` as the `grant_type`.",
             "example": "ly1nj6n11vionaie65emwzk575hnnmrk"
           },
           "client_secret": {
             "type": "string",
             "format": "token",
-            "description": "The client secret of the application requesting an access token.\n\nUsed in combination with `authorization_code` or \n`urn:ietf:params:oauth:grant-type:jwt-bearer` as the `grant_type`.",
+            "description": "The client secret of the application requesting an access token.\n\nUsed in combination with `authorization_code` or\n`urn:ietf:params:oauth:grant-type:jwt-bearer` as the `grant_type`.",
             "example": "hOzsTeFlT6ko0dme22uGbQal04SBPYc1"
           },
           "code": {
             "type": "string",
             "format": "token",
-            "description": "The client-side authorization code passed to your application by\nBox in the browser redirect after the user has successfully\ngranted your application permission to make API calls on their \nbehalf.\n\nUsed in combination with `authorization_code` as the `grant_type`.",
+            "description": "The client-side authorization code passed to your application by\nBox in the browser redirect after the user has successfully\ngranted your application permission to make API calls on their\nbehalf.\n\nUsed in combination with `authorization_code` as the `grant_type`.",
             "example": "n22JPxrh18m4Y0wIZPIqYZK7VRrsMTWW"
           },
           "refresh_token": {
@@ -369,19 +376,20 @@
           "assertion": {
             "type": "string",
             "format": "jwt",
-            "description": "A JWT assertion for which to request a new access token.\n\nUsed in combination with `urn:ietf:params:oauth:grant-type:jwt-bearer` \nas the `grant_type`. ",
+            "description": "A JWT assertion for which to request a new access token.\n\nUsed in combination with `urn:ietf:params:oauth:grant-type:jwt-bearer`\nas the `grant_type`.",
             "example": "xxxxx.yyyyy.zzzzz"
           },
           "subject_token": {
             "type": "string",
             "format": "token",
-            "description": "The token to exchange for a downscoped token. This can be a regular \naccess token, a JWT assertion, or an app token.\n\nUsed in combination with `urn:ietf:params:oauth:grant-type:token-exchange` \nas the `grant_type`.",
+            "description": "The token to exchange for a downscoped token. This can be a regular\naccess token, a JWT assertion, or an app token.\n\nUsed in combination with `urn:ietf:params:oauth:grant-type:token-exchange`\nas the `grant_type`.",
             "example": "c3FIOG9vSGV4VHo4QzAyg5T1JvNnJoZ3ExaVNyQWw6WjRsanRKZG5lQk9qUE1BVQ"
           },
           "subject_token_type": {
             "type": "string",
             "format": "urn",
-            "description": "The type of `subject_token` passed in.\n\nUsed in combination with `urn:ietf:params:oauth:grant-type:token-exchange` \nas the `grant_type`.",
+            "example": "urn:ietf:params:oauth:token-type:access_token",
+            "description": "The type of `subject_token` passed in.\n\nUsed in combination with `urn:ietf:params:oauth:grant-type:token-exchange`\nas the `grant_type`.",
             "enum": [
               "urn:ietf:params:oauth:token-type:access_token"
             ]
@@ -389,13 +397,14 @@
           "actor_token": {
             "type": "string",
             "format": "token",
-            "description": "The actor token used to create an annotator token. This is a JWT assertion.\n\nUsed in combination with `urn:ietf:params:oauth:grant-type:token-exchange` \nas the `grant_type`.",
+            "description": "The actor token used to create an annotator token.\nThis is a JWT assertion.\n\nUsed in combination with `urn:ietf:params:oauth:grant-type:token-exchange`\nas the `grant_type`.",
             "example": "c3FIOG9vSGV4VHo4QzAyg5T1JvNnJoZ3ExaVNyQWw6WjRsanRKZG5lQk9qUE1BVQ"
           },
           "actor_token_type": {
             "type": "string",
             "format": "urn",
-            "description": "The type of `actor_token` passed in.\n\nUsed in combination with `urn:ietf:params:oauth:grant-type:token-exchange` \nas the `grant_type`.",
+            "example": "urn:ietf:params:oauth:token-type:id_token",
+            "description": "The type of `actor_token` passed in.\n\nUsed in combination with `urn:ietf:params:oauth:grant-type:token-exchange`\nas the `grant_type`.",
             "enum": [
               "urn:ietf:params:oauth:token-type:id_token"
             ]
@@ -403,7 +412,7 @@
           "scope": {
             "type": "string",
             "format": "space_delimited_list",
-            "description": "The space-delimited list of scopes that you want apply to the \nnew access token.\n\nThe `subject_token` will need to have all of these scopes or\nthe call will error with **401 Unauthorized**.",
+            "description": "The space-delimited list of scopes that you want apply to the\nnew access token.\n\nThe `subject_token` will need to have all of these scopes or\nthe call will error with **401 Unauthorized**.",
             "example": "item_upload item_preview base_explorer"
           },
           "resource": {
