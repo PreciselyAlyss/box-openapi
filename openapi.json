@@ -312,6 +312,7 @@
                   },
                   "sync_state": {
                     "type": "string",
+                    "example": "synced",
                     "description": "Whether Box Sync clients will sync this folder. Values\nof `synced` or` not_synced` can be sent.",
                     "enum": [
                       "synced",
@@ -890,10 +891,18 @@
             "items": {
               "properties": {
                 "object": {
-                  "$ref": "#/components/schemas/File"
+                  "allOf": [
+                    {
+                      "type": "object"
+                    },
+                    {
+                      "$ref": "#/components/schemas/File"
+                    }
+                  ]
                 },
                 "scope": {
                   "type": "string",
+                  "example": "item_download",
                   "enum": [
                     "annotation_edit",
                     "annotation_view_all",
@@ -957,6 +966,78 @@
                     "$ref": "#/components/schemas/User--Mini"
                   }
                 ]
+              },
+              "invite_email": {
+                "type": "string",
+                "example": "john@example.com",
+                "description": "The email address used to invite an unregistered collaborator, if\nthey are not a registered user."
+              },
+              "role": {
+                "type": "string",
+                "example": "editor",
+                "enum": [
+                  "editor",
+                  "viewer",
+                  "previewer",
+                  "uploader",
+                  "preview uploader",
+                  "viewer uploader",
+                  "co-owner",
+                  "owner"
+                ],
+                "description": "The level of access granted."
+              },
+              "expires_at": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2012-12-12T10:53:43-08:00",
+                "description": "When the collaboration will expire"
+              },
+              "can_view_path": {
+                "type": "boolean",
+                "example": true,
+                "description": "Whether the \"view path collaboration\" feature is enabled or not. View\npath collaborations allow the invitee to see the entire parent path to\nthe item. View path collaboration does not grant privileges in any\nparent folder (e.g. cannot see content the user is not collaborated\non), other than the permission to view the parent path."
+              },
+              "status": {
+                "type": "string",
+                "example": "accepted",
+                "enum": [
+                  "accepted",
+                  "pending",
+                  "rejected"
+                ],
+                "description": "The status of the collaboration invitation."
+              },
+              "acknowledged_at": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2012-12-12T10:53:43-08:00",
+                "description": "When the `status` of the collaboration object changed to\n`accepted` or `rejected`"
+              },
+              "created_by": {
+                "allOf": [
+                  {
+                    "type": "object"
+                  },
+                  {
+                    "description": "The user who created the collaboration object"
+                  },
+                  {
+                    "$ref": "#/components/schemas/User--Mini"
+                  }
+                ]
+              },
+              "created_at": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2012-12-12T10:53:43-08:00",
+                "description": "When the collaboration object was created"
+              },
+              "modified_at": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2012-12-12T10:53:43-08:00",
+                "description": "When the collaboration object was last modified"
               }
             }
           }
@@ -988,6 +1069,8 @@
           {
             "properties": {
               "name": {
+                "description": "The name of the enterprise",
+                "example": "Acme Inc.",
                 "type": "string"
               }
             }
@@ -1308,6 +1391,7 @@
                   "access": {
                     "description": "The access level for which the email was created.",
                     "type": "string",
+                    "example": "access",
                     "enum": [
                       "open",
                       "company",
@@ -1317,7 +1401,8 @@
                   "email": {
                     "description": "The upload email address for this folder. `null` if not set.",
                     "type": "string",
-                    "format": "email"
+                    "format": "email",
+                    "example": "upload.Picture.k13sdz1@u.box.com"
                   }
                 }
               },
