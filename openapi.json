@@ -28,8 +28,7 @@
         "summary": "Authorize a user",
         "description": "Authorize a user by sending them through [Box](https://box.com).\n\nTo begin the process of authenticating user and authorizing your\napplication to work with the Box APIs, you will need to send a\nuser to a URL with this format.",
         "tags": [
-          "Authorization",
-          "Client Side"
+          "Authorization"
         ],
         "security": [],
         "servers": [
@@ -114,8 +113,7 @@
         "summary": "Request an Access Token",
         "description": "Request an Access Token using either client-side obtained OAuth2\nauthorization code or a JWT assertion.\n\nAn access token is a data string that enables Box to verify that a\nrequest belongs to an authorized session. In the normal order of operations\nyou will begin by requesting authentication from the Box authorize endpoint\nand Box will send you an authorization code. You will then send this code\nto this endpoint to exchange it for an access token.\n\nThe returned Access Token can then be used to to make Box API calls.",
         "tags": [
-          "Authorization",
-          "AccessToken"
+          "Authorization"
         ],
         "security": [],
         "requestBody": {
@@ -157,8 +155,7 @@
         "summary": "Revoke an Access Token",
         "description": "This is the URL of the Box revoke endpoint, the endpoint that revokes access\ntokens, or to put it another way, the endpoint that ends sessions, logging\nusers out.",
         "tags": [
-          "Authorization",
-          "AccessToken"
+          "Authorization"
         ],
         "security": [],
         "requestBody": {
@@ -180,6 +177,644 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/OAuth2Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/folders/{folder_id}": {
+      "get": {
+        "operationId": "get_folders_id",
+        "summary": "Get Folder by ID",
+        "tags": [
+          "Folders"
+        ],
+        "description": "Retrieves the full metadata about a folder, including information about when\nit was last updated as well as some of the files and folders contained in it.",
+        "parameters": [
+          {
+            "name": "folder_id",
+            "description": "The ID of the folder to fetch. The root folder of a Box account is\nalways represented by the id \"0\".",
+            "example": "\"12345\"",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "description": "The folder attribute(s) to include in the response",
+            "in": "query",
+            "example": "id,type,name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A full folder object is returned, including the most current information\navailable about it.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Folder--Standard"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "4xx if the user does not have access to it.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "An 404 error is thrown if the folder does not exist.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Get Folder's info error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "put_folders_id",
+        "summary": "Update Folder, Create Shared Link, Create or Delete",
+        "description": "Used to update information about the folder. To move a folder, update the ID\nof its parent. To enable an email address that can be used to upload files to\nthis folder, update the folder_upload_email attribute. An optional If-Match\nheader can be included to ensure that client only updates the folder if it\nknows about the latest version.\n\n\nUsed to create a shared link for this particular folder. Please see here for\nmore information on the permissions available for shared links. In order to\nget default shared link status, set it to an empty access level, i.e.\n`{\"shared_link\": {}}`. In order to disable a shared link, send this same type\nof `PUT` request with the value of shared_link set to null, i.e.\n`{\"shared_link\": null}`\n\n\nTo add or remove an item from a collection, you do a PUT on that item and\nchange the list of collections it belongs to. Philosophically, this is similar\nto the way \"move\" operations work on files and folders - you do a `PUT` on the\nitem and change its parent. It’s the same idea with collections, except you’re\nchanging which collection(s) the item belongs to instead of the folder it\nbelongs to. Currently the only collection available is the favorites\ncollection, and you’ll need to know it’s ID for the user that is making the\nAPI call, since every user has a different favorites collection_id.\n\nThe Add/Remove API handling will check all ids passed in before performing any\nadd/removal operations. If any collection ids are malformed or do not exist in\nthe user’s account, the API call will throw a 400. Only if all of the\ncollection ids are valid will the adds and removals be carried out.",
+        "tags": [
+          "Folders"
+        ],
+        "parameters": [
+          {
+            "name": "folder_id",
+            "example": "123456",
+            "description": "The ID of the folder to update. The root folder of a Box account is\nalways represented by the id \"0\".",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "description": "Attribute(s) to include in the response",
+            "in": "query",
+            "example": "id,name",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "If-Match",
+            "description": "This is in the `etag` field of the folder object.",
+            "example": "1",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "The desired name for the folder",
+                    "example": "New Folder"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "The description of the folder.",
+                    "example": "Some pictures I took"
+                  },
+                  "sync_state": {
+                    "type": "string",
+                    "description": "Whether Box Sync clients will sync this folder. Values\nof `synced` or` not_synced` can be sent.",
+                    "enum": [
+                      "synced",
+                      "not_synced"
+                    ]
+                  },
+                  "can_non_owners_invite": {
+                    "type": "boolean",
+                    "example": true,
+                    "description": "If this parameter is set to false, only folder owners and\nco-owners can send collaborator invites"
+                  },
+                  "is_collaboration_restricted_to_enterprise": {
+                    "type": "boolean",
+                    "example": true,
+                    "description": "Whether to restrict future collaborations to within the\nenterprise. Does not affect existing collaborations."
+                  },
+                  "parent": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "The ID of the parent folder",
+                        "example": "11446498"
+                      }
+                    }
+                  },
+                  "shared_link": {
+                    "type": "object",
+                    "properties": {
+                      "access": {
+                        "type": "string",
+                        "description": "The level of access. Can be `open` (\"People with the link\"),\n`company` (\"People in your company\"), or `collaborators`\n(\"People in this folder\").\n\nIf you omit this field then the access level will be set to\nthe default access level specified by the enterprise admin.",
+                        "enum": [
+                          "open",
+                          "company",
+                          "collaborators"
+                        ],
+                        "example": "open"
+                      },
+                      "password": {
+                        "type": "string",
+                        "description": "The password required to access the shared link. Set to null\nto remove the password.",
+                        "example": "do-not-use-this-password"
+                      },
+                      "unshared_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2012-12-12T10:53:43-08:00",
+                        "description": "The date-time that this link will become disabled. This field\ncan only be set by users with paid accounts."
+                      },
+                      "permissions": {
+                        "type": "object",
+                        "properties": {
+                          "can_download": {
+                            "type": "boolean",
+                            "example": true,
+                            "description": "Whether the shared link allows downloads. For shared links\non folders, this also applies to any items in the folder.\nCan only be set with access levels `open` and `company`\n(not `collaborators`)."
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "folder_upload_email": {
+                    "type": "object",
+                    "properties": {
+                      "access": {
+                        "type": "string",
+                        "example": "open",
+                        "description": "Can be `open` or `collaborators`"
+                      }
+                    }
+                  },
+                  "owned_by": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "example": "123456",
+                        "description": "The ID of the user (should be your own user ID)"
+                      }
+                    }
+                  },
+                  "tags": {
+                    "type": "array",
+                    "example": [
+                      "approved"
+                    ],
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "The tags to attach this folder. To add/remove a tag to/from a\nfolder, you can first get the folder’s current tags, then modify\nthe list as required. Finally, set the folder’s entire list of\ntags."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The updated folder",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Folder"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "When 'collections' is specified in body the folder is moved into\ncollection with the ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Folder"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Update Folder info error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "delete_folders_id",
+        "summary": "Delete Folder",
+        "description": "Used to delete a folder. A recursive parameter must be included in order to\ndelete folders that have items inside of them. An optional If-Match header can\nbe included to ensure that client only deletes the folder if it knows about\nthe latest version.",
+        "tags": [
+          "Folders"
+        ],
+        "parameters": [
+          {
+            "name": "folder_id",
+            "description": "The ID of the folder to delete. The root folder of a Box account is\nalways represented by the id \"0\".",
+            "in": "path",
+            "required": true,
+            "example": "123456",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "recursive",
+            "description": "Whether to delete this folder if it has items inside of it.",
+            "in": "query",
+            "required": false,
+            "example": true,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "If-Match",
+            "description": "This is in the `etag` field of the folder object.",
+            "in": "header",
+            "required": false,
+            "example": 1,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "An empty 204 response will be returned upon successful deletion."
+          },
+          "400": {
+            "description": "An error is thrown if the folder is not empty and the ‘recursive’\nparameter is not included.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Delete folder operation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/folders/{folder_id}/items": {
+      "get": {
+        "operationId": "get_folders_id_items",
+        "summary": "Get Folder’s Items",
+        "tags": [
+          "Folders"
+        ],
+        "description": "Retrieves the files and/or folders contained within this folder without any\nother metadata about the folder. Any attribute in the full files or folders\nobjects can be passed in with the fields parameter to get specific attributes,\nand only those specific attributes back; otherwise, the mini format is\nreturned for each item by default.",
+        "parameters": [
+          {
+            "name": "folder_id",
+            "description": "The ID of the folder to fetch items for",
+            "example": "123456",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "description": "File/folder attribute(s) to include for the items returned",
+            "example": "id,name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "description": "The maximum number of items to return in a page.",
+            "in": "query",
+            "required": false,
+            "example": 1000,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": 100,
+              "maximum": 1000
+            }
+          },
+          {
+            "name": "offset",
+            "description": "The offset at which to begin the response. An offset of value of 0 will\nstart at the beginning of the folder-listing. Note that if there are\nhidden items in your previous response, your next offset should be the\noffset plus the limit, not the number of records you received back.",
+            "in": "query",
+            "required": false,
+            "example": 5000,
+            "schema": {
+              "type": "string",
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A collection of items contained in the folder is returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ItemReferenceList"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/folders": {
+      "post": {
+        "operationId": "post_folders",
+        "summary": "Create Folder",
+        "tags": [
+          "Folders"
+        ],
+        "description": "Used to create a new empty folder. The new folder will be created inside of\nthe specified parent folder",
+        "parameters": [
+          {
+            "name": "fields",
+            "description": "Attribute(s) to include in the response",
+            "in": "query",
+            "example": "id,name",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "The desired name for the folder",
+                    "example": "New Folder"
+                  },
+                  "parent": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "The ID of the parent folder",
+                        "example": "11446498"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "A full folder object is returned if the parent folder ID is valid and if\nno name collisions occur.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Folder"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/folders/{folder_id}/copy": {
+      "post": {
+        "operationId": "post_folders_id_copy",
+        "summary": "Copy Folder",
+        "description": "Used to create a copy of a folder in another folder. The original version of\nthe folder will not be altered.",
+        "tags": [
+          "Folders"
+        ],
+        "parameters": [
+          {
+            "name": "folder_id",
+            "description": "The ID of the folder to copy",
+            "example": "123456",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "description": "Attribute(s) to include in the response",
+            "example": "id,name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "An optional new name for the folder",
+                    "example": "New Folder"
+                  },
+                  "parent": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "The ID of the destination folder",
+                        "example": "11446498"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "A full folder object is returned if the ID is valid and if the update is\nsuccessful.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Folder"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "If the intended destination folder is the same, as this will cause a name\ncollision.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Copy folder operation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/folders/{folder_id}/collaborations": {
+      "get": {
+        "operationId": "get_folders_id_collaborations",
+        "summary": "Get Folder Collaborations",
+        "description": "Use this to get a list of all the collaborations on a folder i.e. all of the\nusers that have access to that folder.",
+        "tags": [
+          "Folders"
+        ],
+        "parameters": [
+          {
+            "name": "folder_id",
+            "description": "The ID of the folder to get collaborations for",
+            "example": "123456",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "description": "Attribute(s) to include in the response",
+            "example": "id,name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "description": "The maximum number of items to return in a page. The default is 100 and\nthe max is 1000.",
+            "in": "query",
+            "required": false,
+            "example": 1000,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": 100,
+              "maximum": 1000
+            }
+          },
+          {
+            "name": "offset",
+            "description": "The item at which to begin the response",
+            "in": "query",
+            "required": false,
+            "example": 1000,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A collection of collaboration objects are returned. If there are no\ncollaborations on this folder, an empty collection will be returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CollaborationList"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Get folder collaborations operation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -212,20 +847,6 @@
       }
     },
     "schemas": {
-      "OAuth2Error": {
-        "properties": {
-          "error": {
-            "type": "string",
-            "example": "invalid_client",
-            "description": "The type of the error returned."
-          },
-          "error_description": {
-            "type": "string",
-            "example": "The client credentials are invalid",
-            "description": "The type of the error returned."
-          }
-        }
-      },
       "AccessToken": {
         "properties": {
           "access_token": {
@@ -294,6 +915,122 @@
           }
         }
       },
+      "Collaboration": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Reference"
+          },
+          {
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "`collaboration`",
+                "example": "`collaboration`"
+              },
+              "id": {
+                "type": "string",
+                "description": "The ID of the collaboration object",
+                "example": "123456"
+              },
+              "item": {
+                "allOf": [
+                  {
+                    "type": "object"
+                  },
+                  {
+                    "description": "The file or folder that access is granted to"
+                  },
+                  {
+                    "$ref": "#/components/schemas/ItemReference"
+                  }
+                ]
+              },
+              "accessible_by": {
+                "allOf": [
+                  {
+                    "type": "object"
+                  },
+                  {
+                    "description": "The user or group that is granted access"
+                  },
+                  {
+                    "$ref": "#/components/schemas/User--Mini"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "CollaborationList": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Pagination"
+          },
+          {
+            "properties": {
+              "entries": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Collaboration"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "Enterprise": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Reference"
+          },
+          {
+            "properties": {
+              "name": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "Error": {
+        "properties": {
+          "type": {
+            "description": "Always `error`",
+            "example": "`error`",
+            "type": "string",
+            "enum": [
+              "error"
+            ]
+          },
+          "status": {
+            "description": "The HTTP status of the response.",
+            "example": 400,
+            "type": "integer",
+            "format": "int32"
+          },
+          "code": {
+            "description": "A Box-specific error code",
+            "example": "item_name_invalid",
+            "type": "string"
+          },
+          "help_url": {
+            "description": "A URL that links to more information about why the error occurred.",
+            "example": "http://developers.box.com/docs/#errors",
+            "type": "string"
+          },
+          "message": {
+            "description": "A human-readable message describing the error.",
+            "example": "Item name invalid",
+            "type": "string"
+          },
+          "request_id": {
+            "type": "string",
+            "example": "abcdef123456"
+          }
+        }
+      },
       "File": {
         "properties": {
           "type": {
@@ -329,6 +1066,547 @@
             "format": "hash",
             "example": "85136C79CBF9FE36BB9D05D0639C70C265C18D37",
             "description": "The SHA1 hash of the file."
+          }
+        }
+      },
+      "Folder": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Folder--Standard"
+          },
+          {
+            "properties": {
+              "sync_state": {
+                "type": "string",
+                "example": "synced",
+                "enum": [
+                  "synced",
+                  "not_synced",
+                  "partially_synced"
+                ],
+                "description": "Whether this folder will be synced by the Box sync clients or not. Can\nbe `synced`, `not_synced`, or `partially_synced`."
+              },
+              "has_collaborations": {
+                "type": "boolean",
+                "example": true,
+                "description": "Whether this folder has any collaborators."
+              },
+              "permissions": {
+                "type": "object",
+                "properties": {
+                  "can_access": {
+                    "type": "boolean",
+                    "description": "Whether the current user can access the folder",
+                    "example": true
+                  },
+                  "can_upload": {
+                    "type": "boolean",
+                    "description": "Whether the current user can upload to the folder",
+                    "example": true
+                  },
+                  "can_rename": {
+                    "type": "boolean",
+                    "description": "Whether the current user can rename the folder",
+                    "example": true
+                  },
+                  "can_delete": {
+                    "type": "boolean",
+                    "description": "Whether the current user can delete the folder",
+                    "example": true
+                  },
+                  "can_share": {
+                    "type": "boolean",
+                    "description": "Whether the current user can share the folder",
+                    "example": true
+                  },
+                  "can_invite_collaborator": {
+                    "type": "boolean",
+                    "description": "Whether the current user can invite collaborators to the folder",
+                    "example": true
+                  },
+                  "can_set_share_access": {
+                    "type": "boolean",
+                    "description": "Whether the current user can set share permissions for the folder",
+                    "example": true
+                  }
+                }
+              },
+              "tags": {
+                "type": "array",
+                "example": [
+                  "approved"
+                ],
+                "items": {
+                  "type": "string"
+                },
+                "description": "All tags applied to this folder."
+              },
+              "can_non_owners_invite": {
+                "type": "boolean",
+                "example": true,
+                "description": "Whether non-owners can invite collaborators to this folder."
+              },
+              "is_externally_owned": {
+                "type": "boolean",
+                "example": true,
+                "description": "Whether this folder is owned by a user outside of the enterprise."
+              },
+              "is_collaboration_restricted_to_enterprise": {
+                "type": "boolean",
+                "example": true,
+                "description": "Whether future collaborations should be restricted to within the\nenterprise only."
+              },
+              "allowed_shared_link_access_levels": {
+                "type": "array",
+                "example": "open",
+                "enum": [
+                  "open",
+                  "company",
+                  "collaborators"
+                ],
+                "description": "Access level settings for shared links set by administrator. Can\ninclude `open`, `company`, or `collaborators`."
+              },
+              "allowed_invitee_roles": {
+                "type": "array",
+                "description": "Folder [collaboration](#collaboration-object) roles allowed by the\nenterprise administrator.",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "watermark_info": {
+                "allOf": [
+                  {
+                    "type": "object"
+                  },
+                  {
+                    "description": "Information about the watermarking on this folder"
+                  },
+                  {
+                    "$ref": "#/components/schemas/WatermarkInfo"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "Folder--Standard": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Folder--Mini"
+          },
+          {
+            "properties": {
+              "created_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "The time the folder was created.  May be `null` for some folders such\nas root or trash.",
+                "example": "2012-12-12T10:53:43-08:00"
+              },
+              "description": {
+                "type": "string",
+                "description": "The description of the folder. The limit is 256 characters.",
+                "example": "Some pictures I took"
+              },
+              "size": {
+                "type": "integer",
+                "description": "The folder size in bytes. Be careful parsing this integer, it can\neasily go into [exponent notation](http://en.wikipedia.org/wiki/\\\nDouble-precision_floating-point_format).",
+                "example": 629644
+              },
+              "path_collection": {
+                "type": "array",
+                "description": "The path of folders to this folder, starting at the root",
+                "items": {
+                  "$ref": "#/components/schemas/Folder--Mini"
+                }
+              },
+              "created_by": {
+                "allOf": [
+                  {
+                    "type": "object"
+                  },
+                  {
+                    "description": "The user who created this folder"
+                  },
+                  {
+                    "$ref": "#/components/schemas/User--Mini"
+                  }
+                ]
+              },
+              "modified_by": {
+                "allOf": [
+                  {
+                    "type": "object"
+                  },
+                  {
+                    "description": "The user who last modified this folder."
+                  },
+                  {
+                    "$ref": "#/components/schemas/User--Mini"
+                  }
+                ]
+              },
+              "trashed_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "The time the folder or its contents were put in the trash. May be\n`null` for some folders such as root or trash.",
+                "example": "2012-12-12T10:53:43-08:00"
+              },
+              "purged_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "The time the folder or its contents will be purged from the trash. May\nbe `null` for some folders such as root or trash.",
+                "example": "2012-12-12T10:53:43-08:00"
+              },
+              "content_created_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "The time the folder or its contents were originally created (according\nto the uploader).  May be `null` for some folders such as root or\ntrash.",
+                "example": "2012-12-12T10:53:43-08:00"
+              },
+              "content_modified_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "The time the folder or its contents were last modified (according to\nthe uploader).  May be `null` for some folders such as root or trash.",
+                "example": "2012-12-12T10:53:43-08:00"
+              },
+              "expires_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "When the folder will automatically be deleted, i.e. expired. This\nattribute cannot be set.",
+                "example": "2012-12-12T10:53:43-08:00"
+              },
+              "owned_by": {
+                "allOf": [
+                  {
+                    "type": "object"
+                  },
+                  {
+                    "description": "The user who owns this folder."
+                  },
+                  {
+                    "$ref": "#/components/schemas/User--Mini"
+                  }
+                ]
+              },
+              "shared_link": {
+                "allOf": [
+                  {
+                    "type": "object"
+                  },
+                  {
+                    "description": "The shared link object for this file. Will be\n`null` if no shared link has been created."
+                  },
+                  {
+                    "$ref": "#/components/schemas/SharedLink"
+                  }
+                ]
+              },
+              "folder_upload_email": {
+                "type": "object",
+                "properties": {
+                  "access": {
+                    "description": "The access level for which the email was created.",
+                    "type": "string",
+                    "enum": [
+                      "open",
+                      "company",
+                      "collaborators"
+                    ]
+                  },
+                  "email": {
+                    "description": "The upload email address for this folder. `null` if not set.",
+                    "type": "string",
+                    "format": "email"
+                  }
+                }
+              },
+              "parent": {
+                "allOf": [
+                  {
+                    "type": "object"
+                  },
+                  {
+                    "description": "The folder that contains this folder.\n\nMay be `null` for folders such as root, trash and child folders\nwhose parent is inaccessible."
+                  },
+                  {
+                    "$ref": "#/components/schemas/Folder--Mini"
+                  }
+                ]
+              },
+              "item_status": {
+                "type": "string",
+                "description": "Whether this item is deleted or not. Values include `active`,\n`trashed` if the item has been moved to the trash, and\n`deleted` if the item has been permanently deleted.",
+                "enum": [
+                  "active",
+                  "trashed",
+                  "deleted"
+                ],
+                "example": "active"
+              },
+              "item_collection": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ItemReference"
+                },
+                "description": "A collection of mini file and folder objects contained in this folder."
+              }
+            }
+          }
+        ]
+      },
+      "Folder--Mini": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ItemReference"
+          },
+          {
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "The type of object, defaults to `folder`",
+                "example": "`folder`"
+              },
+              "id": {
+                "type": "string",
+                "description": "The ID of the folder",
+                "example": "11446498"
+              },
+              "sequence_id": {
+                "type": "string",
+                "example": "1",
+                "description": "A unique ID for use with the `/events` endpoint. May be `null` for\nsome folders, such as root or trash."
+              },
+              "etag": {
+                "type": "string",
+                "example": "1",
+                "description": "The entity tag of this folder object. Used with If-Match\nheaders. May be `null` for some folders such as root or\ntrash."
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the folder.",
+                "example": "Pictures"
+              }
+            }
+          }
+        ]
+      },
+      "ItemReference": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Reference"
+          },
+          {
+            "properties": {
+              "sequence_id": {
+                "type": "string",
+                "example": "1",
+                "description": "A unique ID for use with the `/events` endpoint. May be `null` for\nsome items, such as root or trash."
+              },
+              "etag": {
+                "type": "string",
+                "example": "1",
+                "description": "The entity tag of this item. Used with If-Match headers.\nMay be `null` for some folders such as root or trash."
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the item.",
+                "example": "Pictures"
+              }
+            }
+          }
+        ]
+      },
+      "ItemReferenceList": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Pagination"
+          },
+          {
+            "properties": {
+              "entries": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ItemReference"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "OAuth2Error": {
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "invalid_client",
+            "description": "The type of the error returned."
+          },
+          "error_description": {
+            "type": "string",
+            "example": "The client credentials are invalid",
+            "description": "The type of the error returned."
+          }
+        }
+      },
+      "Pagination": {
+        "properties": {
+          "total_count": {
+            "description": "One greater than the offset of the last entry in the entire collection.\nThe total number of entries in the collection may be less than\n`total_count`.",
+            "example": 5000,
+            "type": "integer",
+            "format": "int64"
+          },
+          "limit": {
+            "description": "The limit that was used for these entries. This will be the same as the\n`limit` query parameter unless that value exceeded the maximum value\nallowed. The maximum value varies by API.",
+            "example": 1000,
+            "type": "integer",
+            "format": "int64"
+          },
+          "offset": {
+            "description": "The 0-based offset of the first entry in this set. This will be the same\nas the `offset` query parameter.",
+            "example": 2000,
+            "type": "integer",
+            "format": "int64"
+          },
+          "order": {
+            "description": "The order by which items are returned",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "by": {
+                  "example": "type",
+                  "type": "string"
+                },
+                "direction": {
+                  "type": "string",
+                  "example": "ASC",
+                  "enum": [
+                    "ASC",
+                    "DESC"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "Reference": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The ID of the object",
+            "example": "11446498"
+          },
+          "type": {
+            "type": "string",
+            "description": "The type of object, defaults to `folder`",
+            "example": "file",
+            "enum": [
+              "folder",
+              "file",
+              "user",
+              "file_version",
+              "lock",
+              "collaboration",
+              "comment",
+              "task",
+              "web_link",
+              "collection",
+              "task_assignment",
+              "event",
+              "realtime_server",
+              "webhook_event",
+              "webhook",
+              "enterprise",
+              "invite",
+              "email_alias",
+              "group",
+              "group_membership",
+              "device_pinner",
+              "retention_policy",
+              "retention_policy_assignment",
+              "file_version_retention",
+              "legal_hold_policy",
+              "legal_hold_policy_assignment",
+              "legal_hold",
+              "upload_session"
+            ]
+          }
+        }
+      },
+      "SharedLink": {
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "The URL to access the item on Box.  If entered in a browser, this URL will\ndisplay the item in Box's preview UI.  If a custom URL is set this field\nwill return the custom URL, but the original URL will also continue to\nwork.",
+            "example": "https://www.box.com/s/vspke7y05sb214wjokpk"
+          },
+          "download_url": {
+            "type": "string",
+            "description": "The \"direct Link\" URL to download the item.  If entered in a browser, this\nURL will trigger a download of the item.  This URL includes the file\nextension so that the file will be saved with the right file type.",
+            "example": "https://www.box.com/shared/static/rh935iit6ewrmw0unyul.jpeg"
+          },
+          "vanity_url": {
+            "type": "string",
+            "description": "The \"Custom URL\" that can also be used to preview the item on Box.  Custom\nURLs can only be created or modified in the Box Web application.",
+            "example": "https://acme.app.box.com/v/my_url/"
+          },
+          "access": {
+            "type": "string",
+            "description": "The access level specified when the shared link was created. Can be `open`\n(\"People with the link\"), `company` (\"People in your company\"), or\n`collaborators` (\"People in this folder\").  When creating a shared link,\nif you omit this field then the access level will be set to the default\naccess level specified by the enterprise admin.",
+            "enum": [
+              "open",
+              "company",
+              "collaborators"
+            ],
+            "example": "open"
+          },
+          "effective_access": {
+            "type": "string",
+            "description": "The effective access level for the shared link.  This can be lower than\nthe value in the `access` field if the enterprise settings restrict the\nallowed access levels.",
+            "enum": [
+              "open",
+              "company",
+              "collaborators"
+            ],
+            "example": "company"
+          },
+          "unshared_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date-time that this link will become disabled. This field can only be\nset by users with paid accounts.",
+            "example": "2018-04-13T13:53:23-07:00"
+          },
+          "is_password_enabled": {
+            "type": "boolean",
+            "description": "Whether the shared link has a password set",
+            "example": true
+          },
+          "permissions": {
+            "type": "object",
+            "properties": {
+              "can_download": {
+                "type": "boolean",
+                "example": true,
+                "description": "Whether the shared link allows downloads.  For shared links on\nfolders, this also applies to any items in the folder. Can only be set\nwith access levels `open` and `company` (not `collaborators`)."
+              },
+              "can_preview": {
+                "type": "boolean",
+                "example": true,
+                "description": "Whether the shared link allows previewing.  Always `true`.  For shared\nlinks on folders, this also applies to any items in the folder."
+              }
+            }
+          },
+          "download_count": {
+            "type": "integer",
+            "example": 3,
+            "description": "The number of times the item has been downloaded"
+          },
+          "preview_count": {
+            "type": "integer",
+            "example": 3,
+            "description": "The number of times the item has been previewed"
           }
         }
       },
@@ -445,6 +1723,216 @@
             "format": "token",
             "description": "The access token to revoke.",
             "example": "n22JPxrh18m4Y0wIZPIqYZK7VRrsMTWW"
+          }
+        }
+      },
+      "User": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/User--Standard"
+          },
+          {
+            "properties": {
+              "role": {
+                "type": "string",
+                "enum": [
+                  "admin",
+                  "coadmin",
+                  "user"
+                ],
+                "description": "The user’s enterprise role",
+                "example": "admin"
+              },
+              "tracking_codes": {
+                "type": "array",
+                "description": "An array of key/value pairs set by the user’s admin",
+                "example": "TBD",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "can_see_managed_users": {
+                "type": "boolean",
+                "example": true,
+                "description": "Whether the user can see other enterprise users in her contact list"
+              },
+              "is_sync_enabled": {
+                "type": "boolean",
+                "description": "Whether the user can use Box Sync",
+                "example": true
+              },
+              "is_external_collab_restricted": {
+                "type": "boolean",
+                "example": true,
+                "description": "Whether the user is allowed to collaborate with users outside her\nenterprise"
+              },
+              "is_exempt_from_device_limits": {
+                "type": "boolean",
+                "example": true,
+                "description": "Whether to exempt the user from Enterprise device limits"
+              },
+              "is_exempt_from_login_verification": {
+                "type": "boolean",
+                "example": true,
+                "description": "Whether the user must use two-factor authentication"
+              },
+              "enterprise": {
+                "allOf": [
+                  {
+                    "type": "object"
+                  },
+                  {
+                    "description": "Representation of the user’s enterprise"
+                  },
+                  {
+                    "$ref": "#/components/schemas/Enterprise"
+                  }
+                ]
+              },
+              "my_tags": {
+                "type": "array",
+                "example": [
+                  "important",
+                  "needs review"
+                ],
+                "description": "Tags for all files and folders owned by the user. Values returned\nwill  only contain tags that were set by the requester."
+              },
+              "hostname": {
+                "type": "string",
+                "example": "https://example.com/",
+                "description": "The root (protocol, subdomain, domain) of any links that need to be\ngenerated for the user"
+              },
+              "is_platform_access_only": {
+                "type": "boolean",
+                "example": true,
+                "description": "Whether the user is an App User"
+              }
+            }
+          }
+        ]
+      },
+      "User--Standard": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/User--Mini"
+          },
+          {
+            "properties": {
+              "created_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "When the user object was created",
+                "example": "2012-12-12T10:53:43-08:00"
+              },
+              "modified_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "When the user object was last modified",
+                "example": "2012-12-12T10:53:43-08:00"
+              },
+              "language": {
+                "type": "string",
+                "format": "ISO639-1-BOX",
+                "description": "The user's preferred language",
+                "example": "en"
+              },
+              "timezone": {
+                "type": "string",
+                "format": "timezone",
+                "description": "The user's timezone",
+                "example": "Africa/Bujumbura"
+              },
+              "space_amount": {
+                "type": "integer",
+                "description": "The user’s total available space amount in bytes",
+                "example": 11345156112
+              },
+              "space_used": {
+                "type": "integer",
+                "description": "The amount of space in use by the user",
+                "example": 1237009912
+              },
+              "max_upload_size": {
+                "type": "integer",
+                "description": "The maximum individual file size in bytes the user can have",
+                "example": 2147483648
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "active",
+                  "inactive",
+                  "cannot_delete_edit",
+                  "cannot_delete_edit_upload"
+                ],
+                "description": "The user's account status",
+                "example": "active"
+              },
+              "job_title": {
+                "type": "string",
+                "description": "The user’s job title",
+                "maxLength": 100,
+                "example": "CEO"
+              },
+              "phone": {
+                "type": "string",
+                "description": "The user’s phone number",
+                "maxLength": 100,
+                "example": 6509241374
+              },
+              "address": {
+                "type": "string",
+                "description": "The user’s address",
+                "maxLength": 255,
+                "example": "900 Jefferson Ave, Redwood City, CA 94063"
+              },
+              "avatar_url": {
+                "type": "string",
+                "description": "URL of the user’s avatar image",
+                "example": "https://www.box.com/api/avatar/large/181216415"
+              }
+            }
+          }
+        ]
+      },
+      "User--Mini": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Reference"
+          },
+          {
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "`user`",
+                "example": "`user`"
+              },
+              "id": {
+                "type": "string",
+                "description": "The ID of the user object",
+                "example": "181216415"
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the user",
+                "example": "Aaron Levie",
+                "maxLength": 50
+              },
+              "login": {
+                "type": "string",
+                "description": "The email address the user uses to log in",
+                "example": "ceo@box.com"
+              }
+            }
+          }
+        ]
+      },
+      "WatermarkInfo": {
+        "properties": {
+          "is_watermarked": {
+            "type": "boolean",
+            "description": "Whether the folder is watermarked or not.",
+            "example": true
           }
         }
       }
