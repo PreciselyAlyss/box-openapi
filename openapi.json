@@ -1115,42 +1115,383 @@
         }
       },
       "File": {
-        "properties": {
-          "type": {
-            "type": "string",
-            "example": "file",
-            "description": "The type of object returned.",
-            "enum": [
-              "file"
-            ]
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/File--Standard"
           },
-          "id": {
-            "type": "string",
-            "example": 5391641209,
-            "description": "The Box ID for this file"
-          },
-          "name": {
-            "type": "string",
-            "example": "example.txt",
-            "description": "The name of this file"
-          },
-          "sequence_id": {
-            "type": "string",
-            "example": "0",
-            "description": "A unique ID for use with the `/events` endpoint"
-          },
-          "etag": {
-            "type": "string",
-            "example": "3",
-            "description": "The entity tag of this file object. Used with `If-Match` headers."
-          },
-          "sha1": {
-            "type": "string",
-            "format": "hash",
-            "example": "85136C79CBF9FE36BB9D05D0639C70C265C18D37",
-            "description": "The SHA1 hash of the file."
+          {
+            "properties": {
+              "version_number": {
+                "type": "string",
+                "example": 1,
+                "description": "The version number of this file"
+              },
+              "comment_count": {
+                "type": "integer",
+                "example": 10,
+                "description": "The number of comments on this file"
+              },
+              "permissions": {
+                "allOf": [
+                  {
+                    "description": "An object containing the permissions that the current user has\nfor this item"
+                  },
+                  {
+                    "$ref": "#/components/schemas/Permissions"
+                  }
+                ]
+              },
+              "tags": {
+                "type": "array",
+                "example": [
+                  "approved"
+                ],
+                "items": {
+                  "type": "string"
+                },
+                "description": "All tags applied to this folder."
+              },
+              "lock": {
+                "allOf": [
+                  {
+                    "description": "The lock held on this file. If there is no lock, this can either\nbe `null` or have a timestamp in the past."
+                  },
+                  {
+                    "$ref": "#/components/schemas/Lock"
+                  }
+                ]
+              },
+              "extension": {
+                "type": "string",
+                "example": "png",
+                "description": "Indicates the suffix, when available, on the file. By default,\nset to an empty string. The suffix usually indicates the encoding\n(file format) of the file contents or usage."
+              },
+              "is_package": {
+                "type": "boolean",
+                "example": true,
+                "description": "Whether the file is a package. Used for Mac Packages used by iWorks."
+              },
+              "expiring_embed_link": {
+                "type": "string",
+                "example": "https://app.box.com/preview/expiring_embed/gvoct6FE!",
+                "description": "An expiring URL for an embedded preview session in an iframe.\nThis URL will expire after 60 seconds and the session will\nexpire after 60 minutes."
+              },
+              "watermark_info": {
+                "allOf": [
+                  {
+                    "type": "object"
+                  },
+                  {
+                    "description": "Information about the watermarking on this file"
+                  },
+                  {
+                    "$ref": "#/components/schemas/WatermarkInfo"
+                  }
+                ]
+              },
+              "allowed_invitee_roles": {
+                "type": "array",
+                "description": "Folder [collaboration](#collaboration-object) roles allowed by the\nenterprise administrator.",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "is_externally_owned": {
+                "type": "boolean",
+                "example": true,
+                "description": "Whether this file is owned by a user outside of the enterprise."
+              },
+              "has_collaborations": {
+                "type": "boolean",
+                "example": true,
+                "description": "Whether this file has any collaborators."
+              },
+              "metadata": {
+                "type": "object",
+                "description": "The scope of the metadata",
+                "example": "global",
+                "additionalProperties": {
+                  "type": "object",
+                  "description": "The template name for the metadata",
+                  "example": "properties",
+                  "additionalProperties": {
+                    "$ref": "#/components/schemas/ItemMetadata"
+                  }
+                }
+              }
+            }
           }
-        }
+        ]
+      },
+      "File--Standard": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/File--Mini"
+          },
+          {
+            "properties": {
+              "sha1": {
+                "type": "string",
+                "format": "hash",
+                "example": "85136C79CBF9FE36BB9D05D0639C70C265C18D37",
+                "description": "The SHA1 hash of the file."
+              },
+              "description": {
+                "type": "string",
+                "description": "The description of the file",
+                "maxLength": 256,
+                "example": "Some pictures I took"
+              },
+              "size": {
+                "type": "integer",
+                "description": "The file size in bytes. Be careful parsing this integer, it can\neasily go into [exponent notation](http://en.wikipedia.org/wiki/\\\nDouble-precision_floating-point_format).",
+                "example": 629644
+              },
+              "path_collection": {
+                "type": "array",
+                "description": "The path of folders to this file, starting at the root",
+                "items": {
+                  "$ref": "#/components/schemas/Folder--Mini"
+                }
+              },
+              "created_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "When this file was upload to Box’s servers",
+                "example": "2012-12-12T10:53:43-08:00"
+              },
+              "modified_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "When this file was last updated on the Box servers",
+                "example": "2012-12-12T10:53:43-08:00"
+              },
+              "trashed_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "When this file was last moved to the trash",
+                "example": "2012-12-12T10:53:43-08:00"
+              },
+              "purged_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "When this file will be permanently deleted",
+                "example": "2012-12-12T10:53:43-08:00"
+              },
+              "content_created_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "When this file was created originally",
+                "example": "2012-12-12T10:53:43-08:00"
+              },
+              "content_modified_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "When this file was last updated",
+                "example": "2012-12-12T10:53:43-08:00"
+              },
+              "expires_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "When the file will automatically be deleted",
+                "example": "2012-12-12T10:53:43-08:00"
+              },
+              "created_by": {
+                "allOf": [
+                  {
+                    "type": "object"
+                  },
+                  {
+                    "description": "The user who created this file"
+                  },
+                  {
+                    "$ref": "#/components/schemas/User--Mini"
+                  }
+                ]
+              },
+              "modified_by": {
+                "allOf": [
+                  {
+                    "type": "object"
+                  },
+                  {
+                    "description": "The user who last modified this file"
+                  },
+                  {
+                    "$ref": "#/components/schemas/User--Mini"
+                  }
+                ]
+              },
+              "owned_by": {
+                "allOf": [
+                  {
+                    "type": "object"
+                  },
+                  {
+                    "description": "The user who owns this file"
+                  },
+                  {
+                    "$ref": "#/components/schemas/User--Mini"
+                  }
+                ]
+              },
+              "shared_link": {
+                "allOf": [
+                  {
+                    "type": "object"
+                  },
+                  {
+                    "description": "The shared link object for this file. Will be\n`null` if no shared link has been created."
+                  },
+                  {
+                    "$ref": "#/components/schemas/SharedLink"
+                  }
+                ]
+              },
+              "parent": {
+                "allOf": [
+                  {
+                    "description": "The folder that contains this file."
+                  },
+                  {
+                    "$ref": "#/components/schemas/Folder--Mini"
+                  }
+                ]
+              },
+              "item_status": {
+                "type": "string",
+                "example": "active",
+                "enum": [
+                  "active",
+                  "trashed",
+                  "deleted"
+                ],
+                "description": "Whether this item is deleted or not. Values include `active`,\n`trashed` if the file has been moved to the trash, and `deleted` if\nthe file has been permanently deleted"
+              }
+            }
+          }
+        ]
+      },
+      "File--Mini": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ItemReference"
+          },
+          {
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "`folder`",
+                "example": "`folder`"
+              },
+              "id": {
+                "type": "string",
+                "description": "The ID of the file",
+                "example": "11446498"
+              },
+              "sequence_id": {
+                "type": "string",
+                "example": "1",
+                "description": "A unique ID for use with the /events endpoint"
+              },
+              "etag": {
+                "type": "string",
+                "example": "1",
+                "description": "The entity tag of this file object. Used with `If-Match`\nheaders."
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the file",
+                "example": "Pictures"
+              }
+            }
+          }
+        ]
+      },
+      "FileVersion": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/FileVersion--Mini"
+          },
+          {
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The name of the file version",
+                "example": "tigers.jpeg"
+              },
+              "size": {
+                "type": "integer",
+                "format": "int64",
+                "description": "Size of the file version in bytes",
+                "example": 629644
+              },
+              "created_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "When the file version object was created",
+                "example": "2012-12-12T10:53:43-08:00"
+              },
+              "modified_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "When the file version object was last updated",
+                "example": "2012-12-12T10:53:43-08:00"
+              },
+              "modified_by": {
+                "allOf": [
+                  {
+                    "description": "The user who last updated the file version"
+                  },
+                  {
+                    "$ref": "#/components/schemas/User--Mini"
+                  }
+                ]
+              },
+              "type": {
+                "type": "string",
+                "description": "`file_version `",
+                "example": "`file_version`"
+              },
+              "id": {
+                "type": "string",
+                "description": "The ID of the file version object",
+                "example": 26261748416
+              },
+              "trashed_at": {
+                "type": "string",
+                "description": "When the file version object was trashed.",
+                "format": "date-time",
+                "example": "2012-12-12T10:53:43-08:00"
+              },
+              "purged_at": {
+                "type": "string",
+                "description": "When the file version object was purged.",
+                "format": "date-time",
+                "example": "2012-12-12T10:53:43-08:00"
+              }
+            }
+          }
+        ]
+      },
+      "FileVersion--Mini": {
+        "type": "object",
+        "description": "The version information of the file.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Reference"
+          },
+          {
+            "properties": {
+              "sha1": {
+                "type": "string",
+                "description": "The SHA1 hash of this file.",
+                "example": "134b65991ed521fcfe4724b7d814ab8ded5185dc"
+              }
+            }
+          }
+        ]
       },
       "Folder": {
         "allOf": [
@@ -1175,44 +1516,14 @@
                 "description": "Whether this folder has any collaborators."
               },
               "permissions": {
-                "type": "object",
-                "properties": {
-                  "can_access": {
-                    "type": "boolean",
-                    "description": "Whether the current user can access the folder",
-                    "example": true
+                "allOf": [
+                  {
+                    "description": "An object containing the permissions that the current user has\nfor this item"
                   },
-                  "can_upload": {
-                    "type": "boolean",
-                    "description": "Whether the current user can upload to the folder",
-                    "example": true
-                  },
-                  "can_rename": {
-                    "type": "boolean",
-                    "description": "Whether the current user can rename the folder",
-                    "example": true
-                  },
-                  "can_delete": {
-                    "type": "boolean",
-                    "description": "Whether the current user can delete the folder",
-                    "example": true
-                  },
-                  "can_share": {
-                    "type": "boolean",
-                    "description": "Whether the current user can share the folder",
-                    "example": true
-                  },
-                  "can_invite_collaborator": {
-                    "type": "boolean",
-                    "description": "Whether the current user can invite collaborators to the folder",
-                    "example": true
-                  },
-                  "can_set_share_access": {
-                    "type": "boolean",
-                    "description": "Whether the current user can set share permissions for the folder",
-                    "example": true
+                  {
+                    "$ref": "#/components/schemas/Permissions"
                   }
-                }
+                ]
               },
               "tags": {
                 "type": "array",
@@ -1268,6 +1579,19 @@
                     "$ref": "#/components/schemas/WatermarkInfo"
                   }
                 ]
+              },
+              "metadata": {
+                "type": "object",
+                "description": "The scope of the metadata",
+                "example": "global",
+                "additionalProperties": {
+                  "type": "object",
+                  "description": "The template name for the metadata",
+                  "example": "properties",
+                  "additionalProperties": {
+                    "$ref": "#/components/schemas/ItemMetadata"
+                  }
+                }
               }
             }
           }
@@ -1288,7 +1612,8 @@
               },
               "description": {
                 "type": "string",
-                "description": "The description of the folder. The limit is 256 characters.",
+                "description": "The description of the folder.",
+                "maxLength": 256,
                 "example": "Some pictures I took"
               },
               "size": {
@@ -1378,7 +1703,7 @@
                     "type": "object"
                   },
                   {
-                    "description": "The shared link object for this file. Will be\n`null` if no shared link has been created."
+                    "description": "The shared link object for this folder. Will be\n`null` if no shared link has been created."
                   },
                   {
                     "$ref": "#/components/schemas/SharedLink"
@@ -1449,7 +1774,7 @@
             "properties": {
               "type": {
                 "type": "string",
-                "description": "The type of object, defaults to `folder`",
+                "description": "`folder`",
                 "example": "`folder`"
               },
               "id": {
@@ -1475,6 +1800,58 @@
             }
           }
         ]
+      },
+      "ItemMetadata": {
+        "properties": {
+          "$canEdit": {
+            "type": "boolean",
+            "example": true,
+            "description": "Whether the user can edit this metadata"
+          },
+          "$id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234500-12f1-1234-aa12-b1d234cb567e",
+            "description": "36-character UUID to identify the metadata object"
+          },
+          "$parent": {
+            "type": "string",
+            "example": "folder_59449484661,",
+            "description": "An ID for the parent folder"
+          },
+          "$scope": {
+            "type": "string",
+            "example": "enterprise_27335",
+            "description": "An ID for the scope in which this template\nhas been applied"
+          },
+          "$template": {
+            "type": "string",
+            "example": "blueprintTemplate",
+            "description": "The name of the template"
+          },
+          "$type": {
+            "type": "string",
+            "example": "blueprintTemplate-6bcba49f-ca6d-4d2a-a758-57fe6edf44d0",
+            "description": "A unique identifier for the \"type\" of this instance. This is an internal\nsystem property and should not be used by a client application."
+          },
+          "$typeVersion": {
+            "type": "integer",
+            "example": 2,
+            "description": "The last-known version of the template of the object. This is an internal\nsystem property and should not be used by a client application."
+          },
+          "$version": {
+            "type": "integer",
+            "example": 1,
+            "description": "The version of the metadata object. Starts at 0 and increases every time\na user-defined property is modified."
+          }
+        },
+        "additionalProperties": {
+          "type": "string",
+          "description": "Additional data",
+          "example": {
+            "foo": "bar"
+          }
+        }
       },
       "ItemReference": {
         "allOf": [
@@ -1514,6 +1891,46 @@
                 "items": {
                   "$ref": "#/components/schemas/ItemReference"
                 }
+              }
+            }
+          }
+        ]
+      },
+      "Lock": {
+        "type": "object",
+        "description": "The lock held on a file.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Reference"
+          },
+          {
+            "properties": {
+              "created_by": {
+                "allOf": [
+                  {
+                    "description": "The use who created the lock"
+                  },
+                  {
+                    "$ref": "#/components/schemas/User--Mini"
+                  }
+                ]
+              },
+              "created_at": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2012-12-12T10:53:43-08:00",
+                "description": "The time this lock was created at"
+              },
+              "expired_at": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2012-12-12T10:53:43-08:00",
+                "description": "The time this lock is to expire at, which might be in the past"
+              },
+              "is_download_prevented": {
+                "type": "boolean",
+                "example": true,
+                "description": "Whether or not the file can be downloaded while locked"
               }
             }
           }
@@ -1573,6 +1990,45 @@
                 }
               }
             }
+          }
+        }
+      },
+      "Permissions": {
+        "properties": {
+          "can_access": {
+            "type": "boolean",
+            "description": "Whether the current user can access the item",
+            "example": true
+          },
+          "can_upload": {
+            "type": "boolean",
+            "description": "Whether the current user can upload to the item",
+            "example": true
+          },
+          "can_rename": {
+            "type": "boolean",
+            "description": "Whether the current user can rename the item",
+            "example": true
+          },
+          "can_delete": {
+            "type": "boolean",
+            "description": "Whether the current user can delete the item",
+            "example": true
+          },
+          "can_share": {
+            "type": "boolean",
+            "description": "Whether the current user can share the item",
+            "example": true
+          },
+          "can_invite_collaborator": {
+            "type": "boolean",
+            "description": "Whether the current user can invite collaborators to the item",
+            "example": true
+          },
+          "can_set_share_access": {
+            "type": "boolean",
+            "description": "Whether the current user can set share permissions for the item",
+            "example": true
           }
         }
       },
