@@ -1215,7 +1215,7 @@
                   "description": "The template name for the metadata",
                   "example": "properties",
                   "additionalProperties": {
-                    "$ref": "#/components/schemas/ItemMetadata"
+                    "$ref": "#/components/schemas/Metadata"
                   }
                 }
               }
@@ -1589,7 +1589,7 @@
                   "description": "The template name for the metadata",
                   "example": "properties",
                   "additionalProperties": {
-                    "$ref": "#/components/schemas/ItemMetadata"
+                    "$ref": "#/components/schemas/Metadata"
                   }
                 }
               }
@@ -1801,58 +1801,6 @@
           }
         ]
       },
-      "ItemMetadata": {
-        "properties": {
-          "$canEdit": {
-            "type": "boolean",
-            "example": true,
-            "description": "Whether the user can edit this metadata"
-          },
-          "$id": {
-            "type": "string",
-            "format": "uuid",
-            "example": "01234500-12f1-1234-aa12-b1d234cb567e",
-            "description": "36-character UUID to identify the metadata object"
-          },
-          "$parent": {
-            "type": "string",
-            "example": "folder_59449484661,",
-            "description": "An ID for the parent folder"
-          },
-          "$scope": {
-            "type": "string",
-            "example": "enterprise_27335",
-            "description": "An ID for the scope in which this template\nhas been applied"
-          },
-          "$template": {
-            "type": "string",
-            "example": "blueprintTemplate",
-            "description": "The name of the template"
-          },
-          "$type": {
-            "type": "string",
-            "example": "blueprintTemplate-6bcba49f-ca6d-4d2a-a758-57fe6edf44d0",
-            "description": "A unique identifier for the \"type\" of this instance. This is an internal\nsystem property and should not be used by a client application."
-          },
-          "$typeVersion": {
-            "type": "integer",
-            "example": 2,
-            "description": "The last-known version of the template of the object. This is an internal\nsystem property and should not be used by a client application."
-          },
-          "$version": {
-            "type": "integer",
-            "example": 1,
-            "description": "The version of the metadata object. Starts at 0 and increases every time\na user-defined property is modified."
-          }
-        },
-        "additionalProperties": {
-          "type": "string",
-          "description": "Additional data",
-          "example": {
-            "foo": "bar"
-          }
-        }
-      },
       "ItemReference": {
         "allOf": [
           {
@@ -1935,6 +1883,139 @@
             }
           }
         ]
+      },
+      "Metadata": {
+        "properties": {
+          "$canEdit": {
+            "type": "boolean",
+            "example": true,
+            "description": "Whether the user can edit this metadata"
+          },
+          "$id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "01234500-12f1-1234-aa12-b1d234cb567e",
+            "description": "36-character UUID to identify the metadata object"
+          },
+          "$parent": {
+            "type": "string",
+            "example": "folder_59449484661,",
+            "description": "An ID for the parent folder"
+          },
+          "$scope": {
+            "type": "string",
+            "example": "enterprise_27335",
+            "description": "An ID for the scope in which this template\nhas been applied"
+          },
+          "$template": {
+            "type": "string",
+            "example": "blueprintTemplate",
+            "description": "The name of the template"
+          },
+          "$type": {
+            "type": "string",
+            "example": "blueprintTemplate-6bcba49f-ca6d-4d2a-a758-57fe6edf44d0",
+            "description": "A unique identifier for the \"type\" of this instance. This is an internal\nsystem property and should not be used by a client application."
+          },
+          "$typeVersion": {
+            "type": "integer",
+            "example": 2,
+            "description": "The last-known version of the template of the object. This is an internal\nsystem property and should not be used by a client application."
+          },
+          "$version": {
+            "type": "integer",
+            "example": 1,
+            "description": "The version of the metadata object. Starts at 0 and increases every time\na user-defined property is modified."
+          }
+        },
+        "additionalProperties": {
+          "type": "string",
+          "description": "Additional data",
+          "example": {
+            "foo": "bar"
+          }
+        }
+      },
+      "MetadataTemplate": {
+        "properties": {
+          "templateKey": {
+            "type": "string",
+            "example": "productInfo",
+            "description": "A unique identifier for the template. The identifier must be unique across\nthe scope of the enterprise to which the metadata template is being\napplied.",
+            "maxLength": 64,
+            "pattern": "^[a-zA-Z_][-a-zA-Z0-9_]*$"
+          },
+          "scope": {
+            "type": "string",
+            "description": "The scope of the object. `global` and `enterprise_*` scopes are supported.\n\nThe `global` scope contains the template with a key of `properties`,\nwhile the enterprise scope pertains to custom templates created within\nthe enterprise.\n\n The ID of the enterprise will be appended to the enterprise scope.",
+            "example": "enterprise_123456"
+          },
+          "displayName": {
+            "type": "string",
+            "description": "The display name of the template",
+            "maxLength": 4096,
+            "example": "Product Info"
+          },
+          "hidden": {
+            "type": "boolean",
+            "example": true,
+            "description": "Whether this template is hidden in the UI",
+            "default": false
+          },
+          "fields": {
+            "type": "array",
+            "description": "The ordered set of key:value pairs for the template.",
+            "items": {
+              "$ref": "#/components/schemas/MetadataTemplateField"
+            }
+          }
+        }
+      },
+      "MetadataTemplateField": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "string",
+            "description": "The data type of the field's value",
+            "enum": [
+              "string",
+              "enum",
+              "float",
+              "date"
+            ]
+          },
+          "key": {
+            "type": "string",
+            "example": "category",
+            "description": "A unique identifier for the field. The identifier must\nbe unique within the template to which it belongs.",
+            "maxLength": 256
+          },
+          "displayName": {
+            "type": "string",
+            "example": "Category",
+            "description": "The display name of the field.",
+            "maxLength": 4096
+          },
+          "description": {
+            "type": "string",
+            "example": "The category",
+            "description": "A description of the field.",
+            "maxLength": 4096
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "key": {
+                  "description": "For type `enum` and `multiSelect`, one of the potential values\nthat can be selected",
+                  "example": "category1",
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
       },
       "OAuth2Error": {
         "properties": {
