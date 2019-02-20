@@ -189,7 +189,7 @@
         "operationId": "get_folders_id",
         "summary": "Get Folder by ID",
         "tags": [
-          "Folders"
+          "Folder"
         ],
         "description": "Retrieves the full metadata about a folder, including information about when\nit was last updated as well as some of the files and folders contained in it.",
         "parameters": [
@@ -262,7 +262,7 @@
         "summary": "Update Folder, Create Shared Link, Create or Delete",
         "description": "Used to update information about the folder. To move a folder, update the ID\nof its parent. To enable an email address that can be used to upload files to\nthis folder, update the folder_upload_email attribute. An optional If-Match\nheader can be included to ensure that client only updates the folder if it\nknows about the latest version.\n\n\nUsed to create a shared link for this particular folder. Please see here for\nmore information on the permissions available for shared links. In order to\nget default shared link status, set it to an empty access level, i.e.\n`{\"shared_link\": {}}`. In order to disable a shared link, send this same type\nof `PUT` request with the value of shared_link set to null, i.e.\n`{\"shared_link\": null}`\n\n\nTo add or remove an item from a collection, you do a PUT on that item and\nchange the list of collections it belongs to. Philosophically, this is similar\nto the way \"move\" operations work on files and folders - you do a `PUT` on the\nitem and change its parent. It’s the same idea with collections, except you’re\nchanging which collection(s) the item belongs to instead of the folder it\nbelongs to. Currently the only collection available is the favorites\ncollection, and you’ll need to know it’s ID for the user that is making the\nAPI call, since every user has a different favorites collection_id.\n\nThe Add/Remove API handling will check all ids passed in before performing any\nadd/removal operations. If any collection ids are malformed or do not exist in\nthe user’s account, the API call will throw a 400. Only if all of the\ncollection ids are valid will the adds and removals be carried out.",
         "tags": [
-          "Folders"
+          "Folder"
         ],
         "parameters": [
           {
@@ -448,7 +448,7 @@
         "summary": "Delete Folder",
         "description": "Used to delete a folder. A recursive parameter must be included in order to\ndelete folders that have items inside of them. An optional If-Match header can\nbe included to ensure that client only deletes the folder if it knows about\nthe latest version.",
         "tags": [
-          "Folders"
+          "Folder"
         ],
         "parameters": [
           {
@@ -514,7 +514,7 @@
         "operationId": "get_folders_id_items",
         "summary": "Get Folder’s Items",
         "tags": [
-          "Folders"
+          "Folder"
         ],
         "description": "Retrieves the files and/or folders contained within this folder without any\nother metadata about the folder. Any attribute in the full files or folders\nobjects can be passed in with the fields parameter to get specific attributes,\nand only those specific attributes back; otherwise, the mini format is\nreturned for each item by default.",
         "parameters": [
@@ -592,7 +592,7 @@
         "operationId": "post_folders",
         "summary": "Create Folder",
         "tags": [
-          "Folders"
+          "Folder"
         ],
         "description": "Used to create a new empty folder. The new folder will be created inside of\nthe specified parent folder",
         "parameters": [
@@ -661,7 +661,7 @@
         "summary": "Copy Folder",
         "description": "Used to create a copy of a folder in another folder. The original version of\nthe folder will not be altered.",
         "tags": [
-          "Folders"
+          "Folder"
         ],
         "parameters": [
           {
@@ -750,7 +750,7 @@
         "summary": "Get Folder Collaborations",
         "description": "Use this to get a list of all the collaborations on a folder i.e. all of the\nusers that have access to that folder.",
         "tags": [
-          "Folders"
+          "Folder"
         ],
         "parameters": [
           {
@@ -849,6 +849,7 @@
     },
     "schemas": {
       "AccessToken": {
+        "description": "A token that can be used to make authenticated API calls",
         "properties": {
           "access_token": {
             "type": "string",
@@ -925,6 +926,7 @@
         }
       },
       "Collaboration": {
+        "description": "Collaborations define access permissions for users and groups to files and\nfolders, similar to access control lists. A collaboration object grants a\nuser or group access to a file or folder with permissions defined by a\nspecific role.",
         "allOf": [
           {
             "$ref": "#/components/schemas/Reference"
@@ -1045,6 +1047,7 @@
       },
       "CollaborationList": {
         "type": "object",
+        "description": "A list of collaboration objects",
         "allOf": [
           {
             "$ref": "#/components/schemas/Pagination"
@@ -1062,6 +1065,7 @@
         ]
       },
       "Enterprise": {
+        "description": "A representation of a Box enterprise",
         "allOf": [
           {
             "$ref": "#/components/schemas/Reference"
@@ -1078,6 +1082,7 @@
         ]
       },
       "Error": {
+        "description": "A generic error",
         "properties": {
           "type": {
             "description": "Always `error`",
@@ -1115,6 +1120,7 @@
         }
       },
       "File": {
+        "description": "A full representation of a file, as can be returned from any\nfile API endpoints by default",
         "allOf": [
           {
             "$ref": "#/components/schemas/File--Standard"
@@ -1224,6 +1230,7 @@
         ]
       },
       "File--Standard": {
+        "description": "A standard representation of a file, as returned from any\nfile API endpoints by default",
         "allOf": [
           {
             "$ref": "#/components/schemas/File--Mini"
@@ -1373,6 +1380,7 @@
         ]
       },
       "File--Mini": {
+        "description": "A mini representation of a file, used when\nnested under another resource.",
         "allOf": [
           {
             "$ref": "#/components/schemas/ItemReference"
@@ -1409,7 +1417,7 @@
         ]
       },
       "FileVersion": {
-        "type": "object",
+        "description": "A full representation of a file version",
         "allOf": [
           {
             "$ref": "#/components/schemas/FileVersion--Mini"
@@ -1476,8 +1484,7 @@
         ]
       },
       "FileVersion--Mini": {
-        "type": "object",
-        "description": "The version information of the file.",
+        "description": "A mini representation of a file version, used when\nnested under another resource.",
         "allOf": [
           {
             "$ref": "#/components/schemas/Reference"
@@ -1494,6 +1501,7 @@
         ]
       },
       "Folder": {
+        "description": "A full representation of a folder, as can be returned from any\nfolder API endpoints by default",
         "allOf": [
           {
             "$ref": "#/components/schemas/Folder--Standard"
@@ -1598,6 +1606,7 @@
         ]
       },
       "Folder--Standard": {
+        "description": "A standard representation of a folder, as returned from any\nfolder API endpoints by default",
         "allOf": [
           {
             "$ref": "#/components/schemas/Folder--Mini"
@@ -1766,6 +1775,7 @@
         ]
       },
       "Folder--Mini": {
+        "description": "A mini representation of a file version, used when\nnested under another resource.",
         "allOf": [
           {
             "$ref": "#/components/schemas/ItemReference"
@@ -1802,6 +1812,7 @@
         ]
       },
       "ItemReference": {
+        "description": "A generic mini representation of a file, folder, user or enterprise",
         "allOf": [
           {
             "$ref": "#/components/schemas/Reference"
@@ -1828,6 +1839,7 @@
         ]
       },
       "ItemReferenceList": {
+        "description": "A list of generic mini representations of a file, folder, user or enterprise",
         "allOf": [
           {
             "$ref": "#/components/schemas/Pagination"
@@ -1845,7 +1857,6 @@
         ]
       },
       "Lock": {
-        "type": "object",
         "description": "The lock held on a file.",
         "allOf": [
           {
@@ -1885,6 +1896,7 @@
         ]
       },
       "Metadata": {
+        "description": "The metadata as applied by a metadata template to a file or\nfolder",
         "properties": {
           "$canEdit": {
             "type": "boolean",
@@ -1936,7 +1948,60 @@
           }
         }
       },
+      "MetadataCascadePolicy": {
+        "description": "A cascade policy that applies to metadata policy template\nto a folder",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "6fd4ff89-8fc1-42cf-8b29-1890dedd26d7",
+            "description": "The ID of the metadata cascade policy object"
+          },
+          "owner_enterprise": {
+            "type": "object",
+            "description": "The enterprise that owns the policy.",
+            "properties": {
+              "type": {
+                "type": "string",
+                "example": "`enterprise`",
+                "description": "`enterprise`"
+              },
+              "id": {
+                "type": "string",
+                "example": "690678",
+                "description": "The ID of the enterprise that owns the policy."
+              }
+            }
+          },
+          "parent": {
+            "type": "object",
+            "description": "Represent the folder the policy is applied to",
+            "properties": {
+              "type": {
+                "type": "string",
+                "example": "`folder`",
+                "description": "`folder`"
+              },
+              "id": {
+                "type": "string",
+                "example": "690678",
+                "description": "The ID of the folder the policy is applied to"
+              }
+            }
+          },
+          "scope": {
+            "type": "string",
+            "example": "global",
+            "description": "The scope of the target instance that will be cascaded down. The `scope`\nand `templateKey` together identify the metadata on the folder that is\nto be cascaded down. Today, only `global` and `enterprise_*` scopes are\nsupported."
+          },
+          "templateKey": {
+            "type": "string",
+            "example": "demo",
+            "description": "The template key of the target metadata template to cascade down.\nThe `scope` & `templateKey` together identify the metadata on the f\nolder that is to be cascaded down."
+          }
+        }
+      },
       "MetadataTemplate": {
+        "description": "A template for metadata as can be applied to files and folders",
         "properties": {
           "templateKey": {
             "type": "string",
@@ -1972,6 +2037,7 @@
         }
       },
       "MetadataTemplateField": {
+        "description": "An ordered set of key-value pairs that are part of a\nmetadata template",
         "properties": {
           "type": {
             "type": "string",
@@ -2002,6 +2068,11 @@
             "description": "A description of the field.",
             "maxLength": 4096
           },
+          "hidden": {
+            "type": "boolean",
+            "example": true,
+            "description": "Whether this template is hidden in the UI"
+          },
           "options": {
             "type": "array",
             "items": {
@@ -2018,6 +2089,7 @@
         }
       },
       "OAuth2Error": {
+        "description": "An OAuth2 error",
         "properties": {
           "error": {
             "type": "string",
@@ -2032,6 +2104,7 @@
         }
       },
       "Pagination": {
+        "description": "The part of an API response that describes pagination",
         "properties": {
           "total_count": {
             "description": "One greater than the offset of the last entry in the entire collection.\nThe total number of entries in the collection may be less than\n`total_count`.",
@@ -2075,6 +2148,7 @@
         }
       },
       "Permissions": {
+        "description": "The part of an API response that describes permissions",
         "properties": {
           "can_access": {
             "type": "boolean",
@@ -2114,6 +2188,7 @@
         }
       },
       "Reference": {
+        "description": "The bare basic reference for an object",
         "properties": {
           "id": {
             "type": "string",
@@ -2158,6 +2233,7 @@
         }
       },
       "SharedLink": {
+        "description": "Shared links provide direct, read-only access to files or folder on Box\nusing a URL. Shared links with open access level allow anyone with the URL\nto access the item, while shared links with company or collaborators access\nlevels can only be accessed by appropriate authenticated Box users.",
         "properties": {
           "url": {
             "type": "string",
@@ -2233,6 +2309,7 @@
         }
       },
       "TokenRequest": {
+        "description": "A request for a new OAuth2 token",
         "required": [
           "grant_type"
         ],
@@ -2324,6 +2401,7 @@
         }
       },
       "TokenRevocationRequest": {
+        "description": "A request to revoke an OAuth2 token",
         "required": [
           "grant_type"
         ],
@@ -2349,6 +2427,7 @@
         }
       },
       "User": {
+        "description": "A full representation of a user, as can be returned from any\nuser API endpoints by default",
         "allOf": [
           {
             "$ref": "#/components/schemas/User--Standard"
@@ -2434,6 +2513,7 @@
         ]
       },
       "User--Standard": {
+        "description": "A standard representation of a user, as returned from any\nuser API endpoints by default",
         "allOf": [
           {
             "$ref": "#/components/schemas/User--Mini"
@@ -2518,6 +2598,7 @@
         ]
       },
       "User--Mini": {
+        "description": "A mini representation of a user, used when\nnested under another resource.",
         "allOf": [
           {
             "$ref": "#/components/schemas/Reference"
@@ -2550,10 +2631,11 @@
         ]
       },
       "WatermarkInfo": {
+        "description": "The watermark information about this item",
         "properties": {
           "is_watermarked": {
             "type": "boolean",
-            "description": "Whether the folder is watermarked or not.",
+            "description": "Whether the item is watermarked or not.",
             "example": true
           }
         }
