@@ -850,6 +850,32 @@
     "schemas": {
       "AccessToken": {
         "description": "A token that can be used to make authenticated API calls",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AccessToken--Mini"
+          },
+          {
+            "properties": {
+              "refresh_token": {
+                "type": "string",
+                "format": "token",
+                "example": "c3FIOG9vSGV4VHo4QzAyg5T1JvNnJoZ3ExaVNyQWw6WjRsanRKZG5lQk9qUE1BVQ",
+                "description": "The refresh token for this access token, which can be used\nto request a new access token when the current one expires."
+              },
+              "issued_token_type": {
+                "type": "string",
+                "example": "urn:ietf:params:oauth:token-type:access_token",
+                "enum": [
+                  "urn:ietf:params:oauth:token-type:access_token"
+                ],
+                "description": "The type of downscoped access token returned. This is only\nreturned if an access token has been downscoped."
+              }
+            }
+          }
+        ]
+      },
+      "AccessToken--Mini": {
+        "description": "The basics of an access token",
         "properties": {
           "access_token": {
             "type": "string",
@@ -870,20 +896,6 @@
             ],
             "example": "bearer",
             "description": "The type of access token returned."
-          },
-          "refresh_token": {
-            "type": "string",
-            "format": "token",
-            "example": "c3FIOG9vSGV4VHo4QzAyg5T1JvNnJoZ3ExaVNyQWw6WjRsanRKZG5lQk9qUE1BVQ",
-            "description": "The refresh token for this access token, which can be used\nto request a new access token when the current one expires."
-          },
-          "issued_token_type": {
-            "type": "string",
-            "example": "urn:ietf:params:oauth:token-type:access_token",
-            "enum": [
-              "urn:ietf:params:oauth:token-type:access_token"
-            ],
-            "description": "The type of downscoped access token returned. This is only\nreturned if an access token has been downscoped."
           },
           "restricted_to": {
             "type": "array",
@@ -968,16 +980,6 @@
           },
           {
             "properties": {
-              "type": {
-                "type": "string",
-                "description": "`collaboration`",
-                "example": "`collaboration`"
-              },
-              "id": {
-                "type": "string",
-                "description": "The ID of the collaboration object",
-                "example": "123456"
-              },
               "item": {
                 "allOf": [
                   {
@@ -1072,8 +1074,7 @@
         ]
       },
       "CollaborationCollection": {
-        "type": "object",
-        "description": "A list of collaboration objects",
+        "description": "A list of collaborations",
         "allOf": [
           {
             "$ref": "#/components/schemas/Pagination"
@@ -1085,6 +1086,79 @@
                 "items": {
                   "$ref": "#/components/schemas/Collaboration"
                 }
+              }
+            }
+          }
+        ]
+      },
+      "Comment": {
+        "description": "Comments are messages created on files. Comments\ncan be made independently or created as responses to other\ncomments",
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Comment--Standard"
+          },
+          {
+            "properties": {
+              "tagged_message": {
+                "type": "string",
+                "example": "@[1234567:Aaron Levie] these tigers are cool!",
+                "description": "The string representing the comment text with\n@mentions included. @mention format is @[id:username]\nwhere `id` is user's Box ID an username is\ntheir display name."
+              }
+            }
+          }
+        ]
+      },
+      "Comment--Standard": {
+        "description": "Standard representation of a comment, as returned by the\ncomment API endpoints and when nested within other resources.",
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Reference"
+          },
+          {
+            "properties": {
+              "is_reply_comment": {
+                "type": "boolean",
+                "description": "Whether or not this comment is a reply to another\ncomment",
+                "example": true
+              },
+              "message": {
+                "type": "string",
+                "example": "@Aaron Levie these tigers are cool!",
+                "description": "The text of the comment, as provided by the user"
+              },
+              "created_by": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/User--Mini"
+                  },
+                  {
+                    "description": "A mini user object representing the author of the\ncomment"
+                  }
+                ]
+              },
+              "created_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "The time this comment was created",
+                "example": "2012-12-12T10:53:43-08:00"
+              },
+              "modified_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "The time this comment was last modified",
+                "example": "2012-12-12T10:53:43-08:00"
+              },
+              "item": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/ItemReference"
+                  },
+                  {
+                    "description": "The object this comment was placed on"
+                  }
+                ]
               }
             }
           }
@@ -1105,6 +1179,190 @@
               }
             }
           }
+        ]
+      },
+      "Event": {
+        "description": "The description of an event that happened within Box",
+        "properties": {
+          "type": {
+            "description": "`event`",
+            "type": "string",
+            "example": "event"
+          },
+          "event_id": {
+            "type": "string",
+            "example": "f82c3ba03e41f7e8a7608363cc6c0390183c3f83",
+            "description": "The ID of the event object. You can use this to detect duplicate events"
+          },
+          "created_by": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/User--Mini"
+              },
+              {
+                "description": "The user that performed the action represented by the event.\nSome events may be performed by users not logged into Box.\nIn that case, not all attributes of the object are populated and the\nevent is attributed to a unknown user (`user_id = 2`)"
+              }
+            ]
+          },
+          "event_type": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EventType"
+              },
+              {
+                "description": "The event type that triggered this event"
+              }
+            ]
+          },
+          "session_id": {
+            "type": "string",
+            "example": "70090280850c8d2a1933c1",
+            "description": "The session of the user that performed the action. Not all events will\npopulate this attribute."
+          },
+          "source": {
+            "type": "object",
+            "allOf": [
+              {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/File--Standard"
+                  },
+                  {
+                    "$ref": "#/components/schemas/Folder--Standard"
+                  },
+                  {
+                    "$ref": "#/components/schemas/Comment"
+                  }
+                ]
+              },
+              {
+                "description": "The object that triggered this event"
+              }
+            ]
+          },
+          "additional_details": {
+            "type": "object",
+            "example": {},
+            "description": "This object provides additional information about the event if available.\n\nThis can include how a user performed an event as well as additional\ninformation to correlate an event to external Keysafe logs. Not all events\nhave an additional_details object.  This object is only available in the\nEnterprise Events."
+          }
+        }
+      },
+      "EventType": {
+        "example": "FILE.UPLOADED",
+        "type": "string",
+        "description": "An event type that can trigger an event",
+        "enum": [
+          "ACCESS_GRANTED",
+          "ACCESS_REVOKED",
+          "ADD_DEVICE_ASSOCIATION",
+          "ADD_LOGIN_ACTIVITY_DEVICE",
+          "ADMIN_LOGIN",
+          "APPLICATION_CREATED",
+          "APPLICATION_PUBLIC_KEY_ADDED",
+          "APPLICATION_PUBLIC_KEY_DELETED",
+          "CHANGE_ADMIN_ROLE",
+          "CHANGE_FOLDER_PERMISSION",
+          "COLLABORATION_ACCEPT",
+          "COLLABORATION_EXPIRATION",
+          "COLLABORATION_INVITE",
+          "COLLABORATION_REMOVE",
+          "COLLABORATION_ROLE_CHANGE",
+          "COLLAB_ADD_COLLABORATOR",
+          "COLLAB_INVITE_COLLABORATOR",
+          "COLLAB_REMOVE_COLLABORATOR",
+          "COLLAB_ROLE_CHANGE",
+          "COMMENT_CREATE",
+          "COMMENT_DELETE",
+          "CONTENT_WORKFLOW_ABNORMAL_DOWNLOAD_ACTIVITY",
+          "CONTENT_WORKFLOW_AUTOMATION_ADD",
+          "CONTENT_WORKFLOW_AUTOMATION_DELETE",
+          "CONTENT_WORKFLOW_POLICY_ADD",
+          "CONTENT_WORKFLOW_SHARING_POLICY_VIOLATION",
+          "CONTENT_WORKFLOW_UPLOAD_POLICY_VIOLATION",
+          "COPY",
+          "DATA_RETENTION_CREATE_RETENTION",
+          "DATA_RETENTION_REMOVE_RETENTION",
+          "DELETE",
+          "DELETE_USER",
+          "DEVICE_TRUST_CHECK_FAILED",
+          "DOWNLOAD",
+          "EDIT",
+          "EDIT_USER",
+          "EMAIL_ALIAS_CONFIRM",
+          "EMAIL_ALIAS_REMOVE",
+          "ENABLE_TWO_FACTOR_AUTH",
+          "FAILED_LOGIN",
+          "FILE_MARKED_MALICIOUS",
+          "FILE_WATERMARKED_DOWNLOAD",
+          "GROUP_ADD_ITEM",
+          "GROUP_ADD_USER",
+          "GROUP_CREATION",
+          "GROUP_DELETION",
+          "GROUP_EDITED",
+          "GROUP_REMOVE_ITEM",
+          "GROUP_REMOVE_USER",
+          "ITEM_COPY",
+          "ITEM_CREATE",
+          "ITEM_DOWNLOAD",
+          "ITEM_MAKE_CURRENT_VERSION",
+          "ITEM_MODIFY",
+          "ITEM_MOVE",
+          "ITEM_OPEN",
+          "ITEM_PREVIEW",
+          "ITEM_RENAME",
+          "ITEM_SHARED",
+          "ITEM_SHARED_CREATE",
+          "ITEM_SHARED_UNSHARE",
+          "ITEM_SHARED_UPDATE",
+          "ITEM_SYNC",
+          "ITEM_TRASH",
+          "ITEM_UNDELETE_VIA_TRASH",
+          "ITEM_UNSYNC",
+          "ITEM_UPLOAD",
+          "LEGAL_HOLD_ASSIGNMENT_CREATE",
+          "LEGAL_HOLD_ASSIGNMENT_DELETE",
+          "LEGAL_HOLD_POLICY_CREATE",
+          "LEGAL_HOLD_POLICY_DELETE",
+          "LEGAL_HOLD_POLICY_UPDATE",
+          "LOCK",
+          "LOCK_CREATE",
+          "LOCK_DESTROY",
+          "LOGIN",
+          "MASTER_INVITE_ACCEPT",
+          "MASTER_INVITE_REJECT",
+          "METADATA_INSTANCE_CREATE",
+          "METADATA_INSTANCE_DELETE",
+          "METADATA_INSTANCE_UPDATE",
+          "METADATA_TEMPLATE_CREATE",
+          "METADATA_TEMPLATE_DELETE",
+          "METADATA_TEMPLATE_UPDATE",
+          "MOVE",
+          "NEW_USER",
+          "PREVIEW",
+          "REMOVE_DEVICE_ASSOCIATION",
+          "REMOVE_LOGIN_ACTIVITY_DEVICE",
+          "RENAME",
+          "RETENTION_POLICY_ASSIGNMENT_ADD",
+          "SHARE",
+          "SHARE_EXPIRATION",
+          "STORAGE_EXPIRATION",
+          "TAG_ITEM_CREATE",
+          "TASK_ASSIGNMENT_CREATE",
+          "TASK_ASSIGNMENT_DELETE",
+          "TASK_ASSIGNMENT_UPDATE",
+          "TASK_CREATE",
+          "TASK_UPDATE",
+          "TERMS_OF_SERVICE_ACCEPT",
+          "TERMS_OF_SERVICE_REJECT",
+          "UNDELETE",
+          "UNLOCK",
+          "UNSHARE",
+          "UPDATE_COLLABORATION_EXPIRATION",
+          "UPDATE_SHARE_EXPIRATION",
+          "UPLOAD",
+          "USER_AUTHENTICATE_OAUTH2_ACCESS_TOKEN_CREATE",
+          "WATERMARK_LABEL_CREATE",
+          "WATERMARK_LABEL_DELETE"
         ]
       },
       "File": {
@@ -1360,16 +1618,6 @@
           },
           {
             "properties": {
-              "type": {
-                "type": "string",
-                "description": "`folder`",
-                "example": "`folder`"
-              },
-              "id": {
-                "type": "string",
-                "description": "The ID of the file",
-                "example": "11446498"
-              },
               "sequence_id": {
                 "type": "string",
                 "example": "1",
@@ -1429,16 +1677,6 @@
                     "description": "The user who last updated the file version"
                   }
                 ]
-              },
-              "type": {
-                "type": "string",
-                "description": "`file_version `",
-                "example": "`file_version`"
-              },
-              "id": {
-                "type": "string",
-                "description": "The ID of the file version object",
-                "example": 26261748416
               },
               "trashed_at": {
                 "type": "string",
@@ -1737,16 +1975,6 @@
           },
           {
             "properties": {
-              "type": {
-                "type": "string",
-                "description": "`folder`",
-                "example": "`folder`"
-              },
-              "id": {
-                "type": "string",
-                "description": "The ID of the folder",
-                "example": "11446498"
-              },
               "sequence_id": {
                 "type": "string",
                 "example": "1",
@@ -1848,16 +2076,6 @@
           },
           {
             "properties": {
-              "type": {
-                "type": "string",
-                "description": "`group`",
-                "example": "group"
-              },
-              "id": {
-                "type": "string",
-                "description": "The ID of the group object",
-                "example": "1786931"
-              },
               "name": {
                 "type": "string",
                 "description": "The name of the group",
@@ -2417,6 +2635,327 @@
           }
         }
       },
+      "Skill": {
+        "description": "An object representing a skill",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Reference"
+          },
+          {
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The name of the skill",
+                "example": "Hello World Skill"
+              },
+              "api_key": {
+                "type": "string",
+                "description": "The client ID of the application",
+                "example": "hxel2s12wd2h9r8ne103c4gjbqefofih"
+              }
+            }
+          }
+        ]
+      },
+      "SkillInvocation": {
+        "description": "The payload of a Box skill as sent to a Custom Skill's\n`invocation_url`.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Reference"
+          },
+          {
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "Unique identifier for the invocation request.",
+                "example": "fd1d2e53-35f5-41fb-9c25-4ba326daf2f9_341016304"
+              },
+              "skill": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Skill"
+                  },
+                  {
+                    "description": "The skill that triggered this invocation"
+                  }
+                ]
+              },
+              "token": {
+                "type": "object",
+                "properties": {
+                  "read": {
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/AccessToken--Mini"
+                      },
+                      {
+                        "description": "A read-only access token"
+                      }
+                    ]
+                  },
+                  "write": {
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/AccessToken--Mini"
+                      },
+                      {
+                        "description": "A read-write access token"
+                      }
+                    ]
+                  }
+                }
+              },
+              "status": {
+                "type": "object",
+                "properties": {
+                  "state": {
+                    "type": "string",
+                    "example": "invoked",
+                    "description": "The state of this event.\n\n* `invoked` - Triggered the skill with event details to start\n  applying skill on the file.\n* `processing` - Currently processing.\n* `success` - Completed processing with a success.\n* `transient_failure` - Encountered a failure which can be\n  retried.\n* `permanent_failure` -  Encountered a permanent failure and\n  retry would not help.",
+                    "enum": [
+                      "invoked",
+                      "processing",
+                      "success",
+                      "transient_failure",
+                      "permanent_failure"
+                    ]
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Example",
+                    "description": "Status information"
+                  },
+                  "error_code": {
+                    "type": "string",
+                    "example": "400",
+                    "description": "Error code information, if error occurred."
+                  },
+                  "additional_info": {
+                    "type": "string",
+                    "example": "Example",
+                    "description": "Additional status information."
+                  }
+                }
+              },
+              "created_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "The time this invocation was created.",
+                "example": "2012-12-12T10:53:43-08:00"
+              },
+              "trigger": {
+                "type": "string",
+                "example": "FILE_CONTENT",
+                "description": "Action that triggered the invocation"
+              },
+              "enterprise": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Enterprise"
+                  },
+                  {
+                    "description": "The enterprise that this invocation was triggered for"
+                  }
+                ]
+              },
+              "source": {
+                "allOf": [
+                  {
+                    "oneOf": [
+                      {
+                        "$ref": "#/components/schemas/File--Standard"
+                      },
+                      {
+                        "$ref": "#/components/schemas/Folder--Standard"
+                      }
+                    ]
+                  },
+                  {
+                    "description": "The item that caused the invocation to trigger"
+                  }
+                ]
+              },
+              "event": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Event"
+                  },
+                  {
+                    "description": "The event that triggered this invocation"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "Task": {
+        "description": "Tasks enabled file-centric workflows in Box. Users can\ncreate tasks on files and assign them to collaborators on\nBox.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Reference"
+          },
+          {
+            "properties": {
+              "item": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/File--Mini"
+                  },
+                  {
+                    "description": "The file associated with the task"
+                  }
+                ]
+              },
+              "due_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "When the task is due",
+                "example": "2012-12-12T10:53:43-08:00"
+              },
+              "action": {
+                "type": "string",
+                "example": "review",
+                "description": "The action the task assignee will be prompted to\ndo.",
+                "enum": [
+                  "review"
+                ]
+              },
+              "message": {
+                "type": "string",
+                "description": "A message that will be included with the task",
+                "example": "Legal review"
+              },
+              "task_assignment_collection": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/TaskAssignmentCollection"
+                  },
+                  {
+                    "description": "A collection of task assignment objects\nassociated with the task"
+                  }
+                ]
+              },
+              "is_completed": {
+                "type": "boolean",
+                "description": "Whether the task has been completed",
+                "example": true
+              },
+              "created_by": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/User--Mini"
+                  },
+                  {
+                    "description": "The user who created the task"
+                  }
+                ]
+              },
+              "created_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "When the task object was created",
+                "example": "2012-12-12T10:53:43-08:00"
+              }
+            }
+          }
+        ]
+      },
+      "TaskAssignment": {
+        "description": "An assignment of a task to a file and user",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Reference"
+          },
+          {
+            "properties": {
+              "item": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/File--Mini"
+                  },
+                  {
+                    "description": "The file the task has been assigned to"
+                  }
+                ]
+              },
+              "assigned_to": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/User--Mini"
+                  },
+                  {
+                    "description": "The user the task has been assigned to"
+                  }
+                ]
+              },
+              "message": {
+                "type": "string",
+                "example": "Please review",
+                "description": "A message that will be included with this task\nassignment"
+              },
+              "completed_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "The date at which this task assignment was\ncompleted",
+                "example": "2012-12-12T10:53:43-08:00"
+              },
+              "assigned_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "The date at which this task assignment was\nassigned",
+                "example": "2012-12-12T10:53:43-08:00"
+              },
+              "reminded_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "The date at which this task assignment was\nreminded",
+                "example": "2012-12-12T10:53:43-08:00"
+              },
+              "resolution_state": {
+                "type": "string",
+                "description": "State of this assignment",
+                "example": "incomplete",
+                "enum": [
+                  "completed",
+                  "incomplete",
+                  "approved",
+                  "rejected"
+                ]
+              },
+              "assigned_by": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/User--Mini"
+                  },
+                  {
+                    "description": "The user who assigned this task"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "TaskAssignmentCollection": {
+        "type": "object",
+        "description": "A list of task assignments",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Pagination"
+          },
+          {
+            "properties": {
+              "entries": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/TaskAssignment"
+                }
+              }
+            }
+          }
+        ]
+      },
       "TokenRequest": {
         "description": "A request for a new OAuth2 token",
         "required": [
@@ -2534,6 +3073,49 @@
             "example": "n22JPxrh18m4Y0wIZPIqYZK7VRrsMTWW"
           }
         }
+      },
+      "Trigger": {
+        "example": "FILE.UPLOADED",
+        "type": "string",
+        "description": "The event name that triggered this webhook",
+        "enum": [
+          "FILE.UPLOADED",
+          "FILE.PREVIEWED",
+          "FILE.DOWNLOADED",
+          "FILE.TRASHED",
+          "FILE.DELETED",
+          "FILE.RESTORED",
+          "FILE.COPIED",
+          "FILE.MOVED",
+          "FILE.LOCKED",
+          "FILE.UNLOCKED",
+          "FILE.RENAMED",
+          "COMMENT.CREATED",
+          "COMMENT.UPDATED",
+          "COMMENT.DELETED",
+          "TASK_ASSIGNMENT.CREATED",
+          "TASK_ASSIGNMENT.UPDATED",
+          "METADATA_INSTANCE.CREATED",
+          "METADATA_INSTANCE.UPDATED",
+          "METADATA_INSTANCE.DELETED",
+          "FOLDER.CREATED",
+          "FOLDER.RENAMED",
+          "FOLDER.DOWNLOADED",
+          "FOLDER.RESTORED",
+          "FOLDER.DELETED",
+          "FOLDER.COPIED",
+          "FOLDER.MOVED",
+          "FOLDER.TRASHED",
+          "WEBHOOK.DELETED",
+          "COLLABORATION.CREATED",
+          "COLLABORATION.ACCEPTED",
+          "COLLABORATION.REJECTED",
+          "COLLABORATION.REMOVED",
+          "COLLABORATION.UPDATED",
+          "SHARED_LINK.DELETED",
+          "SHARED_LINK.CREATED",
+          "SHARED_LINK.UPDATED"
+        ]
       },
       "User": {
         "description": "A full representation of a user, as can be returned from any\nuser API endpoints by default",
@@ -2711,16 +3293,6 @@
           },
           {
             "properties": {
-              "type": {
-                "type": "string",
-                "description": "`user`",
-                "example": "`user`"
-              },
-              "id": {
-                "type": "string",
-                "description": "The ID of the user object",
-                "example": "181216415"
-              },
               "name": {
                 "type": "string",
                 "description": "The name of the user",
@@ -2736,6 +3308,28 @@
           }
         ]
       },
+      "Watermark": {
+        "description": "A watermark is a semi-transparent overlay on an embedded file\npreview that displays a viewer's email address or user ID\nand the time of access over a file's content",
+        "properties": {
+          "watermark": {
+            "type": "object",
+            "properties": {
+              "created_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "When this watermark was created",
+                "example": "2012-12-12T10:53:43-08:00"
+              },
+              "modified_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "When this task was modified",
+                "example": "2012-12-12T10:53:43-08:00"
+              }
+            }
+          }
+        }
+      },
       "WatermarkInfo": {
         "description": "The watermark information about this item",
         "properties": {
@@ -2745,6 +3339,246 @@
             "example": true
           }
         }
+      },
+      "Webhook": {
+        "description": "Represents a configured webhook.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Reference"
+          },
+          {
+            "properties": {
+              "target": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Reference"
+                  },
+                  {
+                    "description": "A reference to the item that will be monitored\nand webhooks created for"
+                  }
+                ]
+              },
+              "created_by": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/User--Mini"
+                  },
+                  {
+                    "description": "The user who created the webhook"
+                  }
+                ]
+              },
+              "created_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "A timestamp identifying the time that\nthe webhook was created.",
+                "example": "2012-12-12T10:53:43-08:00"
+              },
+              "address": {
+                "type": "string",
+                "example": "https://example.com/webhooks",
+                "description": "The URL that is notified by this webhook"
+              },
+              "triggers": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Trigger"
+                  },
+                  {
+                    "type": "array"
+                  },
+                  {
+                    "example": [
+                      "FILE.UPLOADED",
+                      "FILE.CREATED"
+                    ]
+                  },
+                  {
+                    "description": "An array of event names that this webhook is\nto be triggered for"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "WebhookEvent": {
+        "description": "The event that is sent to a webhook address when an event happens",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Reference"
+          },
+          {
+            "properties": {
+              "webhook": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Webhook"
+                  },
+                  {
+                    "description": "The webhook object that triggered this event"
+                  }
+                ]
+              },
+              "created_by": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/User--Mini"
+                  },
+                  {
+                    "description": "The user that triggered this event"
+                  }
+                ]
+              },
+              "created_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "A timestamp identifying the time that\nthe webhook event was triggered.",
+                "example": "2012-12-12T10:53:43-08:00"
+              },
+              "trigger": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Trigger"
+                  },
+                  {
+                    "description": "The event name that triggered this webhook"
+                  }
+                ]
+              },
+              "source": {
+                "allOf": [
+                  {
+                    "oneOf": [
+                      {
+                        "$ref": "#/components/schemas/File--Standard"
+                      },
+                      {
+                        "$ref": "#/components/schemas/Folder--Standard"
+                      }
+                    ]
+                  },
+                  {
+                    "description": "The item that caused the event to trigger"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "WebLink": {
+        "description": "Web links are objects that point to URLs. These objects\nare also known as bookmarks within the Box web application.\n\nWeb link objects are treated similarly to file objects,\nthey will also support most actions that apply to regular files.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ItemReference"
+          },
+          {
+            "properties": {
+              "parent": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/ItemReference"
+                  },
+                  {
+                    "description": "The parent object the web link belongs to"
+                  }
+                ]
+              },
+              "url": {
+                "type": "string",
+                "example": "https://www.example.com/example/1234",
+                "description": "The URL this web link points to"
+              },
+              "description": {
+                "type": "string",
+                "example": "Example page",
+                "description": "The description accompanying the web link. This is\nvisible within the Box web application."
+              },
+              "path_collection": {
+                "type": "array",
+                "description": "The path of folders to this link, starting at the root",
+                "items": {
+                  "$ref": "#/components/schemas/Folder--Mini"
+                }
+              },
+              "created_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "When this file was created on Box’s servers.",
+                "example": "2012-12-12T10:53:43-08:00"
+              },
+              "modified_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "When this file was last updated on the Box\nservers.",
+                "example": "2012-12-12T10:53:43-08:00"
+              },
+              "trashed_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "When this file was last moved to the trash.",
+                "example": "2012-12-12T10:53:43-08:00"
+              },
+              "purged_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "When this file will be permanently deleted.",
+                "example": "2012-12-12T10:53:43-08:00"
+              },
+              "created_by": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/User--Mini"
+                  },
+                  {
+                    "description": "The user who created this web link"
+                  }
+                ]
+              },
+              "modified_by": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/User--Mini"
+                  },
+                  {
+                    "description": "The user who last modified this web link"
+                  }
+                ]
+              },
+              "owned_by": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/User--Mini"
+                  },
+                  {
+                    "description": "The user who owns this web link"
+                  }
+                ]
+              },
+              "shared_link": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/SharedLink"
+                  },
+                  {
+                    "description": "The shared link object for this item. Will be\n`null` if no shared link has been created."
+                  }
+                ]
+              },
+              "item_status": {
+                "type": "string",
+                "example": "active",
+                "enum": [
+                  "active",
+                  "trashed",
+                  "deleted"
+                ],
+                "description": "Whether this item is deleted or not. Values include `active`,\n`trashed` if the file has been moved to the trash, and `deleted` if\nthe file has been permanently deleted"
+              }
+            }
+          }
+        ]
       }
     }
   },
