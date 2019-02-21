@@ -934,6 +934,35 @@
           }
         }
       },
+      "AssignmentCounts": {
+        "description": "Counts of assignments within this a legal hold policy by item type",
+        "properties": {
+          "user": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The number of users this policy is applied to",
+            "example": 1
+          },
+          "folder": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The number of folders this policy is applied to",
+            "example": 2
+          },
+          "file": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The number of files this policy is applied to",
+            "example": 3
+          },
+          "file_version": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The number of file versions this policy is applied to",
+            "example": 4
+          }
+        }
+      },
       "ClientError": {
         "description": "A generic error",
         "properties": {
@@ -1159,6 +1188,45 @@
                     "description": "The object this comment was placed on"
                   }
                 ]
+              }
+            }
+          }
+        ]
+      },
+      "DevicePinner": {
+        "description": "Device pins allow enterprises to control what devices can\nuse native Box applications.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Reference"
+          },
+          {
+            "properties": {
+              "owned_by": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/User--Mini"
+                  },
+                  {
+                    "description": "The user that the device pin belongs to"
+                  }
+                ]
+              },
+              "product_name": {
+                "type": "string",
+                "description": "The type of device being pinned",
+                "example": "iPad"
+              },
+              "created_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "The time the device pin was created",
+                "example": "2012-12-12T10:53:43-08:00"
+              },
+              "modified_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "The time the device pin was modified",
+                "example": "2012-12-12T10:53:43-08:00"
               }
             }
           }
@@ -1765,6 +1833,51 @@
           }
         ]
       },
+      "FileVersionLegalHold": {
+        "description": "File-Version-Legal-Hold is an entity representing all\nholds on a File Version.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Reference"
+          },
+          {
+            "properties": {
+              "file_version": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/FileVersion--Mini"
+                  },
+                  {
+                    "description": "The file version that is held"
+                  }
+                ]
+              },
+              "file": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/File--Mini"
+                  },
+                  {
+                    "description": "The parent file of the file version that is held.\nNote that there is no guarantee that the current\nversion of this file is held."
+                  }
+                ]
+              },
+              "legal_hold_policy_assignments": {
+                "description": "List of assignments contributing to this Hold.",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/LegalHoldPolicyAssignment"
+                }
+              },
+              "deleted_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "Time that this File-Version-Legal-Hold was\ndeleted.",
+                "example": "2012-12-12T10:53:43-08:00"
+              }
+            }
+          }
+        ]
+      },
       "Folder": {
         "description": "A full representation of a folder, as can be returned from any\nfolder API endpoints by default",
         "allOf": [
@@ -2232,6 +2345,159 @@
                 "items": {
                   "$ref": "#/components/schemas/ItemReference"
                 }
+              }
+            }
+          }
+        ]
+      },
+      "LegalHoldPolicy": {
+        "description": "Legal Hold Policy information describes the basic\ncharacteristics of the Policy, such as name, description,\nand filter dates.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/LegalHoldPolicy--Mini"
+          },
+          {
+            "properties": {
+              "policy_name": {
+                "type": "string",
+                "example": "Policy 4",
+                "description": "Name of the legal hold policy.",
+                "maxLength": 254
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of the legal hold policy. Optional\nproperty with a 500 character limit.",
+                "maxLength": 500,
+                "example": "Postman created policy"
+              },
+              "status": {
+                "type": "string",
+                "example": "active",
+                "enum": [
+                  "active",
+                  "applying",
+                  "releasing",
+                  "released"
+                ],
+                "description": "* 'active' - the policy is not in a transition state\n* 'applying' - that the policy is in the process of\n  being applied\n* 'releasing' - that the process is in the process\n  of being released\n* 'released' - the policy is no longer active"
+              },
+              "assignment_counts": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/AssignmentCounts"
+                  },
+                  {
+                    "description": "Counts of assignments within this policy by apply-to type"
+                  }
+                ]
+              },
+              "created_by": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/User--Mini"
+                  },
+                  {
+                    "description": "The user who created the legal hold policy object"
+                  }
+                ]
+              },
+              "created_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "When the legal hold policy object was created",
+                "example": "2012-12-12T10:53:43-08:00"
+              },
+              "modified_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "When the legal hold policy object was modified.\nDoes not update when assignments are added or removed.",
+                "example": "2012-12-12T10:53:43-08:00"
+              },
+              "deleted_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "When the policy release request was sent. (Because\nit can take time for a policy to fully delete, this\nisn't quite the same time that the policy is fully deleted).\n\nIf `null`, the policy was not deleted.",
+                "example": "2012-12-12T10:53:43-08:00"
+              },
+              "filter_started_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "User-specified, optional date filter applies to\nCustodian assignments only",
+                "example": "2012-12-12T10:53:43-08:00"
+              },
+              "filter_ended_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "User-specified, optional date filter applies to\nCustodian assignments only",
+                "example": "2012-12-12T10:53:43-08:00"
+              },
+              "release_notes": {
+                "type": "string",
+                "example": "Example",
+                "description": "Optional notes about why the policy was created.",
+                "maxLength": 500
+              }
+            }
+          }
+        ]
+      },
+      "LegalHoldPolicy--Mini": {
+        "description": "A mini legal hold policy",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Reference"
+          }
+        ]
+      },
+      "LegalHoldPolicyAssignment": {
+        "description": "Legal Hold Assignments are used to assign Legal Hold\nPolicies to Users, Folders, Files, or File Versions.\n\nCreating a Legal Hold Assignment puts a hold\non the File-Versions that belong to the Assignment's\n'apply-to' entity.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Reference"
+          },
+          {
+            "properties": {
+              "legal_hold_policy": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/LegalHoldPolicy--Mini"
+                  },
+                  {
+                    "description": "The policy that the legal hold policy assignment\nis part of"
+                  }
+                ]
+              },
+              "assigned_to": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/ItemReference"
+                  },
+                  {
+                    "description": "The entity that the legal hold policy assignment\nis assigned to. Includes type and ID."
+                  }
+                ]
+              },
+              "assigned_by": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/User--Mini"
+                  },
+                  {
+                    "description": "The user who created the legal hold policy\nassignment"
+                  }
+                ]
+              },
+              "assigned_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "When the legal hold policy assignment object was\ncreated",
+                "example": "2012-12-12T10:53:43-08:00"
+              },
+              "deleted_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "When the assignment release request was sent.\n(Because it can take time for an assignment to fully\ndelete, this isn't quite the same time that the\nassignment is fully deleted). If null, Assignment\nwas not deleted.",
+                "example": "2012-12-12T10:53:43-08:00"
               }
             }
           }
@@ -3187,6 +3453,51 @@
                 "items": {
                   "$ref": "#/components/schemas/TaskAssignment"
                 }
+              }
+            }
+          }
+        ]
+      },
+      "TermsOfService": {
+        "description": "The root-level record that is supposed to represent a\nsingle Terms of Service.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Reference"
+          },
+          {
+            "properties": {
+              "status": {
+                "description": "Whether these terms are enabled or not",
+                "type": "string",
+                "example": "enabled",
+                "enum": [
+                  "enabled",
+                  "disabled"
+                ]
+              },
+              "enterprise": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Enterprise"
+                  },
+                  {
+                    "description": "The enterprise these terms apply to"
+                  }
+                ]
+              },
+              "tos_type": {
+                "description": "Whether to apply these terms to managed users or external users",
+                "type": "string",
+                "example": "managed",
+                "enum": [
+                  "managed",
+                  "external"
+                ]
+              },
+              "text": {
+                "description": "The text for your terms and conditions. This text could be\nempty if the status is disabled",
+                "type": "string",
+                "example": "By using this service, you agree to ..."
               }
             }
           }
