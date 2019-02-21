@@ -2256,7 +2256,7 @@
         "description": "A standard representation of a group, as returned from any\ngroup API endpoints by default",
         "allOf": [
           {
-            "$ref": "#/components/schemas/Group--Standard"
+            "$ref": "#/components/schemas/Group--Mini"
           },
           {
             "properties": {
@@ -3271,26 +3271,13 @@
               },
               "token": {
                 "type": "object",
+                "description": "The read-only and read-write access tokens for this item",
                 "properties": {
                   "read": {
-                    "allOf": [
-                      {
-                        "$ref": "#/components/schemas/AccessToken--Mini"
-                      },
-                      {
-                        "description": "A read-only access token"
-                      }
-                    ]
+                    "$ref": "#/components/schemas/AccessToken--Mini"
                   },
                   "write": {
-                    "allOf": [
-                      {
-                        "$ref": "#/components/schemas/AccessToken--Mini"
-                      },
-                      {
-                        "description": "A read-write access token"
-                      }
-                    ]
+                    "$ref": "#/components/schemas/AccessToken--Mini"
                   }
                 }
               },
@@ -3847,49 +3834,6 @@
           }
         }
       },
-      "Trigger": {
-        "example": "FILE.UPLOADED",
-        "type": "string",
-        "description": "The event name that triggered this webhook",
-        "enum": [
-          "FILE.UPLOADED",
-          "FILE.PREVIEWED",
-          "FILE.DOWNLOADED",
-          "FILE.TRASHED",
-          "FILE.DELETED",
-          "FILE.RESTORED",
-          "FILE.COPIED",
-          "FILE.MOVED",
-          "FILE.LOCKED",
-          "FILE.UNLOCKED",
-          "FILE.RENAMED",
-          "COMMENT.CREATED",
-          "COMMENT.UPDATED",
-          "COMMENT.DELETED",
-          "TASK_ASSIGNMENT.CREATED",
-          "TASK_ASSIGNMENT.UPDATED",
-          "METADATA_INSTANCE.CREATED",
-          "METADATA_INSTANCE.UPDATED",
-          "METADATA_INSTANCE.DELETED",
-          "FOLDER.CREATED",
-          "FOLDER.RENAMED",
-          "FOLDER.DOWNLOADED",
-          "FOLDER.RESTORED",
-          "FOLDER.DELETED",
-          "FOLDER.COPIED",
-          "FOLDER.MOVED",
-          "FOLDER.TRASHED",
-          "WEBHOOK.DELETED",
-          "COLLABORATION.CREATED",
-          "COLLABORATION.ACCEPTED",
-          "COLLABORATION.REJECTED",
-          "COLLABORATION.REMOVED",
-          "COLLABORATION.UPDATED",
-          "SHARED_LINK.DELETED",
-          "SHARED_LINK.CREATED",
-          "SHARED_LINK.UPDATED"
-        ]
-      },
       "User": {
         "description": "A full representation of a user, as can be returned from any\nuser API endpoints by default",
         "allOf": [
@@ -4155,7 +4099,7 @@
               "triggers": {
                 "allOf": [
                   {
-                    "$ref": "#/components/schemas/Trigger"
+                    "$ref": "#/components/schemas/WebhookTrigger"
                   },
                   {
                     "type": "array"
@@ -4212,7 +4156,7 @@
               "trigger": {
                 "allOf": [
                   {
-                    "$ref": "#/components/schemas/Trigger"
+                    "$ref": "#/components/schemas/WebhookTrigger"
                   },
                   {
                     "description": "The event name that triggered this webhook"
@@ -4238,6 +4182,49 @@
               }
             }
           }
+        ]
+      },
+      "WebhookTrigger": {
+        "example": "FILE.UPLOADED",
+        "type": "string",
+        "description": "The event name that triggered this webhook",
+        "enum": [
+          "FILE.UPLOADED",
+          "FILE.PREVIEWED",
+          "FILE.DOWNLOADED",
+          "FILE.TRASHED",
+          "FILE.DELETED",
+          "FILE.RESTORED",
+          "FILE.COPIED",
+          "FILE.MOVED",
+          "FILE.LOCKED",
+          "FILE.UNLOCKED",
+          "FILE.RENAMED",
+          "COMMENT.CREATED",
+          "COMMENT.UPDATED",
+          "COMMENT.DELETED",
+          "TASK_ASSIGNMENT.CREATED",
+          "TASK_ASSIGNMENT.UPDATED",
+          "METADATA_INSTANCE.CREATED",
+          "METADATA_INSTANCE.UPDATED",
+          "METADATA_INSTANCE.DELETED",
+          "FOLDER.CREATED",
+          "FOLDER.RENAMED",
+          "FOLDER.DOWNLOADED",
+          "FOLDER.RESTORED",
+          "FOLDER.DELETED",
+          "FOLDER.COPIED",
+          "FOLDER.MOVED",
+          "FOLDER.TRASHED",
+          "WEBHOOK.DELETED",
+          "COLLABORATION.CREATED",
+          "COLLABORATION.ACCEPTED",
+          "COLLABORATION.REJECTED",
+          "COLLABORATION.REMOVED",
+          "COLLABORATION.UPDATED",
+          "SHARED_LINK.DELETED",
+          "SHARED_LINK.CREATED",
+          "SHARED_LINK.UPDATED"
         ]
       },
       "WebLink": {
