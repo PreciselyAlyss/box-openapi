@@ -1711,6 +1711,60 @@
           }
         ]
       },
+      "FileVersionRetention": {
+        "description": "A retention policy blocks permanent deletion of content\nfor a specified amount of time. Admins can apply policies to\nspecified folders, or an entire enterprise. A file version retention\nis a  record for a retained file version. To use this feature,\nyou must  have the manage retention policies scope enabled for your\nAPI key via  your application management console. For more information\nabout retention policies, please visit our help documentation",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Reference"
+          },
+          {
+            "properties": {
+              "file_version": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/FileVersion--Mini"
+                  },
+                  {
+                    "description": "The file version this file version retention was\napplied to"
+                  }
+                ]
+              },
+              "file": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/File--Mini"
+                  },
+                  {
+                    "description": "The file this file version retention was applied to"
+                  }
+                ]
+              },
+              "applied_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "When this file version retention object was\ncreated",
+                "example": "2012-12-12T10:53:43-08:00"
+              },
+              "disposition_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "When the retention period expires on this file\nversion retention",
+                "example": "2012-12-12T10:53:43-08:00"
+              },
+              "winning_retention_policy": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/RetentionPolicy--Mini"
+                  },
+                  {
+                    "description": "The winning retention policy applied to this file\nversion retention. A file version can have multiple\nretention policies applied."
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
       "Folder": {
         "description": "A full representation of a folder, as can be returned from any\nfolder API endpoints by default",
         "allOf": [
@@ -2601,6 +2655,145 @@
             ]
           }
         }
+      },
+      "RetentionPolicy": {
+        "title": "Retention Policy Object",
+        "description": "A retention policy blocks permanent deletion of content\nfor a specified amount of time. Admins can create retention\npolicies and then later assign them to specific folders\nor their entire enterprise.  To use this feature, you must\nhave the manage retention policies scope enabled\nfor your API key via your application management console.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RetentionPolicy--Mini"
+          },
+          {
+            "properties": {
+              "policy_type": {
+                "type": "string",
+                "example": "finite",
+                "description": "The type of the retention policy. A retention\npolicy type can either be `finite`, where a\nspecific amount of time to retain the content is known\nupfront, or `indefinite`, where the amount of time\nto retain the content is still unknown.",
+                "enum": [
+                  "finite",
+                  "indefinite"
+                ]
+              },
+              "retention_length": {
+                "type": "string",
+                "example": "0",
+                "description": "The length of the retention policy. This length\nspecifies the duration in days that the retention\npolicy will be active for after being assigned to\ncontent.  If the policy has A `policy_type` of\n`indefinite`, the `retention_length` will also be\n`indefinite`."
+              },
+              "disposition_action": {
+                "type": "string",
+                "example": "permanently_delete",
+                "description": "The disposition action of the retention policy.\nThis action can be `permanently_delete`, which\nwill cause the content retained by the policy\nto be permanently deleted, or `remove_retention`,\nwhich will lift the retention policy from the content,\nallowing it to be deleted by users,\nonce the retention policy time period has passed.",
+                "enum": [
+                  "permanently_delete",
+                  "remove_retention"
+                ]
+              },
+              "status": {
+                "type": "string",
+                "example": "active",
+                "description": "The status of the retention policy. The status of\na policy will be `active`, unless explicitly retired by an\nadministrator, in which case the status will be `retired`.\nOnce a policy has been retired, it cannot become\nactive again.",
+                "enum": [
+                  "active",
+                  "retired"
+                ]
+              },
+              "created_by": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/User--Mini"
+                  },
+                  {
+                    "description": "A mini user object representing the user that\ncreated the retention policy"
+                  }
+                ]
+              },
+              "created_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "When the retention policy object was created",
+                "example": "2012-12-12T10:53:43-08:00"
+              },
+              "modified_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "When the retention policy object was last modified",
+                "example": "2012-12-12T10:53:43-08:00"
+              }
+            }
+          }
+        ]
+      },
+      "RetentionPolicy--Mini": {
+        "description": "Mini representation of the retention policy",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Reference"
+          },
+          {
+            "properties": {
+              "policy_name": {
+                "type": "string",
+                "description": "The name given to the retention policy",
+                "example": "Some Policy Name"
+              }
+            }
+          }
+        ]
+      },
+      "RetentionPolicyAssignment": {
+        "description": "The retention policy assignment endpoint provides a way\nfor admins to apply a retention policy on a per-folder\nbasis, or place a blanket policy over the entire\nenterprise.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Reference"
+          },
+          {
+            "properties": {
+              "retention_policy": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/RetentionPolicy--Mini"
+                  },
+                  {
+                    "description": "A mini retention policy object representing the\nretention policy that has been assigned to this content"
+                  }
+                ]
+              },
+              "assigned_to": {
+                "allOf": [
+                  {
+                    "oneOf": [
+                      {
+                        "$ref": "#/components/schemas/Folder--Mini"
+                      },
+                      {
+                        "$ref": "#/components/schemas/Enterprise"
+                      }
+                    ]
+                  },
+                  {
+                    "description": "The `type` and `id` of the content that is under\nretention. The `type` can either be `folder` or `\nenterprise`."
+                  }
+                ]
+              },
+              "assigned_by": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/User--Mini"
+                  },
+                  {
+                    "description": "A mini user object representing the user that\ncreated the retention policy assignment object"
+                  }
+                ]
+              },
+              "assigned_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "When the retention policy assignment object was\ncreated",
+                "example": "2012-12-12T10:53:43-08:00"
+              }
+            }
+          }
+        ]
       },
       "SharedLink": {
         "description": "Shared links provide direct, read-only access to files or folder on Box\nusing a URL. Shared links with open access level allow anyone with the URL\nto access the item, while shared links with company or collaborators access\nlevels can only be accessed by appropriate authenticated Box users.",
