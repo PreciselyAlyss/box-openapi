@@ -894,9 +894,6 @@
                 "object": {
                   "allOf": [
                     {
-                      "type": "object"
-                    },
-                    {
                       "$ref": "#/components/schemas/File"
                     }
                   ]
@@ -984,26 +981,20 @@
               "item": {
                 "allOf": [
                   {
-                    "type": "object"
+                    "$ref": "#/components/schemas/ItemReference"
                   },
                   {
                     "description": "The file or folder that access is granted to"
-                  },
-                  {
-                    "$ref": "#/components/schemas/ItemReference"
                   }
                 ]
               },
               "accessible_by": {
                 "allOf": [
                   {
-                    "type": "object"
+                    "$ref": "#/components/schemas/User--Mini"
                   },
                   {
                     "description": "The user or group that is granted access"
-                  },
-                  {
-                    "$ref": "#/components/schemas/User--Mini"
                   }
                 ]
               },
@@ -1057,13 +1048,10 @@
               "created_by": {
                 "allOf": [
                   {
-                    "type": "object"
+                    "$ref": "#/components/schemas/User--Mini"
                   },
                   {
                     "description": "The user who created the collaboration object"
-                  },
-                  {
-                    "$ref": "#/components/schemas/User--Mini"
                   }
                 ]
               },
@@ -1140,10 +1128,10 @@
               "permissions": {
                 "allOf": [
                   {
-                    "description": "An object containing the permissions that the current user has\nfor this item"
+                    "$ref": "#/components/schemas/Permissions"
                   },
                   {
-                    "$ref": "#/components/schemas/Permissions"
+                    "description": "An object containing the permissions that the current user has\nfor this item"
                   }
                 ]
               },
@@ -1160,10 +1148,10 @@
               "lock": {
                 "allOf": [
                   {
-                    "description": "The lock held on this file. If there is no lock, this can either\nbe `null` or have a timestamp in the past."
+                    "$ref": "#/components/schemas/Lock"
                   },
                   {
-                    "$ref": "#/components/schemas/Lock"
+                    "description": "The lock held on this file. If there is no lock, this can either\nbe `null` or have a timestamp in the past."
                   }
                 ]
               },
@@ -1185,13 +1173,10 @@
               "watermark_info": {
                 "allOf": [
                   {
-                    "type": "object"
+                    "$ref": "#/components/schemas/WatermarkInfo"
                   },
                   {
                     "description": "Information about the watermarking on this file"
-                  },
-                  {
-                    "$ref": "#/components/schemas/WatermarkInfo"
                   }
                 ]
               },
@@ -1306,62 +1291,50 @@
               "created_by": {
                 "allOf": [
                   {
-                    "type": "object"
+                    "$ref": "#/components/schemas/User--Mini"
                   },
                   {
                     "description": "The user who created this file"
-                  },
-                  {
-                    "$ref": "#/components/schemas/User--Mini"
                   }
                 ]
               },
               "modified_by": {
                 "allOf": [
                   {
-                    "type": "object"
+                    "$ref": "#/components/schemas/User--Mini"
                   },
                   {
                     "description": "The user who last modified this file"
-                  },
-                  {
-                    "$ref": "#/components/schemas/User--Mini"
                   }
                 ]
               },
               "owned_by": {
                 "allOf": [
                   {
-                    "type": "object"
+                    "$ref": "#/components/schemas/User--Mini"
                   },
                   {
                     "description": "The user who owns this file"
-                  },
-                  {
-                    "$ref": "#/components/schemas/User--Mini"
                   }
                 ]
               },
               "shared_link": {
                 "allOf": [
                   {
-                    "type": "object"
+                    "$ref": "#/components/schemas/SharedLink"
                   },
                   {
                     "description": "The shared link object for this file. Will be\n`null` if no shared link has been created."
-                  },
-                  {
-                    "$ref": "#/components/schemas/SharedLink"
                   }
                 ]
               },
               "parent": {
                 "allOf": [
                   {
-                    "description": "The folder that contains this file."
+                    "$ref": "#/components/schemas/Folder--Mini"
                   },
                   {
-                    "$ref": "#/components/schemas/Folder--Mini"
+                    "description": "The folder that contains this file."
                   }
                 ]
               },
@@ -1450,10 +1423,10 @@
               "modified_by": {
                 "allOf": [
                   {
-                    "description": "The user who last updated the file version"
+                    "$ref": "#/components/schemas/User--Mini"
                   },
                   {
-                    "$ref": "#/components/schemas/User--Mini"
+                    "description": "The user who last updated the file version"
                   }
                 ]
               },
@@ -1526,10 +1499,10 @@
               "permissions": {
                 "allOf": [
                   {
-                    "description": "An object containing the permissions that the current user has\nfor this item"
+                    "$ref": "#/components/schemas/Permissions"
                   },
                   {
-                    "$ref": "#/components/schemas/Permissions"
+                    "description": "An object containing the permissions that the current user has\nfor this item"
                   }
                 ]
               },
@@ -1578,13 +1551,10 @@
               "watermark_info": {
                 "allOf": [
                   {
-                    "type": "object"
+                    "$ref": "#/components/schemas/WatermarkInfo"
                   },
                   {
                     "description": "Information about the watermarking on this folder"
-                  },
-                  {
-                    "$ref": "#/components/schemas/WatermarkInfo"
                   }
                 ]
               },
@@ -1640,26 +1610,20 @@
               "created_by": {
                 "allOf": [
                   {
-                    "type": "object"
+                    "$ref": "#/components/schemas/User--Mini"
                   },
                   {
                     "description": "The user who created this folder"
-                  },
-                  {
-                    "$ref": "#/components/schemas/User--Mini"
                   }
                 ]
               },
               "modified_by": {
                 "allOf": [
                   {
-                    "type": "object"
+                    "$ref": "#/components/schemas/User--Mini"
                   },
                   {
                     "description": "The user who last modified this folder."
-                  },
-                  {
-                    "$ref": "#/components/schemas/User--Mini"
                   }
                 ]
               },
@@ -1696,26 +1660,20 @@
               "owned_by": {
                 "allOf": [
                   {
-                    "type": "object"
+                    "$ref": "#/components/schemas/User--Mini"
                   },
                   {
                     "description": "The user who owns this folder."
-                  },
-                  {
-                    "$ref": "#/components/schemas/User--Mini"
                   }
                 ]
               },
               "shared_link": {
                 "allOf": [
                   {
-                    "type": "object"
+                    "$ref": "#/components/schemas/SharedLink"
                   },
                   {
                     "description": "The shared link object for this folder. Will be\n`null` if no shared link has been created."
-                  },
-                  {
-                    "$ref": "#/components/schemas/SharedLink"
                   }
                 ]
               },
@@ -1743,13 +1701,10 @@
               "parent": {
                 "allOf": [
                   {
-                    "type": "object"
+                    "$ref": "#/components/schemas/Folder--Mini"
                   },
                   {
                     "description": "The folder that contains this folder.\n\nMay be `null` for folders such as root, trash and child folders\nwhose parent is inaccessible."
-                  },
-                  {
-                    "$ref": "#/components/schemas/Folder--Mini"
                   }
                 ]
               },
@@ -1862,35 +1817,108 @@
       },
       "Group--Standard": {
         "description": "A standard representation of a group, as returned from any\ngroup API endpoints by default",
-        "properties": {
-          "type": {
-            "type": "string",
-            "description": "`group`",
-            "example": "group"
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Group--Standard"
           },
-          "id": {
-            "type": "string",
-            "description": "The ID of the group object",
-            "example": "1786931"
-          },
-          "name": {
-            "type": "string",
-            "description": "The name of the group",
-            "example": "Support"
-          },
-          "created_at": {
-            "type": "string",
-            "format": "date-time",
-            "description": "When the group object was created",
-            "example": "2012-12-12T10:53:43-08:00"
-          },
-          "modified_at": {
-            "type": "string",
-            "format": "date-time",
-            "description": "When the group object was last modified",
-            "example": "2012-12-12T10:53:43-08:00"
+          {
+            "properties": {
+              "created_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "When the group object was created",
+                "example": "2012-12-12T10:53:43-08:00"
+              },
+              "modified_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "When the group object was last modified",
+                "example": "2012-12-12T10:53:43-08:00"
+              }
+            }
           }
-        }
+        ]
+      },
+      "Group--Mini": {
+        "type": "object",
+        "description": "Mini representation of the group, including id and name of\ngroup.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Reference"
+          },
+          {
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "`group`",
+                "example": "group"
+              },
+              "id": {
+                "type": "string",
+                "description": "The ID of the group object",
+                "example": "1786931"
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the group",
+                "example": "Support"
+              }
+            }
+          }
+        ]
+      },
+      "GroupMembership": {
+        "description": "Membership is used to signify that a user is part of a\ngroup.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Reference"
+          },
+          {
+            "properties": {
+              "user": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/User--Mini"
+                  },
+                  {
+                    "description": "The user that the membership applies to"
+                  }
+                ]
+              },
+              "group": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Group--Mini"
+                  },
+                  {
+                    "description": "The group that the membership applies to"
+                  }
+                ]
+              },
+              "role": {
+                "type": "string",
+                "example": "member",
+                "description": "The role of the user in the group.",
+                "enum": [
+                  "member",
+                  "admin"
+                ]
+              },
+              "created_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "The time this membership was created.",
+                "example": "2012-12-12T10:53:43-08:00"
+              },
+              "modified_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "The time this membership was last modified.",
+                "example": "2012-12-12T10:53:43-08:00"
+              }
+            }
+          }
+        ]
       },
       "ItemReference": {
         "description": "A generic mini representation of a file, folder, user or enterprise",
@@ -1948,10 +1976,10 @@
               "created_by": {
                 "allOf": [
                   {
-                    "description": "The use who created the lock"
+                    "$ref": "#/components/schemas/User--Mini"
                   },
                   {
-                    "$ref": "#/components/schemas/User--Mini"
+                    "description": "The use who created the lock"
                   }
                 ]
               },
@@ -2561,13 +2589,10 @@
               "enterprise": {
                 "allOf": [
                   {
-                    "type": "object"
+                    "$ref": "#/components/schemas/Enterprise"
                   },
                   {
                     "description": "Representation of the user’s enterprise"
-                  },
-                  {
-                    "$ref": "#/components/schemas/Enterprise"
                   }
                 ]
               },
