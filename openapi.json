@@ -230,7 +230,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/ClientError"
                 }
               }
             }
@@ -240,7 +240,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/ClientError"
                 }
               }
             }
@@ -250,7 +250,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/ClientError"
                 }
               }
             }
@@ -436,7 +436,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/ClientError"
                 }
               }
             }
@@ -491,7 +491,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/ClientError"
                 }
               }
             }
@@ -501,7 +501,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/ClientError"
                 }
               }
             }
@@ -569,7 +569,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ItemReferenceList"
+                  "$ref": "#/components/schemas/ItemReferenceCollection"
                 }
               }
             }
@@ -579,7 +579,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/ClientError"
                 }
               }
             }
@@ -647,7 +647,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/ClientError"
                 }
               }
             }
@@ -726,7 +726,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/ClientError"
                 }
               }
             }
@@ -736,7 +736,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/ClientError"
                 }
               }
             }
@@ -805,7 +805,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollaborationList"
+                  "$ref": "#/components/schemas/CollaborationCollection"
                 }
               }
             }
@@ -815,7 +815,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/ClientError"
                 }
               }
             }
@@ -922,6 +922,44 @@
                 }
               }
             }
+          }
+        }
+      },
+      "ClientError": {
+        "description": "A generic error",
+        "properties": {
+          "type": {
+            "description": "Always `error`",
+            "example": "`error`",
+            "type": "string",
+            "enum": [
+              "error"
+            ]
+          },
+          "status": {
+            "description": "The HTTP status of the response.",
+            "example": 400,
+            "type": "integer",
+            "format": "int32"
+          },
+          "code": {
+            "description": "A Box-specific error code",
+            "example": "item_name_invalid",
+            "type": "string"
+          },
+          "help_url": {
+            "description": "A URL that links to more information about why the error occurred.",
+            "example": "http://developers.box.com/docs/#errors",
+            "type": "string"
+          },
+          "message": {
+            "description": "A human-readable message describing the error.",
+            "example": "Item name invalid",
+            "type": "string"
+          },
+          "request_id": {
+            "type": "string",
+            "example": "abcdef123456"
           }
         }
       },
@@ -1045,7 +1083,7 @@
           }
         ]
       },
-      "CollaborationList": {
+      "CollaborationCollection": {
         "type": "object",
         "description": "A list of collaboration objects",
         "allOf": [
@@ -1080,44 +1118,6 @@
             }
           }
         ]
-      },
-      "Error": {
-        "description": "A generic error",
-        "properties": {
-          "type": {
-            "description": "Always `error`",
-            "example": "`error`",
-            "type": "string",
-            "enum": [
-              "error"
-            ]
-          },
-          "status": {
-            "description": "The HTTP status of the response.",
-            "example": 400,
-            "type": "integer",
-            "format": "int32"
-          },
-          "code": {
-            "description": "A Box-specific error code",
-            "example": "item_name_invalid",
-            "type": "string"
-          },
-          "help_url": {
-            "description": "A URL that links to more information about why the error occurred.",
-            "example": "http://developers.box.com/docs/#errors",
-            "type": "string"
-          },
-          "message": {
-            "description": "A human-readable message describing the error.",
-            "example": "Item name invalid",
-            "type": "string"
-          },
-          "request_id": {
-            "type": "string",
-            "example": "abcdef123456"
-          }
-        }
       },
       "File": {
         "description": "A full representation of a file, as can be returned from any\nfile API endpoints by default",
@@ -1811,6 +1811,87 @@
           }
         ]
       },
+      "Group": {
+        "description": "Groups contain a set of users, and can be used in place of\nusers in some operations, such as collaborations.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Group--Standard"
+          },
+          {
+            "properties": {
+              "provenance": {
+                "type": "string",
+                "description": "Keeps track of which external source this group is\ncoming from (e.g. \"Active Directory\", \"Google Groups\",\n\"Facebook Groups\").  Setting this will\nalso prevent Box users from editing the group name\nand its members directly via the Box web application.\nThis is desirable for one-way  syncing of groups.",
+                "maxLength": 255,
+                "example": "Active Directory"
+              },
+              "external_sync_identifier": {
+                "type": "string",
+                "description": "An arbitrary identifier that can be used by\nexternal group sync tools to link this Box Group to\nan external group. Example values of this field\ncould be an Active Directory Object ID or a Google\nGroup ID.  We recommend you use of this field in\norder to avoid issues when group names are updated in\neither Box or external systems.",
+                "example": "AD:123456"
+              },
+              "description": {
+                "type": "string",
+                "description": "Human readable description of the group.",
+                "maxLength": 255,
+                "example": "Support Group - as imported from Active Directory"
+              },
+              "invitability_level": {
+                "type": "string",
+                "example": "admins_only",
+                "description": "Specifies who can invite the group to collaborate\non folders (Create Collaboration).\n\nWhen set to `admins_only` the enterprise admin, co-admins,\nand the group's admin can invite the group.\n\nWhen set to `admins_and_members` all the admins listed\nabove and group members can invite the group.\n\nWhen set to `all_managed_users` all managed users in the\nenterprise can invite the group.",
+                "enum": [
+                  "admins_only",
+                  "admins_and_members",
+                  "all_managed_users"
+                ]
+              },
+              "member_viewability_level": {
+                "type": "string",
+                "example": "admins_only",
+                "description": "Specifies who can view the members of the group\n(Get Memberships for Group).\n\n* `admins_only - the enterprise admin, co-admins, group's\n  group admin\n* `admins_and_members` - all admins and group members\n* `all_managed_users` - all managed users in the\n  enterprise",
+                "enum": [
+                  "admins_only",
+                  "admins_and_members",
+                  "all_managed_users"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "Group--Standard": {
+        "description": "A standard representation of a group, as returned from any\ngroup API endpoints by default",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "`group`",
+            "example": "group"
+          },
+          "id": {
+            "type": "string",
+            "description": "The ID of the group object",
+            "example": "1786931"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the group",
+            "example": "Support"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the group object was created",
+            "example": "2012-12-12T10:53:43-08:00"
+          },
+          "modified_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the group object was last modified",
+            "example": "2012-12-12T10:53:43-08:00"
+          }
+        }
+      },
       "ItemReference": {
         "description": "A generic mini representation of a file, folder, user or enterprise",
         "allOf": [
@@ -1838,7 +1919,7 @@
           }
         ]
       },
-      "ItemReferenceList": {
+      "ItemReferenceCollection": {
         "description": "A list of generic mini representations of a file, folder, user or enterprise",
         "allOf": [
           {
