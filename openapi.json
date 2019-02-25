@@ -969,6 +969,7 @@
             "type": "string"
           },
           "request_id": {
+            "description": "The unique ID for this request as can be used when contacting\nBox support.",
             "type": "string",
             "example": "abcdef123456"
           }
@@ -1772,11 +1773,15 @@
             "allOf": [
               {
                 "$ref": "#/components/schemas/File"
+              },
+              {
+                "description": "The file for which the file can be accessed"
               }
             ]
           },
           "scope": {
             "type": "string",
+            "description": "The file scopes for the file access",
             "example": "item_download",
             "enum": [
               "annotation_edit",
@@ -2537,6 +2542,9 @@
         "allOf": [
           {
             "$ref": "#/components/schemas/Reference"
+          },
+          {
+            "properties": {}
           }
         ]
       },
@@ -2883,11 +2891,13 @@
         "description": "The order in which a pagination is ordered",
         "properties": {
           "by": {
+            "description": "The field to order by",
             "example": "type",
             "type": "string"
           },
           "direction": {
             "type": "string",
+            "description": "The direction to order by, either ascending or descending",
             "example": "ASC",
             "enum": [
               "ASC",
@@ -4112,23 +4122,15 @@
                 "description": "The URL that is notified by this webhook"
               },
               "triggers": {
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/WebhookTrigger"
-                  },
-                  {
-                    "type": "array"
-                  },
-                  {
-                    "example": [
-                      "FILE.UPLOADED",
-                      "FILE.CREATED"
-                    ]
-                  },
-                  {
-                    "description": "An array of event names that this webhook is\nto be triggered for"
-                  }
-                ]
+                "type": "array",
+                "example": [
+                  "FILE.UPLOADED",
+                  "FILE.CREATED"
+                ],
+                "description": "An array of event names that this webhook is\nto be triggered for",
+                "items": {
+                  "$ref": "#/components/schemas/WebhookTrigger"
+                }
               }
             }
           }
