@@ -902,34 +902,7 @@
             "example": "[{ object: <File...>, scope: \"annotation_view_self\"}]",
             "description": "The permissions that this access token permits,\nproviding a list of resources (files, folders, etc)\nand the scopes permitted for each of those resources.",
             "items": {
-              "properties": {
-                "object": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/File"
-                    }
-                  ]
-                },
-                "scope": {
-                  "type": "string",
-                  "example": "item_download",
-                  "enum": [
-                    "annotation_edit",
-                    "annotation_view_all",
-                    "annotation_view_self",
-                    "base_explorer",
-                    "base_picker",
-                    "base_preview",
-                    "base_upload",
-                    "item_delete",
-                    "item_download",
-                    "item_preview",
-                    "item_rename",
-                    "item_share",
-                    "item_upload"
-                  ]
-                }
-              }
+              "$ref": "#/components/schemas/FileScope"
             }
           }
         }
@@ -1791,6 +1764,37 @@
             }
           }
         ]
+      },
+      "FileScope": {
+        "description": "A relation between a file and the scopes for which the file can be accessed",
+        "properties": {
+          "object": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/File"
+              }
+            ]
+          },
+          "scope": {
+            "type": "string",
+            "example": "item_download",
+            "enum": [
+              "annotation_edit",
+              "annotation_view_all",
+              "annotation_view_self",
+              "base_explorer",
+              "base_picker",
+              "base_preview",
+              "base_upload",
+              "item_delete",
+              "item_download",
+              "item_preview",
+              "item_rename",
+              "item_share",
+              "item_upload"
+            ]
+          }
+        }
       },
       "FileVersion": {
         "description": "A full representation of a file version",
@@ -2810,15 +2814,23 @@
           "options": {
             "type": "array",
             "items": {
-              "type": "object",
-              "properties": {
-                "key": {
-                  "description": "For type `enum` and `multiSelect`, one of the potential values\nthat can be selected",
-                  "example": "category1",
-                  "type": "string"
-                }
-              }
+              "$ref": "#/components/schemas/MetadataTemplateFieldOption"
             }
+          }
+        }
+      },
+      "MetadataTemplateFieldOption": {
+        "description": "For type `enum` and `multiSelect`, one of the potential values\nthat can be selected",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "f7a9895f",
+            "description": "The ID of the option"
+          },
+          "key": {
+            "description": "The text value of the option",
+            "example": "category1",
+            "type": "string"
           }
         }
       },
@@ -2862,22 +2874,25 @@
             "description": "The order by which items are returned",
             "type": "array",
             "items": {
-              "type": "object",
-              "properties": {
-                "by": {
-                  "example": "type",
-                  "type": "string"
-                },
-                "direction": {
-                  "type": "string",
-                  "example": "ASC",
-                  "enum": [
-                    "ASC",
-                    "DESC"
-                  ]
-                }
-              }
+              "$ref": "#/components/schemas/PaginationOrder"
             }
+          }
+        }
+      },
+      "PaginationOrder": {
+        "description": "The order in which a pagination is ordered",
+        "properties": {
+          "by": {
+            "example": "type",
+            "type": "string"
+          },
+          "direction": {
+            "type": "string",
+            "example": "ASC",
+            "enum": [
+              "ASC",
+              "DESC"
+            ]
           }
         }
       },
