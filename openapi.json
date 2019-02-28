@@ -1371,7 +1371,7 @@
           },
           "additional_details": {
             "type": "object",
-            "example": {},
+            "example": "",
             "description": "This object provides additional information about the event if available.\n\nThis can include how a user performed an event as well as additional\ninformation to correlate an event to external Keysafe logs. Not all events\nhave an additional_details object.  This object is only available in the\nEnterprise Events."
           }
         }
@@ -2689,9 +2689,7 @@
         "additionalProperties": {
           "type": "string",
           "description": "Additional data",
-          "example": {
-            "foo": "bar"
-          }
+          "example": "foo=bar"
         }
       },
       "MetadataCascadePolicy": {
