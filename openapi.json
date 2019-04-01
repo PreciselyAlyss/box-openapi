@@ -426,7 +426,7 @@
       "delete": {
         "operationId": "delete_folders_id",
         "summary": "Delete a folder",
-        "description": "Permanently delete a folder. This can normally not be undone.",
+        "description": "Deletes a folder. Depending on the enterprise settings for\nthe user the item will either be permanently deleted from\nBox or moved to the trash.",
         "tags": [
           "Folder"
         ],
