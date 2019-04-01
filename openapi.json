@@ -267,7 +267,7 @@
           },
           {
             "name": "If-Match",
-            "description": "Ensure a folder is only changed if its `etag` matches the\n`etag` passed in this header.",
+            "description": "Ensure a folder is only updated if it hasn't recently changed\nby ensuring the `etag` matches the `etag` passed in this header.",
             "in": "header",
             "required": false,
             "example": 1,
