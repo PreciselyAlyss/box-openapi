@@ -239,8 +239,8 @@
       },
       "put": {
         "operationId": "put_folders_id",
-        "summary": "Update Folder, Create Shared Link, Create or Delete",
-        "description": "Used to update information about the folder. To move a folder, update the ID\nof its parent. To enable an email address that can be used to upload files to\nthis folder, update the folder_upload_email attribute. An optional If-Match\nheader can be included to ensure that client only updates the folder if it\nknows about the latest version.\n\n\nUsed to create a shared link for this particular folder. Please see here for\nmore information on the permissions available for shared links. In order to\nget default shared link status, set it to an empty access level, i.e.\n`{\"shared_link\": {}}`. In order to disable a shared link, send this same type\nof `PUT` request with the value of shared_link set to null, i.e.\n`{\"shared_link\": null}`\n\n\nTo add or remove an item from a collection, you do a PUT on that item and\nchange the list of collections it belongs to. Philosophically, this is similar\nto the way \"move\" operations work on files and folders - you do a `PUT` on the\nitem and change its parent. It’s the same idea with collections, except you’re\nchanging which collection(s) the item belongs to instead of the folder it\nbelongs to. Currently the only collection available is the favorites\ncollection, and you’ll need to know it’s ID for the user that is making the\nAPI call, since every user has a different favorites collection_id.\n\nThe Add/Remove API handling will check all ids passed in before performing any\nadd/removal operations. If any collection ids are malformed or do not exist in\nthe user’s account, the API call will throw a 400. Only if all of the\ncollection ids are valid will the adds and removals be carried out.",
+        "summary": "Update a folder",
+        "description": "Updates a folder. This can be also be used to move the folder,\ncreate shared links, update collaborations, and more.",
         "tags": [
           "Folder"
         ],
@@ -248,7 +248,7 @@
           {
             "name": "folder_id",
             "example": "123456",
-            "description": "The ID of the folder to update. The root folder of a Box account is\nalways represented by the id \"0\".",
+            "description": "The ID of the folder to update.",
             "in": "path",
             "required": true,
             "schema": {
@@ -257,19 +257,20 @@
           },
           {
             "name": "fields",
-            "description": "Attribute(s) to include in the response",
-            "in": "query",
+            "description": "A comma-separated list of item attributes to include in the\nresponse. This can be used to request fields that are not normally\nreturned in a standard response for this endpoint.",
             "example": "id,name",
+            "in": "query",
+            "required": false,
             "schema": {
               "type": "string"
             }
           },
           {
             "name": "If-Match",
-            "description": "This is in the `etag` field of the folder object.",
-            "example": "1",
+            "description": "Ensure a folder is only changed if its `etag` matches the\n`etag` passed in this header.",
             "in": "header",
             "required": false,
+            "example": 1,
             "schema": {
               "type": "string"
             }
@@ -282,18 +283,18 @@
                 "properties": {
                   "name": {
                     "type": "string",
-                    "description": "The desired name for the folder",
+                    "description": "The new name for the folder",
                     "example": "New Folder"
                   },
                   "description": {
                     "type": "string",
-                    "description": "The description of the folder.",
+                    "description": "A description for the folder",
                     "example": "Some pictures I took"
                   },
                   "sync_state": {
                     "type": "string",
                     "example": "synced",
-                    "description": "Whether Box Sync clients will sync this folder. Values\nof `synced` or` not_synced` can be sent.",
+                    "description": "If Box Sync or Box Drive is allowed to sync this folder.",
                     "enum": [
                       "synced",
                       "not_synced"
@@ -302,12 +303,12 @@
                   "can_non_owners_invite": {
                     "type": "boolean",
                     "example": true,
-                    "description": "If this parameter is set to false, only folder owners and\nco-owners can send collaborator invites"
+                    "description": "If non folder owners can invite new collaborators"
                   },
                   "is_collaboration_restricted_to_enterprise": {
                     "type": "boolean",
                     "example": true,
-                    "description": "Whether to restrict future collaborations to within the\nenterprise. Does not affect existing collaborations."
+                    "description": "If future invites to this folder are restricted to users\nwithin the enterprise. This does not affect existing\ncollaborations."
                   },
                   "parent": {
                     "type": "object",
@@ -324,7 +325,7 @@
                     "properties": {
                       "access": {
                         "type": "string",
-                        "description": "The level of access. Can be `open` (\"People with the link\"),\n`company` (\"People in your company\"), or `collaborators`\n(\"People in this folder\").\n\nIf you omit this field then the access level will be set to\nthe default access level specified by the enterprise admin.",
+                        "description": "The level of access for the shared link. This can be\nrestricted to anyone with the link (`open`), only people\nwithin the company (`company`) and only those who\nhave been invited to the folder (`collaborators`).\n\nThis field defaults to default access level\nspecified by the enterprise admin.",
                         "enum": [
                           "open",
                           "company",
@@ -334,14 +335,14 @@
                       },
                       "password": {
                         "type": "string",
-                        "description": "The password required to access the shared link. Set to null\nto remove the password.",
+                        "description": "The password required to access the shared link. Set this to\n`null` to remove the password.",
                         "example": "do-not-use-this-password"
                       },
                       "unshared_at": {
                         "type": "string",
                         "format": "date-time",
                         "example": "2012-12-12T10:53:43-08:00",
-                        "description": "The date-time that this link will become disabled. This field\ncan only be set by users with paid accounts."
+                        "description": "The timestamp at which this shared link will\nbe disabled. This field can only be set by\nusers with paid accounts."
                       },
                       "permissions": {
                         "type": "object",
@@ -349,7 +350,7 @@
                           "can_download": {
                             "type": "boolean",
                             "example": true,
-                            "description": "Whether the shared link allows downloads. For shared links\non folders, this also applies to any items in the folder.\nCan only be set with access levels `open` and `company`\n(not `collaborators`)."
+                            "description": "If the shared link allows for downloading of files.\nThis can only be set when `access` is set to\n`open` or `company`."
                           }
                         }
                       }
@@ -361,7 +362,11 @@
                       "access": {
                         "type": "string",
                         "example": "open",
-                        "description": "Can be `open` or `collaborators`"
+                        "enum": [
+                          "open",
+                          "collaborators"
+                        ],
+                        "description": "If set, users can email files to the automatically\ncreated email address to upload files to the\nfolder. To get the email address, request the\n`folder_upload_email` field for the folder after setting\nthis field.\n\nWhen set to `collaborators`, only emails from registered email\naddresses for collaborators will be accepted."
                       }
                     }
                   },
@@ -371,7 +376,7 @@
                       "id": {
                         "type": "string",
                         "example": "123456",
-                        "description": "The ID of the user (should be your own user ID)"
+                        "description": "The ID of the new user that will own this folder."
                       }
                     }
                   },
@@ -383,7 +388,7 @@
                     "items": {
                       "type": "string"
                     },
-                    "description": "The tags to attach this folder. To add/remove a tag to/from a\nfolder, you can first get the folder’s current tags, then modify\nthe list as required. Finally, set the folder’s entire list of\ntags."
+                    "description": "The tags for this folder.\n\nTo add or remove a tag, retrieve the folder’s current tags,\nmodify them, and then update them using this field."
                   }
                 }
               }
@@ -392,11 +397,11 @@
         },
         "responses": {
           "200": {
-            "description": "The updated folder",
+            "description": "A standard folder response for the updated folder",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Folder"
+                  "$ref": "#/components/schemas/Folder--Standard"
                 }
               }
             }
@@ -412,7 +417,7 @@
             }
           },
           "default": {
-            "description": "Update Folder info error",
+            "description": "A client error",
             "content": {
               "application/json": {
                 "schema": {
@@ -629,8 +634,8 @@
     "/folders/{folder_id}/copy": {
       "post": {
         "operationId": "post_folders_id_copy",
-        "summary": "Copy Folder",
-        "description": "Used to create a copy of a folder in another folder. The original version of\nthe folder will not be altered.",
+        "summary": "Copy a folder",
+        "description": "Creates a copy of a folder in another folder. The original folder will\nnot be changed.",
         "tags": [
           "Folder"
         ],
@@ -647,7 +652,7 @@
           },
           {
             "name": "fields",
-            "description": "Attribute(s) to include in the response",
+            "description": "A comma-separated list of folder attributes to include in the\nresponse. This can be used to request fields that are not normally\nreturned in a standard response.",
             "example": "id,name",
             "in": "query",
             "required": false,
@@ -660,14 +665,20 @@
           "content": {
             "application/json": {
               "schema": {
+                "required": [
+                  "parent"
+                ],
                 "properties": {
                   "name": {
                     "type": "string",
-                    "description": "An optional new name for the folder",
+                    "description": "An optional different name for the new folder",
                     "example": "New Folder"
                   },
                   "parent": {
                     "type": "object",
+                    "required": [
+                      "id"
+                    ],
                     "properties": {
                       "id": {
                         "type": "string",
@@ -683,7 +694,7 @@
         },
         "responses": {
           "201": {
-            "description": "A full folder object is returned if the ID is valid and if the update is\nsuccessful.",
+            "description": "Returns a standard folder object.",
             "content": {
               "application/json": {
                 "schema": {
@@ -692,18 +703,8 @@
               }
             }
           },
-          "409": {
-            "description": "If the intended destination folder is the same, as this will cause a name\ncollision.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClientError"
-                }
-              }
-            }
-          },
           "default": {
-            "description": "Copy folder operation error",
+            "description": "A client error",
             "content": {
               "application/json": {
                 "schema": {
