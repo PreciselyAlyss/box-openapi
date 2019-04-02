@@ -288,7 +288,8 @@
                   },
                   "description": {
                     "type": "string",
-                    "description": "A description for the folder",
+                    "description": "The description of the folder",
+                    "maxLength": 256,
                     "example": "Some pictures I took"
                   },
                   "sync_state": {
@@ -303,7 +304,7 @@
                   "can_non_owners_invite": {
                     "type": "boolean",
                     "example": true,
-                    "description": "If non folder owners can invite new collaborators"
+                    "description": "If collaborators who are not\nfolder owners can invite new collaborators"
                   },
                   "is_collaboration_restricted_to_enterprise": {
                     "type": "boolean",
@@ -314,64 +315,13 @@
                     "$ref": "#/components/schemas/Parent"
                   },
                   "shared_link": {
-                    "type": "object",
-                    "properties": {
-                      "access": {
-                        "type": "string",
-                        "description": "The level of access for the shared link. This can be\nrestricted to anyone with the link (`open`), only people\nwithin the company (`company`) and only those who\nhave been invited to the folder (`collaborators`).\n\nThis field defaults to default access level\nspecified by the enterprise admin.",
-                        "enum": [
-                          "open",
-                          "company",
-                          "collaborators"
-                        ],
-                        "example": "open"
-                      },
-                      "password": {
-                        "type": "string",
-                        "description": "The password required to access the shared link. Set this to\n`null` to remove the password.",
-                        "example": "do-not-use-this-password"
-                      },
-                      "unshared_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2012-12-12T10:53:43-08:00",
-                        "description": "The timestamp at which this shared link will\nbe disabled. This field can only be set by\nusers with paid accounts."
-                      },
-                      "permissions": {
-                        "type": "object",
-                        "properties": {
-                          "can_download": {
-                            "type": "boolean",
-                            "example": true,
-                            "description": "If the shared link allows for downloading of files.\nThis can only be set when `access` is set to\n`open` or `company`."
-                          }
-                        }
-                      }
-                    }
+                    "$ref": "#/components/schemas/SharedLink--Writable"
                   },
                   "folder_upload_email": {
-                    "type": "object",
-                    "properties": {
-                      "access": {
-                        "type": "string",
-                        "example": "open",
-                        "enum": [
-                          "open",
-                          "collaborators"
-                        ],
-                        "description": "If set, users can email files to the automatically\ncreated email address to upload files to the\nfolder. To get the email address, request the\n`folder_upload_email` field for the folder after setting\nthis field.\n\nWhen set to `collaborators`, only emails from registered email\naddresses for collaborators will be accepted."
-                      }
-                    }
+                    "$ref": "#/components/schemas/FolderUploadEmail"
                   },
                   "owned_by": {
-                    "type": "object",
-                    "properties": {
-                      "id": {
-                        "type": "string",
-                        "example": "123456",
-                        "description": "The ID of the new user that will own this folder."
-                      }
-                    }
+                    "$ref": "#/components/schemas/Owner"
                   },
                   "tags": {
                     "type": "array",
@@ -597,7 +547,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Folder--Standard"
+                  "$ref": "#/components/schemas/Folder"
                 }
               }
             }
@@ -1886,17 +1836,16 @@
               "sync_state": {
                 "type": "string",
                 "example": "synced",
+                "description": "If Box Sync or Box Drive is allowed to sync this folder.",
                 "enum": [
                   "synced",
-                  "not_synced",
-                  "partially_synced"
-                ],
-                "description": "Whether this folder will be synced by the Box sync clients or not. Can\nbe `synced`, `not_synced`, or `partially_synced`."
+                  "not_synced"
+                ]
               },
               "has_collaborations": {
                 "type": "boolean",
                 "example": true,
-                "description": "Whether this folder has any collaborators."
+                "description": "If this folder has any collaborators."
               },
               "permissions": {
                 "allOf": [
@@ -1904,7 +1853,7 @@
                     "$ref": "#/components/schemas/Permissions"
                   },
                   {
-                    "description": "An object containing the permissions that the current user has\nfor this item"
+                    "description": "The permissions that the current user has\nfor this item"
                   }
                 ]
               },
@@ -1916,22 +1865,22 @@
                 "items": {
                   "type": "string"
                 },
-                "description": "All tags applied to this folder."
+                "description": "The tags for this folder.\n\nTo add or remove a tag, retrieve the folder’s current tags,\nmodify them, and then update them using this field."
               },
               "can_non_owners_invite": {
                 "type": "boolean",
                 "example": true,
-                "description": "Whether non-owners can invite collaborators to this folder."
+                "description": "If collaborators who are not\nfolder owners can invite new collaborators"
               },
               "is_externally_owned": {
                 "type": "boolean",
                 "example": true,
-                "description": "Whether this folder is owned by a user outside of the enterprise."
+                "description": "If this folder is owned by a user outside of the enterprise."
               },
               "is_collaboration_restricted_to_enterprise": {
                 "type": "boolean",
                 "example": true,
-                "description": "Whether future collaborations should be restricted to within the\nenterprise only."
+                "description": "If future invites to this folder are restricted to users\nwithin the enterprise. This does not affect existing\ncollaborations."
               },
               "allowed_shared_link_access_levels": {
                 "type": "array",
@@ -1941,11 +1890,17 @@
                   "company",
                   "collaborators"
                 ],
-                "description": "Access level settings for shared links set by administrator. Can\ninclude `open`, `company`, or `collaborators`."
+                "description": "The default access level settings for shared links as set\nby the administrator."
               },
               "allowed_invitee_roles": {
                 "type": "array",
-                "description": "Folder [collaboration](#collaboration-object) roles allowed by the\nenterprise administrator.",
+                "example": "open",
+                "enum": [
+                  "open",
+                  "company",
+                  "collaborators"
+                ],
+                "description": "The types of collaborations that have been allowed by the\nenterprise administrator.",
                 "items": {
                   "type": "string"
                 }
@@ -1959,19 +1914,6 @@
                     "description": "Information about the watermarking on this folder"
                   }
                 ]
-              },
-              "metadata": {
-                "type": "object",
-                "description": "The scope of the metadata",
-                "example": "global",
-                "additionalProperties": {
-                  "type": "object",
-                  "description": "The template name for the metadata",
-                  "example": "properties",
-                  "additionalProperties": {
-                    "$ref": "#/components/schemas/Metadata"
-                  }
-                }
               }
             }
           }
@@ -1993,18 +1935,19 @@
               },
               "description": {
                 "type": "string",
-                "description": "The description of the folder.",
+                "description": "The description of the folder",
                 "maxLength": 256,
                 "example": "Some pictures I took"
               },
               "size": {
                 "type": "integer",
-                "description": "The folder size in bytes. Be careful parsing this integer, it can\neasily go into [exponent notation](http://en.wikipedia.org/wiki/\\\nDouble-precision_floating-point_format).",
+                "format": "int64",
+                "description": "The folder size in bytes.\n\nBe careful parsing this integer as it can easily\ngo into exponent notation.",
                 "example": 629644
               },
               "path_collection": {
                 "type": "array",
-                "description": "The path of folders to this folder, starting at the root",
+                "description": "The tree of folders that this folder is contained in,\nstarting at the root.",
                 "items": {
                   "$ref": "#/components/schemas/Folder--Mini"
                 }
@@ -2032,31 +1975,31 @@
               "trashed_at": {
                 "type": "string",
                 "format": "date-time",
-                "description": "The time the folder or its contents were put in the trash. May be\n`null` for some folders such as root or trash.",
+                "description": "The time at which this folder was put in the trash.",
                 "example": "2012-12-12T10:53:43-08:00"
               },
               "purged_at": {
                 "type": "string",
                 "format": "date-time",
-                "description": "The time the folder or its contents will be purged from the trash. May\nbe `null` for some folders such as root or trash.",
+                "description": "The time at which this folder will be purged from the trash.",
                 "example": "2012-12-12T10:53:43-08:00"
               },
               "content_created_at": {
                 "type": "string",
                 "format": "date-time",
-                "description": "The time the folder or its contents were originally created (according\nto the uploader).  May be `null` for some folders such as root or\ntrash.",
+                "description": "The time at which this folder was originally created according\nto the uploader.",
                 "example": "2012-12-12T10:53:43-08:00"
               },
               "content_modified_at": {
                 "type": "string",
                 "format": "date-time",
-                "description": "The time the folder or its contents were last modified (according to\nthe uploader).  May be `null` for some folders such as root or trash.",
+                "description": "The time the folder or its contents were last modified according to\nthe uploader.",
                 "example": "2012-12-12T10:53:43-08:00"
               },
               "expires_at": {
                 "type": "string",
                 "format": "date-time",
-                "description": "When the folder will automatically be deleted, i.e. expired. This\nattribute cannot be set.",
+                "description": "The time and which the folder will be automatically be deleted.",
                 "example": "2012-12-12T10:53:43-08:00"
               },
               "owned_by": {
@@ -2083,17 +2026,16 @@
                 "type": "object",
                 "properties": {
                   "access": {
-                    "description": "The access level for which the email was created.",
                     "type": "string",
-                    "example": "access",
+                    "example": "open",
                     "enum": [
                       "open",
-                      "company",
                       "collaborators"
-                    ]
+                    ],
+                    "description": "If set, users can email files to the automatically\ncreated email address to upload files to the\nfolder. To get the email address, request the\n`folder_upload_email` field for the folder after setting\nthis field.\n\nWhen set to `collaborators`, only emails from registered email\naddresses for collaborators will be accepted."
                   },
                   "email": {
-                    "description": "The upload email address for this folder. `null` if not set.",
+                    "description": "The upload email address for this folder. This will be\n`null` if not enabled.",
                     "type": "string",
                     "format": "email",
                     "example": "upload.Picture.k13sdz1@u.box.com"
@@ -2106,13 +2048,13 @@
                     "$ref": "#/components/schemas/Folder--Mini"
                   },
                   {
-                    "description": "The folder that contains this folder.\n\nMay be `null` for folders such as root, trash and child folders\nwhose parent is inaccessible."
+                    "description": "The direct parent folder that this folder is located within.\n\nMay be `null` for folders such as root, trash and child folders\nwhose parent is inaccessible."
                   }
                 ]
               },
               "item_status": {
                 "type": "string",
-                "description": "Whether this item is deleted or not. Values include `active`,\n`trashed` if the item has been moved to the trash, and\n`deleted` if the item has been permanently deleted.",
+                "description": "Whether this item is deleted or not.\n\nValues include `active` if the item has not been trashed,\n`trashed` if the item has been moved to the trash, and\n`deleted` if the item has been permanently deleted.",
                 "enum": [
                   "active",
                   "trashed",
@@ -2147,7 +2089,7 @@
               "etag": {
                 "type": "string",
                 "example": "1",
-                "description": "The entity tag of this folder object. Used with If-Match\nheaders. May be `null` for some folders such as root or\ntrash."
+                "description": "The entity tag of this folder object. Used with `If-Match`\nheaders."
               },
               "name": {
                 "type": "string",
@@ -2157,6 +2099,21 @@
             }
           }
         ]
+      },
+      "FolderUploadEmail": {
+        "type": "object",
+        "description": "The writable Folder Upload Email object",
+        "properties": {
+          "access": {
+            "type": "string",
+            "example": "open",
+            "enum": [
+              "open",
+              "collaborators"
+            ],
+            "description": "If set, users can email files to the automatically\ncreated email address to upload files to the\nfolder. To get the email address, request the\n`folder_upload_email` field for the folder after setting\nthis field.\n\nWhen set to `collaborators`, only emails from registered email\naddresses for collaborators will be accepted."
+          }
+        }
       },
       "Group": {
         "description": "Groups contain a set of users, and can be used in place of\nusers in some operations, such as collaborations.",
@@ -2801,6 +2758,17 @@
           }
         }
       },
+      "Owner": {
+        "description": "The owner of this item",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "123456",
+            "description": "The ID of user that owns this item."
+          }
+        }
+      },
       "Pagination": {
         "description": "The part of an API response that describes pagination",
         "properties": {
@@ -3200,6 +3168,43 @@
             "type": "integer",
             "example": 3,
             "description": "The number of times the item has been previewed"
+          }
+        }
+      },
+      "SharedLink--Writable": {
+        "type": "object",
+        "description": "The writable attributes for a Shared Link.",
+        "properties": {
+          "access": {
+            "type": "string",
+            "description": "The level of access for the shared link. This can be\nrestricted to anyone with the link (`open`), only people\nwithin the company (`company`) and only those who\nhave been invited to the folder (`collaborators`).\n\nThis field defaults to default access level\nspecified by the enterprise admin.",
+            "enum": [
+              "open",
+              "company",
+              "collaborators"
+            ],
+            "example": "open"
+          },
+          "password": {
+            "type": "string",
+            "description": "The password required to access the shared link. Set this to\n`null` to remove the password.",
+            "example": "do-not-use-this-password"
+          },
+          "unshared_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2012-12-12T10:53:43-08:00",
+            "description": "The timestamp at which this shared link will\nbe disabled. This field can only be set by\nusers with paid accounts."
+          },
+          "permissions": {
+            "type": "object",
+            "properties": {
+              "can_download": {
+                "type": "boolean",
+                "example": true,
+                "description": "If the shared link allows for downloading of files.\nThis can only be set when `access` is set to\n`open` or `company`."
+              }
+            }
           }
         }
       },
