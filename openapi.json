@@ -195,7 +195,7 @@
         "parameters": [
           {
             "name": "folder_id",
-            "description": "The ID of the folder to retrieve. The root folder of a Box account is\nalways represented by the id `\"0\"`.",
+            "description": "The ID of the folder.\n\nThe root folder of a Box account is\nalways represented by the id `\"0\"`.",
             "example": "12345",
             "in": "path",
             "required": true,
@@ -205,7 +205,7 @@
           },
           {
             "name": "fields",
-            "description": "A comma-separated list of folder attributes to include in the\nresponse. This can be used to request fields that are not normally\nreturned in a standard response.",
+            "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.",
             "in": "query",
             "example": "id,type,name",
             "required": false,
@@ -247,8 +247,8 @@
         "parameters": [
           {
             "name": "folder_id",
-            "example": "123456",
-            "description": "The ID of the folder to update.",
+            "description": "The ID of the folder.\n\nThe root folder of a Box account is\nalways represented by the id `\"0\"`.",
+            "example": "12345",
             "in": "path",
             "required": true,
             "schema": {
@@ -257,9 +257,9 @@
           },
           {
             "name": "fields",
-            "description": "A comma-separated list of item attributes to include in the\nresponse. This can be used to request fields that are not normally\nreturned in a standard response for this endpoint.",
-            "example": "id,name",
+            "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.",
             "in": "query",
+            "example": "id,type,name",
             "required": false,
             "schema": {
               "type": "string"
@@ -267,7 +267,7 @@
           },
           {
             "name": "If-Match",
-            "description": "Ensure a folder is only updated if it hasn't recently changed\nby ensuring the `etag` matches the `etag` passed in this header.",
+            "description": "Ensure this item hasn't recently changed\nby ensuring the item's current `etag` matches the\n`etag` passed into this header.",
             "in": "header",
             "required": false,
             "example": 1,
@@ -311,14 +311,7 @@
                     "description": "If future invites to this folder are restricted to users\nwithin the enterprise. This does not affect existing\ncollaborations."
                   },
                   "parent": {
-                    "type": "object",
-                    "properties": {
-                      "id": {
-                        "type": "string",
-                        "description": "The ID of the parent folder",
-                        "example": "11446498"
-                      }
-                    }
+                    "$ref": "#/components/schemas/Parent"
                   },
                   "shared_link": {
                     "type": "object",
@@ -389,6 +382,13 @@
                       "type": "string"
                     },
                     "description": "The tags for this folder.\n\nTo add or remove a tag, retrieve the folder’s current tags,\nmodify them, and then update them using this field."
+                  },
+                  "collections": {
+                    "type": "array",
+                    "description": "The collections this folder belongs to.",
+                    "items": {
+                      "$ref": "#/components/schemas/Parent"
+                    }
                   }
                 }
               }
@@ -402,16 +402,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Folder--Standard"
-                }
-              }
-            }
-          },
-          "201": {
-            "description": "When 'collections' is specified in body the folder is moved into\ncollection with the ID",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Folder"
                 }
               }
             }
@@ -438,10 +428,10 @@
         "parameters": [
           {
             "name": "folder_id",
-            "description": "The ID of the folder to delete.",
+            "description": "The ID of the folder.\n\nThe root folder of a Box account is\nalways represented by the id `\"0\"`.",
+            "example": "12345",
             "in": "path",
             "required": true,
-            "example": "123456",
             "schema": {
               "type": "string"
             }
@@ -458,7 +448,7 @@
           },
           {
             "name": "If-Match",
-            "description": "Ensure a folder is only deleted if it hasn't recently changed\nby ensuring the `etag` matches the `etag` passed in this header.",
+            "description": "Ensure this item hasn't recently changed\nby ensuring the item's current `etag` matches the\n`etag` passed into this header.",
             "in": "header",
             "required": false,
             "example": 1,
@@ -495,8 +485,8 @@
         "parameters": [
           {
             "name": "folder_id",
-            "description": "The ID of the folder to retrieve. The root folder of a Box account is\nalways represented by the id `\"0\"`.",
-            "example": "123456",
+            "description": "The ID of the folder.\n\nThe root folder of a Box account is\nalways represented by the id `\"0\"`.",
+            "example": "12345",
             "in": "path",
             "required": true,
             "schema": {
@@ -505,12 +495,24 @@
           },
           {
             "name": "fields",
-            "description": "A comma-separated list of item attributes to include in the\nresponse. This can be used to request fields that are not normally\nreturned in a standard response for this endpoint.",
-            "example": "id,name",
+            "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.",
             "in": "query",
+            "example": "id,type,name",
             "required": false,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "description": "The offset of the item at which to begin the response.",
+            "in": "query",
+            "required": false,
+            "example": 1000,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": 0
             }
           },
           {
@@ -524,17 +526,6 @@
               "format": "int64",
               "default": 100,
               "maximum": 1000
-            }
-          },
-          {
-            "name": "offset",
-            "description": "The offset of the item at which to begin the response.",
-            "in": "query",
-            "required": false,
-            "example": 5000,
-            "schema": {
-              "type": "string",
-              "default": 0
             }
           }
         ],
@@ -573,9 +564,9 @@
         "parameters": [
           {
             "name": "fields",
-            "description": "A comma-separated list of item attributes to include in the\nresponse. This can be used to request fields that are not normally\nreturned in a standard response for this endpoint.",
-            "example": "id,name",
+            "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.",
             "in": "query",
+            "example": "id,type,name",
             "required": false,
             "schema": {
               "type": "string"
@@ -593,14 +584,7 @@
                     "example": "New Folder"
                   },
                   "parent": {
-                    "type": "object",
-                    "properties": {
-                      "id": {
-                        "type": "string",
-                        "description": "The ID of the parent folder",
-                        "example": "0"
-                      }
-                    }
+                    "$ref": "#/components/schemas/Parent"
                   }
                 }
               }
@@ -642,8 +626,8 @@
         "parameters": [
           {
             "name": "folder_id",
-            "description": "The ID of the folder to copy",
-            "example": "123456",
+            "description": "The ID of the folder.\n\nThe root folder of a Box account is\nalways represented by the id `\"0\"`.",
+            "example": "12345",
             "in": "path",
             "required": true,
             "schema": {
@@ -652,9 +636,9 @@
           },
           {
             "name": "fields",
-            "description": "A comma-separated list of folder attributes to include in the\nresponse. This can be used to request fields that are not normally\nreturned in a standard response.",
-            "example": "id,name",
+            "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.",
             "in": "query",
+            "example": "id,type,name",
             "required": false,
             "schema": {
               "type": "string"
@@ -675,17 +659,7 @@
                     "example": "New Folder"
                   },
                   "parent": {
-                    "type": "object",
-                    "required": [
-                      "id"
-                    ],
-                    "properties": {
-                      "id": {
-                        "type": "string",
-                        "description": "The ID of the destination folder",
-                        "example": "11446498"
-                      }
-                    }
+                    "$ref": "#/components/schemas/Parent"
                   }
                 }
               }
@@ -722,13 +696,13 @@
         "summary": "Retrieve folder collaborations",
         "description": "Retrieves a list of collaborations for a folder folder. This\nreturns all of the users that have access to the folder.",
         "tags": [
-          "Folder"
+          "Collaboration"
         ],
         "parameters": [
           {
             "name": "folder_id",
-            "description": "The ID of the folder to retrieve collaborations for.",
-            "example": "123456",
+            "description": "The ID of the folder.\n\nThe root folder of a Box account is\nalways represented by the id `\"0\"`.",
+            "example": "12345",
             "in": "path",
             "required": true,
             "schema": {
@@ -737,9 +711,9 @@
           },
           {
             "name": "fields",
-            "description": "A comma-separated list of folder attributes to include in the\nresponse. This can be used to request fields that are not\nnormally returned in a standard response.",
-            "example": "id,name",
+            "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.",
             "in": "query",
+            "example": "id,type,name",
             "required": false,
             "schema": {
               "type": "string"
@@ -2397,7 +2371,7 @@
                     "$ref": "#/components/schemas/File--Mini"
                   },
                   {
-                    "description": "The parent file of the file version that is held.\nNote that there is no guarantee that the current\nversion of this file is held."
+                    "description": "The file for the file version held.\nNote that there is no guarantee that the current\nversion of this file is held."
                   }
                 ]
               },
@@ -2873,6 +2847,16 @@
               "ASC",
               "DESC"
             ]
+          }
+        }
+      },
+      "Parent": {
+        "description": "The parent for this item",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The ID of the collection",
+            "example": "123"
           }
         }
       },
