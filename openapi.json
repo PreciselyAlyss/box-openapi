@@ -462,16 +462,44 @@
                     "description": "If future invites to this folder are restricted to users\nwithin the enterprise. This does not affect existing\ncollaborations."
                   },
                   "parent": {
-                    "$ref": "#/components/schemas/Parent"
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/Parent"
+                      },
+                      {
+                        "description": "The parent folder for this folder"
+                      }
+                    ]
                   },
                   "shared_link": {
-                    "$ref": "#/components/schemas/SharedLink--Writable"
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/SharedLink--Writable"
+                      },
+                      {
+                        "description": "Enables the creation of a shared link for this folder"
+                      }
+                    ]
                   },
                   "folder_upload_email": {
-                    "$ref": "#/components/schemas/FolderUploadEmail"
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/FolderUploadEmail"
+                      },
+                      {
+                        "description": "Enables an email address for users to upload\nfiles directly to the folder"
+                      }
+                    ]
                   },
                   "owned_by": {
-                    "$ref": "#/components/schemas/Owner"
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/Owner"
+                      },
+                      {
+                        "description": "The user that owns this folder"
+                      }
+                    ]
                   },
                   "tags": {
                     "type": "array",
@@ -682,7 +710,14 @@
                     "example": "New Folder"
                   },
                   "parent": {
-                    "$ref": "#/components/schemas/Parent"
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/Parent"
+                      },
+                      {
+                        "description": "The parent folder"
+                      }
+                    ]
                   }
                 }
               }
@@ -757,7 +792,14 @@
                     "example": "New Folder"
                   },
                   "parent": {
-                    "$ref": "#/components/schemas/Parent"
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/Parent"
+                      },
+                      {
+                        "description": "The parent folder"
+                      }
+                    ]
                   }
                 }
               }
