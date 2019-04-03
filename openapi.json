@@ -3565,42 +3565,35 @@
       },
       "StoragePolicyAssignment": {
         "description": "The assignment of a storage policy to a user or enterprise",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/StoragePolicyAssignment"
+        "properties": {
+          "storage_policy": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/StoragePolicy--Mini"
+              },
+              {
+                "description": "The assigned storage policy"
+              }
+            ]
           },
-          {
-            "properties": {
-              "storage_policy": {
-                "allOf": [
+          "assigned_to": {
+            "allOf": [
+              {
+                "oneOf": [
                   {
-                    "$ref": "#/components/schemas/StoragePolicy--Mini"
+                    "$ref": "#/components/schemas/Enterprise"
                   },
                   {
-                    "description": "The assigned storage policy"
+                    "$ref": "#/components/schemas/User"
                   }
                 ]
               },
-              "assigned_to": {
-                "allOf": [
-                  {
-                    "oneOf": [
-                      {
-                        "$ref": "#/components/schemas/Enterprise"
-                      },
-                      {
-                        "$ref": "#/components/schemas/User"
-                      }
-                    ]
-                  },
-                  {
-                    "description": "The enterprise or use the policy is assigned to"
-                  }
-                ]
+              {
+                "description": "The enterprise or use the policy is assigned to"
               }
-            }
+            ]
           }
-        ]
+        }
       },
       "Task": {
         "description": "Tasks enabled file-centric workflows in Box. Users can\ncreate tasks on files and assign them to collaborators on\nBox.",
