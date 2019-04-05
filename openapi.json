@@ -527,7 +527,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Folder--Standard"
+                  "$ref": "#/components/schemas/Folder"
                 }
               }
             }
@@ -936,6 +936,7 @@
     "schemas": {
       "AccessToken": {
         "description": "A token that can be used to make authenticated API calls",
+        "x-box-group": "Authorization",
         "allOf": [
           {
             "$ref": "#/components/schemas/AccessToken--Mini"
@@ -1063,6 +1064,7 @@
       },
       "Collaboration": {
         "description": "Collaborations define access permissions for users and groups to files and\nfolders, similar to access control lists. A collaboration object grants a\nuser or group access to a file or folder with permissions defined by a\nspecific role.",
+        "x-box-group": "Collaborations",
         "allOf": [
           {
             "$ref": "#/components/schemas/Reference"
@@ -1164,6 +1166,7 @@
       },
       "CollaborationCollection": {
         "description": "A list of collaborations",
+        "x-box-group": "Collaborations",
         "allOf": [
           {
             "$ref": "#/components/schemas/Pagination"
@@ -1582,6 +1585,7 @@
       },
       "File": {
         "description": "A full representation of a file, as can be returned from any\nfile API endpoints by default",
+        "x-box-group": "Files",
         "allOf": [
           {
             "$ref": "#/components/schemas/File--Standard"
@@ -2015,6 +2019,7 @@
       },
       "Folder": {
         "description": "A full representation of a folder, as can be returned from any\nfolder API endpoints by default",
+        "x-box-group": "Folders",
         "allOf": [
           {
             "$ref": "#/components/schemas/Folder--Standard"
@@ -2474,6 +2479,7 @@
       },
       "ItemReferenceCollection": {
         "description": "A list of generic mini representations of a file, folder, user or enterprise",
+        "x-box-group": "Folders",
         "allOf": [
           {
             "$ref": "#/components/schemas/Pagination"
