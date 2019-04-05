@@ -26,7 +26,7 @@
       "get": {
         "operationId": "get_authorize",
         "summary": "Authorize a user",
-        "description": "Authorize a user by sending them through [Box](https://box.com).\n\nTo begin the process of authenticating user and authorizing your\napplication to work with the Box APIs, you will need to send a\nuser to a URL with this format.",
+        "description": "Authorize a user by sending them through the [Box](https://box.com)\nwebsite and request their permission to act on their behalf.\n\nThis is the first step when authenticating a user using\nOAuth 2.0. To request a user's authorization to use the Box APIs\non their behalf you will need to send a user to the URL with this\nformat.",
         "tags": [
           "Authorization"
         ],
@@ -94,7 +94,7 @@
         ],
         "responses": {
           "200": {
-            "description": "A login and approval page",
+            "description": "Does not return any data, but rather should be used in the browser.",
             "content": {
               "text/html": {
                 "schema": {
@@ -111,7 +111,7 @@
       "post": {
         "operationId": "post_oauth2_token",
         "summary": "Request an Access Token",
-        "description": "Request an Access Token using either client-side obtained OAuth2\nauthorization code or a JWT assertion.\n\nAn access token is a data string that enables Box to verify that a\nrequest belongs to an authorized session. In the normal order of operations\nyou will begin by requesting authentication from the Box authorize endpoint\nand Box will send you an authorization code. You will then send this code\nto this endpoint to exchange it for an access token.\n\nThe returned Access Token can then be used to to make Box API calls.",
+        "description": "Request an Access Token using either a client-side obtained OAuth2\nauthorization code or a server-side JWT assertion.\n\nAn Access Token is a string that enables Box to verify that a\nrequest belongs to an authorized session. In the normal order of\noperations you will begin by requesting authentication from the\n[authorize](#get-authorize) endpoint and Box will send you an\nauthorization code.\n\nYou will then send this code to this endpoint to exchange it for\nan Access Token. The returned Access Token can then be used to to make\nBox API calls.",
         "tags": [
           "Authorization"
         ],
@@ -127,7 +127,7 @@
         },
         "responses": {
           "200": {
-            "description": "A new access token",
+            "description": "Returns a new Access Token that can be used to make authenticated\nAPI calls by passing along the token in a authorization header as\nfollows `Authorization: Bearer <Token>`",
             "content": {
               "application/json": {
                 "schema": {
@@ -153,7 +153,7 @@
       "post": {
         "operationId": "post_oauth2_revoke",
         "summary": "Revoke an Access Token",
-        "description": "This is the URL of the Box revoke endpoint, the endpoint that revokes access\ntokens, or to put it another way, the endpoint that ends sessions, logging\nusers out.",
+        "description": "Revoke an active Access Token, effectively logging a user out\nthat has been previously authenticated.",
         "tags": [
           "Authorization"
         ],
@@ -169,7 +169,7 @@
         },
         "responses": {
           "200": {
-            "description": "The access token has been revoked"
+            "description": "Returns an empty response when the token was successfully revoked."
           },
           "400": {
             "description": "An OAuth2 error",
@@ -188,7 +188,7 @@
       "get": {
         "operationId": "get_files_id_thumbnail_id",
         "summary": "Retrieve a file thumbnail",
-        "description": "Retrieves a thumbnail, or smaller image representation, of a file.\n\nSizes of `32x32`,`64x64`, `128x128`, and `256x256` can be returned in\nthe `.png` format and sizes of `32x32`, `94x94`, `160x160`, and `320x320`\ncan be returned in the `.jpg` format.\n\nThumbnails can be generated for the image and video file formats listed\n[here](http://community.box.com/t5/Managing-Your-Content/What-file-types\\\n-are-supported-by-Box-s-Content-Preview/ta-p/327).",
+        "description": "Retrieves a thumbnail, or smaller image representation, of a file.\n\nSizes of `32x32`,`64x64`, `128x128`, and `256x256` can be returned in\nthe `.png` format and sizes of `32x32`, `94x94`, `160x160`, and `320x320`\ncan be returned in the `.jpg` format.\n\nThumbnails can be generated for the image and video file formats listed\n[found on our community site](http://community.box.com/t5/Managing-\\\nYour-Content/What-file-types-are-supported-by-Box-s-Content-Preview/\\\nta-p/327).",
         "tags": [
           "Files"
         ],
@@ -262,7 +262,7 @@
         ],
         "responses": {
           "200": {
-            "description": "When a thumbnail can be created the response will return with the\ncontents of the thumbnail in the body",
+            "description": "When a thumbnail can be created the thumbnail data will be\nreturned in the body of the response.",
             "content": {
               "image/png": {
                 "schema": {
@@ -341,7 +341,7 @@
         "tags": [
           "Folders"
         ],
-        "description": "Retrieve the details about a folder, including the first 100 entries in the\nfolder.",
+        "description": "Retrieves the details about a folder, including the first 100 entries\nin the folder.",
         "parameters": [
           {
             "name": "folder_id",
@@ -366,7 +366,7 @@
         ],
         "responses": {
           "200": {
-            "description": "A standard folder object, including the first 100 entries in the folder.",
+            "description": "Returns a folder object, including the first 100 entries in the folder.\n\n[Some fields are optional](#folder) and need to be explicitly\nrequested using the [fields](#get-folders-id--request--fields)\nparameter.",
             "content": {
               "application/json": {
                 "schema": {
@@ -523,7 +523,7 @@
         },
         "responses": {
           "200": {
-            "description": "A standard folder response for the updated folder",
+            "description": "Returns a folder object for the updated folder\n\n[Some fields are optional](#folder) and need to be explicitly\nrequested using the [fields](#put-folders-id--request--fields)\nparameter.",
             "content": {
               "application/json": {
                 "schema": {
@@ -547,7 +547,7 @@
       "delete": {
         "operationId": "delete_folders_id",
         "summary": "Delete a folder",
-        "description": "Deletes a folder. Depending on the enterprise settings for\nthe user the item will either be permanently deleted from\nBox or moved to the trash.",
+        "description": "Deletes a folder, either permanently or by moving it to\nthe trash.\n\nThe the enterprise settings determine wether the item will\nbe permanently deleted from Box or moved to the trash.",
         "tags": [
           "Folders"
         ],
@@ -585,7 +585,7 @@
         ],
         "responses": {
           "204": {
-            "description": "Returns an empty response when the folder is successfully deleted."
+            "description": "Returns an empty response when the folder is successfully deleted\nor moved to the trash."
           },
           "default": {
             "description": "A client error",
@@ -607,7 +607,7 @@
         "tags": [
           "Folders"
         ],
-        "description": "Retrieves the files, folders, web links, and other items contained\nwithin a folder. No other data about the folder will be returned.",
+        "description": "Retrieves a page of files, folders, web links, and other items contained\nwithin the specified folder.\n\nTo request more information about the folder, use the\n[Retrieve a folder](#get-folders-id-items) endpoint.",
         "parameters": [
           {
             "name": "folder_id",
@@ -726,7 +726,7 @@
         },
         "responses": {
           "201": {
-            "description": "Returns a standard folder object.",
+            "description": "Returns a folder object.\n\n[Some fields are optional](#folder) and need to be explicitly\nrequested using the [fields](#post-folders--request--fields) parameter.",
             "content": {
               "application/json": {
                 "schema": {
@@ -808,7 +808,7 @@
         },
         "responses": {
           "201": {
-            "description": "Returns a standard folder object.",
+            "description": "Returns a new folder object representing the copied folder.\n\n[Some fields are optional](#folder) and need to be explicitly\nrequested using the [fields](#post-folders-id-copy--request--fields)\nparameter.",
             "content": {
               "application/json": {
                 "schema": {
@@ -834,7 +834,7 @@
       "get": {
         "operationId": "get_folders_id_collaborations",
         "summary": "Retrieve folder collaborations",
-        "description": "Retrieves a list of collaborations for a folder folder. This\nreturns all of the users that have access to the folder.",
+        "description": "Retrieves a list of collaborations for a folder folder. This\nreturns all the users that have access to the folder.",
         "tags": [
           "Collaborations"
         ],
@@ -887,7 +887,7 @@
         ],
         "responses": {
           "200": {
-            "description": "A collection of collaboration objects. If there are no\ncollaborations on this folder an empty collection will be returned.",
+            "description": "Returns a collection of collaboration objects. If there are no\ncollaborations on this folder an empty collection will be returned.",
             "content": {
               "application/json": {
                 "schema": {
@@ -3015,7 +3015,7 @@
         "properties": {
           "id": {
             "type": "string",
-            "description": "The ID of the collection",
+            "description": "The ID of parent item",
             "example": "123"
           }
         }
