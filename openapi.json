@@ -977,6 +977,7 @@
       },
       "AccessToken--Mini": {
         "description": "The basics of an access token",
+        "x-box-reference-hide": true,
         "properties": {
           "access_token": {
             "type": "string",
@@ -1303,6 +1304,7 @@
       },
       "Comment--Standard": {
         "description": "Standard representation of a comment, as returned by the\ncomment API endpoints and when nested within other resources.",
+        "x-box-reference-hide": true,
         "type": "object",
         "allOf": [
           {
@@ -1707,6 +1709,7 @@
       },
       "File--Standard": {
         "description": "A standard representation of a file, as returned from any\nfile API endpoints by default",
+        "x-box-reference-hide": true,
         "allOf": [
           {
             "$ref": "#/components/schemas/File--Mini"
@@ -1845,6 +1848,7 @@
       },
       "File--Mini": {
         "description": "A mini representation of a file, used when\nnested under another resource.",
+        "x-box-reference-hide": true,
         "allOf": [
           {
             "$ref": "#/components/schemas/ItemReference"
@@ -1964,6 +1968,7 @@
       },
       "FileVersion--Mini": {
         "description": "A mini representation of a file version, used when\nnested under another resource.",
+        "x-box-reference-hide": true,
         "allOf": [
           {
             "$ref": "#/components/schemas/Reference"
@@ -2131,6 +2136,7 @@
       },
       "Folder--Standard": {
         "description": "A standard representation of a folder, as returned from any\nfolder API endpoints by default",
+        "x-box-reference-hide": true,
         "allOf": [
           {
             "$ref": "#/components/schemas/Folder--Mini"
@@ -2285,6 +2291,7 @@
       },
       "Folder--Mini": {
         "description": "A mini representation of a file version, used when\nnested under another resource.",
+        "x-box-reference-hide": true,
         "allOf": [
           {
             "$ref": "#/components/schemas/ItemReference"
@@ -2376,6 +2383,7 @@
       },
       "Group--Standard": {
         "description": "A standard representation of a group, as returned from any\ngroup API endpoints by default",
+        "x-box-reference-hide": true,
         "allOf": [
           {
             "$ref": "#/components/schemas/Group--Mini"
@@ -2400,7 +2408,8 @@
       },
       "Group--Mini": {
         "type": "object",
-        "description": "Mini representation of the group, including id and name of\ngroup.",
+        "description": "Mini representation of a group, including id and name of\ngroup.",
+        "x-box-reference-hide": true,
         "allOf": [
           {
             "$ref": "#/components/schemas/Reference"
@@ -2652,6 +2661,7 @@
       },
       "LegalHoldPolicy--Mini": {
         "description": "A mini legal hold policy",
+        "x-box-reference-hide": true,
         "allOf": [
           {
             "$ref": "#/components/schemas/Reference"
@@ -3235,6 +3245,7 @@
       },
       "RetentionPolicy--Mini": {
         "description": "Mini representation of the retention policy",
+        "x-box-reference-hide": true,
         "allOf": [
           {
             "$ref": "#/components/schemas/Reference"
@@ -3384,6 +3395,7 @@
       "SharedLink--Writable": {
         "type": "object",
         "description": "The writable attributes for a Shared Link.",
+        "x-box-reference-hide": true,
         "properties": {
           "access": {
             "type": "string",
@@ -3578,6 +3590,7 @@
       },
       "StoragePolicy--Mini": {
         "description": "A mini description of a Storage Policy object",
+        "x-box-reference-hide": true,
         "allOf": [
           {
             "$ref": "#/components/schemas/Reference"
@@ -3845,6 +3858,7 @@
       },
       "TermsOfService--Mini": {
         "description": "The root-level record that is supposed to represent a\nsingle Terms of Service.",
+        "x-box-reference-hide": true,
         "allOf": [
           {
             "$ref": "#/components/schemas/Reference"
@@ -4108,6 +4122,7 @@
       },
       "User--Standard": {
         "description": "A standard representation of a user, as returned from any\nuser API endpoints by default",
+        "x-box-reference-hide": true,
         "allOf": [
           {
             "$ref": "#/components/schemas/User--Mini"
@@ -4193,6 +4208,7 @@
       },
       "User--Mini": {
         "description": "A mini representation of a user, used when\nnested under another resource.",
+        "x-box-reference-hide": true,
         "allOf": [
           {
             "$ref": "#/components/schemas/Reference"
