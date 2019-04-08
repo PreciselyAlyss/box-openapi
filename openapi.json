@@ -2498,7 +2498,6 @@
       },
       "ItemReferenceCollection": {
         "description": "A list of generic mini representations of a file, folder, user or enterprise",
-        "x-box-reference-category": "Folders",
         "allOf": [
           {
             "$ref": "#/components/schemas/Pagination"
