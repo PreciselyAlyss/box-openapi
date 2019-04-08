@@ -949,6 +949,7 @@
     },
     "schemas": {
       "AccessToken": {
+        "x-box-resource-id": "access_token",
         "description": "A token that can be used to make authenticated API calls",
         "x-box-reference-category": "Authorization",
         "allOf": [
@@ -976,6 +977,7 @@
         ]
       },
       "AccessToken--Mini": {
+        "x-box-resource-id": "access_token--mini",
         "description": "The basics of an access token",
         "x-box-reference-hide": true,
         "properties": {
@@ -1009,6 +1011,7 @@
         }
       },
       "AssignmentCounts": {
+        "x-box-resource-id": "_assignment_counts",
         "description": "Counts of assignments within this a legal hold policy by item type",
         "properties": {
           "user": {
@@ -1038,6 +1041,7 @@
         }
       },
       "ClientError": {
+        "x-box-resource-id": "client_error",
         "description": "A generic error",
         "properties": {
           "type": {
@@ -1077,6 +1081,7 @@
         }
       },
       "Collaboration": {
+        "x-box-resource-id": "collaboration",
         "description": "Collaborations define access permissions for users and groups to files and\nfolders, similar to access control lists. A collaboration object grants a\nuser or group access to a file or folder with permissions defined by a\nspecific role.",
         "x-box-reference-category": "Collaborations",
         "allOf": [
@@ -1179,6 +1184,7 @@
         ]
       },
       "CollaborationCollection": {
+        "x-box-resource-id": "collaborations",
         "description": "A list of collaborations",
         "x-box-reference-category": "Collaborations",
         "allOf": [
@@ -1198,6 +1204,7 @@
         ]
       },
       "CollaborationWhitelistEntry": {
+        "x-box-resource-id": "collaboration_whitelist_entry",
         "description": "A Collaboration Whitelist entry describes an\napproved domains that can collaborate with your enterprise",
         "allOf": [
           {
@@ -1241,6 +1248,7 @@
         ]
       },
       "CollaborationWhitelistExemptTarget": {
+        "x-box-resource-id": "collaboration_whitelist_exempt_target",
         "description": "The record that represents a target user that is exempt from the\ncollaboration whitelist.",
         "allOf": [
           {
@@ -1285,6 +1293,7 @@
         ]
       },
       "Comment": {
+        "x-box-resource-id": "comment",
         "description": "Comments are messages created on files. Comments\ncan be made independently or created as responses to other\ncomments",
         "type": "object",
         "allOf": [
@@ -1303,6 +1312,7 @@
         ]
       },
       "Comment--Standard": {
+        "x-box-resource-id": "comment--standard",
         "description": "Standard representation of a comment, as returned by the\ncomment API endpoints and when nested within other resources.",
         "x-box-reference-hide": true,
         "type": "object",
@@ -1359,6 +1369,7 @@
         ]
       },
       "DevicePinner": {
+        "x-box-resource-id": "device_pinner",
         "description": "Device pins allow enterprises to control what devices can\nuse native Box applications.",
         "allOf": [
           {
@@ -1398,6 +1409,7 @@
         ]
       },
       "Enterprise": {
+        "x-box-resource-id": "enterprise",
         "description": "A representation of a Box enterprise",
         "allOf": [
           {
@@ -1415,6 +1427,7 @@
         ]
       },
       "Event": {
+        "x-box-resource-id": "event",
         "description": "The description of an event that happened within Box",
         "properties": {
           "type": {
@@ -1481,6 +1494,7 @@
         }
       },
       "EventType": {
+        "x-box-resource-id": "event_type",
         "example": "FILE.UPLOADED",
         "type": "string",
         "description": "An event type that can trigger an event",
@@ -1599,6 +1613,7 @@
         ]
       },
       "File": {
+        "x-box-resource-id": "file",
         "description": "A full representation of a file, as can be returned from any\nfile API endpoints by default",
         "x-box-reference-category": "Files",
         "allOf": [
@@ -1708,6 +1723,7 @@
         ]
       },
       "File--Standard": {
+        "x-box-resource-id": "file--standard",
         "description": "A standard representation of a file, as returned from any\nfile API endpoints by default",
         "x-box-reference-hide": true,
         "allOf": [
@@ -1847,6 +1863,7 @@
         ]
       },
       "File--Mini": {
+        "x-box-resource-id": "file--mini",
         "description": "A mini representation of a file, used when\nnested under another resource.",
         "x-box-reference-hide": true,
         "allOf": [
@@ -1875,6 +1892,7 @@
         ]
       },
       "FileScope": {
+        "x-box-resource-id": "_file_scope",
         "description": "A relation between a file and the scopes for which the file can be accessed",
         "properties": {
           "object": {
@@ -1910,6 +1928,7 @@
         }
       },
       "FileVersion": {
+        "x-box-resource-id": "file_version",
         "description": "A full representation of a file version",
         "allOf": [
           {
@@ -1967,6 +1986,7 @@
         ]
       },
       "FileVersion--Mini": {
+        "x-box-resource-id": "file_version--mini",
         "description": "A mini representation of a file version, used when\nnested under another resource.",
         "x-box-reference-hide": true,
         "allOf": [
@@ -1985,6 +2005,7 @@
         ]
       },
       "FileVersionRetention": {
+        "x-box-resource-id": "file_version_retention",
         "description": "A retention policy blocks permanent deletion of content\nfor a specified amount of time. Admins can apply policies to\nspecified folders, or an entire enterprise. A file version retention\nis a  record for a retained file version. To use this feature,\nyou must  have the manage retention policies scope enabled for your\nAPI key via  your application management console. For more information\nabout retention policies, please visit our help documentation",
         "allOf": [
           {
@@ -2039,6 +2060,7 @@
         ]
       },
       "Folder": {
+        "x-box-resource-id": "folder",
         "description": "A full representation of a folder, as can be returned from any\nfolder API endpoints by default",
         "x-box-reference-category": "Folders",
         "allOf": [
@@ -2135,6 +2157,7 @@
         ]
       },
       "Folder--Standard": {
+        "x-box-resource-id": "folder--standard",
         "description": "A standard representation of a folder, as returned from any\nfolder API endpoints by default",
         "x-box-reference-hide": true,
         "allOf": [
@@ -2290,6 +2313,7 @@
         ]
       },
       "Folder--Mini": {
+        "x-box-resource-id": "folder--mini",
         "description": "A mini representation of a file version, used when\nnested under another resource.",
         "x-box-reference-hide": true,
         "allOf": [
@@ -2318,6 +2342,7 @@
         ]
       },
       "FolderUploadEmail": {
+        "x-box-resource-id": "folder_upload_email",
         "type": "object",
         "description": "The writable Folder Upload Email object",
         "properties": {
@@ -2333,6 +2358,7 @@
         }
       },
       "Group": {
+        "x-box-resource-id": "group",
         "description": "Groups contain a set of users, and can be used in place of\nusers in some operations, such as collaborations.",
         "allOf": [
           {
@@ -2382,6 +2408,7 @@
         ]
       },
       "Group--Standard": {
+        "x-box-resource-id": "group--standard",
         "description": "A standard representation of a group, as returned from any\ngroup API endpoints by default",
         "x-box-reference-hide": true,
         "allOf": [
@@ -2407,6 +2434,7 @@
         ]
       },
       "Group--Mini": {
+        "x-box-resource-id": "group--mini",
         "type": "object",
         "description": "Mini representation of a group, including id and name of\ngroup.",
         "x-box-reference-hide": true,
@@ -2426,6 +2454,7 @@
         ]
       },
       "GroupMembership": {
+        "x-box-resource-id": "group_membership",
         "description": "Membership is used to signify that a user is part of a\ngroup.",
         "allOf": [
           {
@@ -2479,6 +2508,7 @@
         ]
       },
       "ItemReference": {
+        "x-box-resource-id": "_item_reference",
         "description": "A generic mini representation of a file, folder, user or enterprise",
         "allOf": [
           {
@@ -2506,6 +2536,7 @@
         ]
       },
       "ItemReferenceCollection": {
+        "x-box-resource-id": "item_references",
         "description": "A list of generic mini representations of a file, folder, user or enterprise",
         "allOf": [
           {
@@ -2524,6 +2555,7 @@
         ]
       },
       "LegalHold": {
+        "x-box-resource-id": "file_version_legal_hold",
         "description": "File-Version-Legal-Hold is an entity representing all\nholds on a File Version.",
         "allOf": [
           {
@@ -2569,6 +2601,7 @@
         ]
       },
       "LegalHoldPolicy": {
+        "x-box-resource-id": "legal_hold_policy",
         "description": "Legal Hold Policy information describes the basic\ncharacteristics of the Policy, such as name, description,\nand filter dates.",
         "allOf": [
           {
@@ -2660,6 +2693,7 @@
         ]
       },
       "LegalHoldPolicy--Mini": {
+        "x-box-resource-id": "legal_hold_policy--mini",
         "description": "A mini legal hold policy",
         "x-box-reference-hide": true,
         "allOf": [
@@ -2672,6 +2706,7 @@
         ]
       },
       "LegalHoldPolicyAssignment": {
+        "x-box-resource-id": "legal_hold_policy_assignment",
         "description": "Legal Hold Assignments are used to assign Legal Hold\nPolicies to Users, Folders, Files, or File Versions.\n\nCreating a Legal Hold Assignment puts a hold\non the File-Versions that belong to the Assignment's\n'apply-to' entity.",
         "allOf": [
           {
@@ -2726,6 +2761,7 @@
         ]
       },
       "Lock": {
+        "x-box-resource-id": "lock",
         "description": "The lock held on a file.",
         "allOf": [
           {
@@ -2765,6 +2801,7 @@
         ]
       },
       "Metadata": {
+        "x-box-resource-id": "metadata",
         "description": "The metadata as applied by a metadata template to a file or\nfolder",
         "properties": {
           "$canEdit": {
@@ -2816,6 +2853,7 @@
         }
       },
       "MetadataCascadePolicy": {
+        "x-box-resource-id": "metadata_cascade_policy",
         "description": "A cascade policy that applies to metadata policy template\nto a folder",
         "properties": {
           "id": {
@@ -2868,6 +2906,7 @@
         }
       },
       "MetadataTemplate": {
+        "x-box-resource-id": "metadata_template",
         "description": "A template for metadata as can be applied to files and folders",
         "properties": {
           "templateKey": {
@@ -2904,6 +2943,7 @@
         }
       },
       "MetadataTemplateField": {
+        "x-box-resource-id": "_metadata_template_field",
         "description": "An ordered set of key-value pairs that are part of a\nmetadata template",
         "properties": {
           "type": {
@@ -2949,6 +2989,7 @@
         }
       },
       "MetadataTemplateFieldOption": {
+        "x-box-resource-id": "_metadata_template_field_option",
         "description": "For type `enum` and `multiSelect`, one of the potential values\nthat can be selected",
         "properties": {
           "id": {
@@ -2964,6 +3005,7 @@
         }
       },
       "OAuth2Error": {
+        "x-box-resource-id": "oauth2_error",
         "description": "An OAuth2 error",
         "properties": {
           "error": {
@@ -2979,6 +3021,7 @@
         }
       },
       "Owner": {
+        "x-box-resource-id": "owner",
         "description": "The owner of this item",
         "type": "object",
         "properties": {
@@ -2990,6 +3033,7 @@
         }
       },
       "Pagination": {
+        "x-box-resource-id": "_pagination",
         "description": "The part of an API response that describes pagination",
         "properties": {
           "total_count": {
@@ -3020,6 +3064,7 @@
         }
       },
       "PaginationOrder": {
+        "x-box-resource-id": "_pagination_order",
         "description": "The order in which a pagination is ordered",
         "properties": {
           "by": {
@@ -3039,6 +3084,7 @@
         }
       },
       "Parent": {
+        "x-box-resource-id": "_parent",
         "description": "The parent for this item",
         "properties": {
           "id": {
@@ -3049,6 +3095,7 @@
         }
       },
       "Permissions": {
+        "x-box-resource-id": "_permissions",
         "description": "The part of an API response that describes permissions",
         "properties": {
           "can_access": {
@@ -3089,6 +3136,7 @@
         }
       },
       "RecentItem": {
+        "x-box-resource-id": "recent_item",
         "description": "Recent Items returns information about files that have\nbeen accessed by a user recently. It keeps track of items\nthat were accessed either in the last 90 days or the last\n1000 items accessed",
         "properties": {
           "type": {
@@ -3132,6 +3180,7 @@
         }
       },
       "Reference": {
+        "x-box-resource-id": "_reference",
         "description": "The bare basic reference for an object",
         "properties": {
           "id": {
@@ -3177,6 +3226,7 @@
         }
       },
       "RetentionPolicy": {
+        "x-box-resource-id": "retention_policy",
         "title": "Retention Policy Object",
         "description": "A retention policy blocks permanent deletion of content\nfor a specified amount of time. Admins can create retention\npolicies and then later assign them to specific folders\nor their entire enterprise.  To use this feature, you must\nhave the manage retention policies scope enabled\nfor your API key via your application management console.",
         "allOf": [
@@ -3244,6 +3294,7 @@
         ]
       },
       "RetentionPolicy--Mini": {
+        "x-box-resource-id": "retention_policy--mini",
         "description": "Mini representation of the retention policy",
         "x-box-reference-hide": true,
         "allOf": [
@@ -3262,6 +3313,7 @@
         ]
       },
       "RetentionPolicyAssignment": {
+        "x-box-resource-id": "retention_policy_assignment",
         "description": "The retention policy assignment endpoint provides a way\nfor admins to apply a retention policy on a per-folder\nbasis, or place a blanket policy over the entire\nenterprise.",
         "allOf": [
           {
@@ -3317,6 +3369,7 @@
         ]
       },
       "SharedLink": {
+        "x-box-resource-id": "shared_link",
         "description": "Shared links provide direct, read-only access to files or folder on Box\nusing a URL. Shared links with open access level allow anyone with the URL\nto access the item, while shared links with company or collaborators access\nlevels can only be accessed by appropriate authenticated Box users.",
         "properties": {
           "url": {
@@ -3393,6 +3446,7 @@
         }
       },
       "SharedLink--Writable": {
+        "x-box-resource-id": "shared_link--writable",
         "type": "object",
         "description": "The writable attributes for a Shared Link.",
         "x-box-reference-hide": true,
@@ -3431,6 +3485,7 @@
         }
       },
       "Skill": {
+        "x-box-resource-id": "skill",
         "description": "An object representing a skill",
         "allOf": [
           {
@@ -3453,6 +3508,7 @@
         ]
       },
       "SkillInvocation": {
+        "x-box-resource-id": "skill_invocation",
         "description": "The payload of a Box skill as sent to a Custom Skill's\n`invocation_url`.",
         "allOf": [
           {
@@ -3572,6 +3628,7 @@
         ]
       },
       "StoragePolicy": {
+        "x-box-resource-id": "storage_policy",
         "description": "The Storage Policy object describes the storage zone.",
         "allOf": [
           {
@@ -3589,6 +3646,7 @@
         ]
       },
       "StoragePolicy--Mini": {
+        "x-box-resource-id": "storage_policy--mini",
         "description": "A mini description of a Storage Policy object",
         "x-box-reference-hide": true,
         "allOf": [
@@ -3601,6 +3659,7 @@
         ]
       },
       "StoragePolicyAssignment": {
+        "x-box-resource-id": "storage_policy_assignment",
         "description": "The assignment of a storage policy to a user or enterprise",
         "properties": {
           "storage_policy": {
@@ -3633,6 +3692,7 @@
         }
       },
       "Task": {
+        "x-box-resource-id": "task",
         "description": "Tasks enabled file-centric workflows in Box. Users can\ncreate tasks on files and assign them to collaborators on\nBox.",
         "allOf": [
           {
@@ -3705,6 +3765,7 @@
         ]
       },
       "TaskAssignment": {
+        "x-box-resource-id": "task_assignment",
         "description": "An assignment of a task to a file and user",
         "allOf": [
           {
@@ -3781,6 +3842,7 @@
         ]
       },
       "TaskAssignmentCollection": {
+        "x-box-resource-id": "task_assignments",
         "type": "object",
         "description": "A list of task assignments",
         "allOf": [
@@ -3800,6 +3862,7 @@
         ]
       },
       "TermsOfService": {
+        "x-box-resource-id": "terms_of_service",
         "description": "The root-level record that is supposed to represent a\nsingle Terms of Service.",
         "allOf": [
           {
@@ -3857,6 +3920,7 @@
         ]
       },
       "TermsOfService--Mini": {
+        "x-box-resource-id": "terms_of_service--mini",
         "description": "The root-level record that is supposed to represent a\nsingle Terms of Service.",
         "x-box-reference-hide": true,
         "allOf": [
@@ -3869,6 +3933,7 @@
         ]
       },
       "TermsOfServiceUserStatus": {
+        "x-box-resource-id": "terms_of_service_user_status",
         "description": "The association between a Terms of Service and a user",
         "allOf": [
           {
@@ -3918,6 +3983,7 @@
         ]
       },
       "TokenRequest": {
+        "x-box-resource-id": "token_request",
         "description": "A request for a new OAuth2 token",
         "required": [
           "grant_type"
@@ -4010,6 +4076,7 @@
         }
       },
       "TokenRevocationRequest": {
+        "x-box-resource-id": "token_revocation_request",
         "description": "A request to revoke an OAuth2 token",
         "required": [
           "grant_type"
@@ -4036,6 +4103,7 @@
         }
       },
       "User": {
+        "x-box-resource-id": "user",
         "description": "A full representation of a user, as can be returned from any\nuser API endpoints by default",
         "allOf": [
           {
@@ -4121,6 +4189,7 @@
         ]
       },
       "User--Standard": {
+        "x-box-resource-id": "user--standard",
         "description": "A standard representation of a user, as returned from any\nuser API endpoints by default",
         "x-box-reference-hide": true,
         "allOf": [
@@ -4207,6 +4276,7 @@
         ]
       },
       "User--Mini": {
+        "x-box-resource-id": "user--mini",
         "description": "A mini representation of a user, used when\nnested under another resource.",
         "x-box-reference-hide": true,
         "allOf": [
@@ -4231,6 +4301,7 @@
         ]
       },
       "Watermark": {
+        "x-box-resource-id": "watermark",
         "description": "A watermark is a semi-transparent overlay on an embedded file\npreview that displays a viewer's email address or user ID\nand the time of access over a file's content",
         "properties": {
           "watermark": {
@@ -4253,6 +4324,7 @@
         }
       },
       "WatermarkInfo": {
+        "x-box-resource-id": "_watermark_info",
         "description": "The watermark information about this item",
         "properties": {
           "is_watermarked": {
@@ -4263,6 +4335,7 @@
         }
       },
       "Webhook": {
+        "x-box-resource-id": "webhook",
         "description": "Represents a configured webhook.",
         "allOf": [
           {
@@ -4314,6 +4387,7 @@
         ]
       },
       "WebhookEvent": {
+        "x-box-resource-id": "webhook_event",
         "description": "The event that is sent to a webhook address when an event happens",
         "allOf": [
           {
@@ -4379,6 +4453,7 @@
         ]
       },
       "WebhookTrigger": {
+        "x-box-resource-id": "webhook_trigger",
         "example": "FILE.UPLOADED",
         "type": "string",
         "description": "The event name that triggered this webhook",
@@ -4422,6 +4497,7 @@
         ]
       },
       "WebLink": {
+        "x-box-resource-id": "web_link",
         "description": "Web links are objects that point to URLs. These objects\nare also known as bookmarks within the Box web application.\n\nWeb link objects are treated similarly to file objects,\nthey will also support most actions that apply to regular files.",
         "allOf": [
           {
