@@ -30,7 +30,7 @@
         "tags": [
           "Authorization"
         ],
-        "x-box-reference-category": "Authorization",
+        "x-box-reference-category": "authorization",
         "security": [],
         "servers": [
           {
@@ -116,7 +116,7 @@
         "tags": [
           "Authorization"
         ],
-        "x-box-reference-category": "Authorization",
+        "x-box-reference-category": "authorization",
         "security": [],
         "requestBody": {
           "content": {
@@ -159,7 +159,7 @@
         "tags": [
           "Authorization"
         ],
-        "x-box-reference-category": "Authorization",
+        "x-box-reference-category": "authorization",
         "security": [],
         "requestBody": {
           "content": {
@@ -196,7 +196,7 @@
           "Files",
           "Thumbnails"
         ],
-        "x-box-reference-category": "Files",
+        "x-box-reference-category": "files",
         "parameters": [
           {
             "name": "file_id",
@@ -346,7 +346,7 @@
         "tags": [
           "Folders"
         ],
-        "x-box-reference-category": "Folders",
+        "x-box-reference-category": "folders",
         "description": "Retrieves the details about a folder, including the first 100 entries\nin the folder.",
         "parameters": [
           {
@@ -400,7 +400,7 @@
         "tags": [
           "Folders"
         ],
-        "x-box-reference-category": "Folders",
+        "x-box-reference-category": "folders",
         "parameters": [
           {
             "name": "folder_id",
@@ -558,7 +558,7 @@
         "tags": [
           "Folders"
         ],
-        "x-box-reference-category": "Folders",
+        "x-box-reference-category": "folders",
         "parameters": [
           {
             "name": "folder_id",
@@ -616,7 +616,7 @@
           "Folders",
           "Files"
         ],
-        "x-box-reference-category": "Folders",
+        "x-box-reference-category": "folders",
         "description": "Retrieves a page of files, folders, web links, and other items contained\nwithin the specified folder.\n\nTo request more information about the folder, use the\n[Retrieve a folder](#get-folders-id-items) endpoint.",
         "parameters": [
           {
@@ -696,7 +696,7 @@
         "tags": [
           "Folders"
         ],
-        "x-box-reference-category": "Folders",
+        "x-box-reference-category": "folders",
         "description": "Creates a new empty folder within the specified parent folder.",
         "parameters": [
           {
@@ -767,7 +767,7 @@
         "tags": [
           "Folders"
         ],
-        "x-box-reference-category": "Folders",
+        "x-box-reference-category": "folders",
         "parameters": [
           {
             "name": "folder_id",
@@ -851,7 +851,7 @@
           "Collaborations",
           "Folders"
         ],
-        "x-box-reference-category": "Collaborations",
+        "x-box-reference-category": "collaborations",
         "parameters": [
           {
             "name": "folder_id",
@@ -951,7 +951,7 @@
       "AccessToken": {
         "x-box-resource-id": "access_token",
         "description": "A token that can be used to make authenticated API calls",
-        "x-box-reference-category": "Authorization",
+        "x-box-reference-category": "authorization",
         "allOf": [
           {
             "$ref": "#/components/schemas/AccessToken--Mini"
@@ -1083,7 +1083,7 @@
       "Collaboration": {
         "x-box-resource-id": "collaboration",
         "description": "Collaborations define access permissions for users and groups to files and\nfolders, similar to access control lists. A collaboration object grants a\nuser or group access to a file or folder with permissions defined by a\nspecific role.",
-        "x-box-reference-category": "Collaborations",
+        "x-box-reference-category": "collaborations",
         "allOf": [
           {
             "$ref": "#/components/schemas/Reference"
@@ -1186,7 +1186,7 @@
       "CollaborationCollection": {
         "x-box-resource-id": "collaborations",
         "description": "A list of collaborations",
-        "x-box-reference-category": "Collaborations",
+        "x-box-reference-category": "collaborations",
         "allOf": [
           {
             "$ref": "#/components/schemas/Pagination"
@@ -1615,7 +1615,7 @@
       "File": {
         "x-box-resource-id": "file",
         "description": "A full representation of a file, as can be returned from any\nfile API endpoints by default",
-        "x-box-reference-category": "Files",
+        "x-box-reference-category": "files",
         "allOf": [
           {
             "$ref": "#/components/schemas/File--Standard"
@@ -2062,7 +2062,7 @@
       "Folder": {
         "x-box-resource-id": "folder",
         "description": "A full representation of a folder, as can be returned from any\nfolder API endpoints by default",
-        "x-box-reference-category": "Folders",
+        "x-box-reference-category": "folders",
         "allOf": [
           {
             "$ref": "#/components/schemas/Folder--Standard"
@@ -4619,16 +4619,20 @@
   ],
   "tags": [
     {
-      "name": "Authorization"
+      "name": "Authorization",
+      "x-box-reference-category": "authorization"
     },
     {
-      "name": "Files"
+      "name": "Files",
+      "x-box-reference-category": "files"
     },
     {
-      "name": "Folders"
+      "name": "Folders",
+      "x-box-reference-category": "folders"
     },
     {
-      "name": "Collaborations"
+      "name": "Collaborations",
+      "x-box-reference-category": "collaborations"
     }
   ]
 }
