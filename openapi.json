@@ -30,6 +30,7 @@
         "tags": [
           "Authorization"
         ],
+        "x-box-reference-category": "Authorization",
         "security": [],
         "servers": [
           {
@@ -115,6 +116,7 @@
         "tags": [
           "Authorization"
         ],
+        "x-box-reference-category": "Authorization",
         "security": [],
         "requestBody": {
           "content": {
@@ -157,6 +159,7 @@
         "tags": [
           "Authorization"
         ],
+        "x-box-reference-category": "Authorization",
         "security": [],
         "requestBody": {
           "content": {
@@ -190,8 +193,10 @@
         "summary": "Retrieve a file thumbnail",
         "description": "Retrieves a thumbnail, or smaller image representation, of a file.\n\nSizes of `32x32`,`64x64`, `128x128`, and `256x256` can be returned in\nthe `.png` format and sizes of `32x32`, `94x94`, `160x160`, and `320x320`\ncan be returned in the `.jpg` format.\n\nThumbnails can be generated for the image and video file formats listed\n[found on our community site](http://community.box.com/t5/Managing-\\\nYour-Content/What-file-types-are-supported-by-Box-s-Content-Preview/\\\nta-p/327).",
         "tags": [
-          "Files"
+          "Files",
+          "Thumbnails"
         ],
+        "x-box-reference-category": "Files",
         "parameters": [
           {
             "name": "file_id",
@@ -341,6 +346,7 @@
         "tags": [
           "Folders"
         ],
+        "x-box-reference-category": "Folders",
         "description": "Retrieves the details about a folder, including the first 100 entries\nin the folder.",
         "parameters": [
           {
@@ -394,6 +400,7 @@
         "tags": [
           "Folders"
         ],
+        "x-box-reference-category": "Folders",
         "parameters": [
           {
             "name": "folder_id",
@@ -551,6 +558,7 @@
         "tags": [
           "Folders"
         ],
+        "x-box-reference-category": "Folders",
         "parameters": [
           {
             "name": "folder_id",
@@ -605,8 +613,10 @@
         "operationId": "get_folders_id_items",
         "summary": "Retrieve folder items",
         "tags": [
-          "Folders"
+          "Folders",
+          "Files"
         ],
+        "x-box-reference-category": "Folders",
         "description": "Retrieves a page of files, folders, web links, and other items contained\nwithin the specified folder.\n\nTo request more information about the folder, use the\n[Retrieve a folder](#get-folders-id-items) endpoint.",
         "parameters": [
           {
@@ -686,6 +696,7 @@
         "tags": [
           "Folders"
         ],
+        "x-box-reference-category": "Folders",
         "description": "Creates a new empty folder within the specified parent folder.",
         "parameters": [
           {
@@ -756,6 +767,7 @@
         "tags": [
           "Folders"
         ],
+        "x-box-reference-category": "Folders",
         "parameters": [
           {
             "name": "folder_id",
@@ -836,8 +848,10 @@
         "summary": "Retrieve folder collaborations",
         "description": "Retrieves a list of collaborations for a folder folder. This\nreturns all the users that have access to the folder.",
         "tags": [
-          "Collaborations"
+          "Collaborations",
+          "Folders"
         ],
+        "x-box-reference-category": "Collaborations",
         "parameters": [
           {
             "name": "folder_id",
@@ -936,7 +950,7 @@
     "schemas": {
       "AccessToken": {
         "description": "A token that can be used to make authenticated API calls",
-        "x-box-group": "Authorization",
+        "x-box-reference-category": "Authorization",
         "allOf": [
           {
             "$ref": "#/components/schemas/AccessToken--Mini"
@@ -1063,7 +1077,7 @@
       },
       "Collaboration": {
         "description": "Collaborations define access permissions for users and groups to files and\nfolders, similar to access control lists. A collaboration object grants a\nuser or group access to a file or folder with permissions defined by a\nspecific role.",
-        "x-box-group": "Collaborations",
+        "x-box-reference-category": "Collaborations",
         "allOf": [
           {
             "$ref": "#/components/schemas/Reference"
@@ -1165,7 +1179,7 @@
       },
       "CollaborationCollection": {
         "description": "A list of collaborations",
-        "x-box-group": "Collaborations",
+        "x-box-reference-category": "Collaborations",
         "allOf": [
           {
             "$ref": "#/components/schemas/Pagination"
@@ -1584,7 +1598,7 @@
       },
       "File": {
         "description": "A full representation of a file, as can be returned from any\nfile API endpoints by default",
-        "x-box-group": "Files",
+        "x-box-reference-category": "Files",
         "allOf": [
           {
             "$ref": "#/components/schemas/File--Standard"
@@ -2021,7 +2035,7 @@
       },
       "Folder": {
         "description": "A full representation of a folder, as can be returned from any\nfolder API endpoints by default",
-        "x-box-group": "Folders",
+        "x-box-reference-category": "Folders",
         "allOf": [
           {
             "$ref": "#/components/schemas/Folder--Standard"
@@ -2484,7 +2498,7 @@
       },
       "ItemReferenceCollection": {
         "description": "A list of generic mini representations of a file, folder, user or enterprise",
-        "x-box-group": "Folders",
+        "x-box-reference-category": "Folders",
         "allOf": [
           {
             "$ref": "#/components/schemas/Pagination"
