@@ -510,7 +510,9 @@
                   },
                   "tags": {
                     "type": "array",
-                    "example": "approved",
+                    "example": [
+                      "approved"
+                    ],
                     "items": {
                       "type": "string"
                     },
@@ -1624,7 +1626,7 @@
             "properties": {
               "version_number": {
                 "type": "string",
-                "example": 1,
+                "example": "1",
                 "description": "The version number of this file"
               },
               "comment_count": {
@@ -1693,7 +1695,15 @@
                 "description": "Folder [collaboration](#collaboration-object) roles allowed by the\nenterprise administrator.",
                 "items": {
                   "type": "string"
-                }
+                },
+                "example": [
+                  "open"
+                ],
+                "enum": [
+                  "open",
+                  "company",
+                  "collaborators"
+                ]
               },
               "is_externally_owned": {
                 "type": "boolean",
@@ -1708,11 +1718,37 @@
               "metadata": {
                 "type": "object",
                 "description": "The scope of the metadata",
-                "example": "global",
+                "example": {
+                  "global": {
+                    "properties": {
+                      "$canEdit": true,
+                      "$id": "1ced710e-19e6-4d98-a288-a81fb2dae93c",
+                      "$parent": "file_1234567",
+                      "$scope": "global",
+                      "$template": "properties",
+                      "$type": "properties",
+                      "$typeVersion": 5,
+                      "$version": 1,
+                      "MyKey": "MyValue"
+                    }
+                  },
+                  "enterprise_12345": {
+                    "properties": {
+                      "$canEdit": true,
+                      "$id": "57b35856-8fed-4fbc-826d-9543a7bf27ce",
+                      "$parent": "file_1234567",
+                      "$scope": "enterprise_12345",
+                      "$template": "acme_inc_metadata",
+                      "$type": "acme_inc_metadata-f2c57cf8-9e7a-4769-a5b2-54f8c3b7c1a0",
+                      "$typeVersion": 4,
+                      "$version": 1,
+                      "acme_inc_metadata_id": "123"
+                    }
+                  }
+                },
                 "additionalProperties": {
                   "type": "object",
                   "description": "The template name for the metadata",
-                  "example": "properties",
                   "additionalProperties": {
                     "$ref": "#/components/schemas/Metadata"
                   }
@@ -2095,7 +2131,9 @@
               },
               "tags": {
                 "type": "array",
-                "example": "approved",
+                "example": [
+                  "approved"
+                ],
                 "items": {
                   "type": "string"
                 },
@@ -2118,7 +2156,9 @@
               },
               "allowed_shared_link_access_levels": {
                 "type": "array",
-                "example": "open",
+                "example": [
+                  "open"
+                ],
                 "items": {
                   "type": "string"
                 },
@@ -2131,7 +2171,9 @@
               },
               "allowed_invitee_roles": {
                 "type": "array",
-                "example": "open",
+                "example": [
+                  "open"
+                ],
                 "enum": [
                   "open",
                   "company",
@@ -4124,7 +4166,9 @@
               "tracking_codes": {
                 "type": "array",
                 "description": "An array of key/value pairs set by the user’s admin",
-                "example": "TBD",
+                "example": [
+                  "code1: 12345"
+                ],
                 "items": {
                   "type": "string"
                 }
@@ -4258,7 +4302,7 @@
                 "type": "string",
                 "description": "The user’s phone number",
                 "maxLength": 100,
-                "example": 6509241374
+                "example": "6509241374"
               },
               "address": {
                 "type": "string",
@@ -4376,7 +4420,9 @@
               },
               "triggers": {
                 "type": "array",
-                "example": "FILE.UPLOADED",
+                "example": [
+                  "FILE.UPLOADED"
+                ],
                 "description": "An array of event names that this webhook is\nto be triggered for",
                 "items": {
                   "$ref": "#/components/schemas/WebhookTrigger"
