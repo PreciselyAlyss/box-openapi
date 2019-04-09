@@ -1186,7 +1186,7 @@
         ]
       },
       "CollaborationCollection": {
-        "x-box-resource-id": "collaborations",
+        "x-box-resource-id": "collaboration_collection",
         "description": "A list of collaborations",
         "x-box-reference-category": "collaborations",
         "allOf": [
@@ -1482,11 +1482,9 @@
                     "$ref": "#/components/schemas/Comment"
                   }
                 ]
-              },
-              {
-                "description": "The object that triggered this event"
               }
-            ]
+            ],
+            "description": "The object that triggered this event"
           },
           "additional_details": {
             "type": "object",
@@ -1717,7 +1715,7 @@
               },
               "metadata": {
                 "type": "object",
-                "description": "An associative array of metadata objects within their\nscopes.\n\nTo access the metadata for a file, first use the\n[Metadata](#metadata) endpoints to determine\nthe metadata templates available to your enterprise.\n\nThe use the [Retrieve File](#get-file-id) endpoint with\nthe `fields` query parameter to get the metadata by ID. The\nID for the metadata template will be in the format\n`metadata.<scope>.<templatename`, for example\n`fields=metadata.global.properties`.",
+                "description": "An associative array of metadata objects within their\nscopes.\n\nTo access the metadata for a file, first use the\n[Metadata](#metadata) endpoints to determine\nthe metadata templates available to your enterprise.\n\nThe use the [Retrieve File](#get-file-id) endpoint with\nthe `fields` query parameter to get the metadata by ID. The\nID for the metadata template will be in the format\n`metadata.<scope>.<templatename>`, for example\n`fields=metadata.global.properties`.",
                 "example": "global",
                 "enum": [
                   "global",
@@ -2556,7 +2554,7 @@
         ]
       },
       "ItemReferenceCollection": {
-        "x-box-resource-id": "item_references",
+        "x-box-resource-id": "item_reference_collection",
         "description": "A list of generic mini representations of a file, folder, user or enterprise",
         "allOf": [
           {
@@ -3857,7 +3855,7 @@
         ]
       },
       "TaskAssignmentCollection": {
-        "x-box-resource-id": "task_assignments",
+        "x-box-resource-id": "task_assignment_collection",
         "type": "object",
         "description": "A list of task assignments",
         "allOf": [
