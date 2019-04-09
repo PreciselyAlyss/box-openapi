@@ -1717,38 +1717,16 @@
               },
               "metadata": {
                 "type": "object",
-                "description": "The scope of the metadata",
-                "example": {
-                  "global": {
-                    "properties": {
-                      "$canEdit": true,
-                      "$id": "1ced710e-19e6-4d98-a288-a81fb2dae93c",
-                      "$parent": "file_1234567",
-                      "$scope": "global",
-                      "$template": "properties",
-                      "$type": "properties",
-                      "$typeVersion": 5,
-                      "$version": 1,
-                      "MyKey": "MyValue"
-                    }
-                  },
-                  "enterprise_12345": {
-                    "properties": {
-                      "$canEdit": true,
-                      "$id": "57b35856-8fed-4fbc-826d-9543a7bf27ce",
-                      "$parent": "file_1234567",
-                      "$scope": "enterprise_12345",
-                      "$template": "acme_inc_metadata",
-                      "$type": "acme_inc_metadata-f2c57cf8-9e7a-4769-a5b2-54f8c3b7c1a0",
-                      "$typeVersion": 4,
-                      "$version": 1,
-                      "acme_inc_metadata_id": "123"
-                    }
-                  }
-                },
+                "description": "An associative array of metadata objects within their\nscopes.\n\nTo access the metadata for a file, first use the\n[Metadata](#metadata) endpoints to determine\nthe metadata templates available to your enterprise.\n\nThe use the [Retrieve File](#get-file-id) endpoint with\nthe `fields` query parameter to get the metadata by ID. The\nID for the metadata template will be in the format\n`metadata.<scope>.<templatename`, for example\n`fields=metadata.global.properties`.",
+                "example": "global",
+                "enum": [
+                  "global",
+                  "enteprise_<:enterprise_id>"
+                ],
                 "additionalProperties": {
                   "type": "object",
-                  "description": "The template name for the metadata",
+                  "description": "The name of the metadata template",
+                  "example": "properties",
                   "additionalProperties": {
                     "$ref": "#/components/schemas/Metadata"
                   }
@@ -1931,16 +1909,6 @@
         "x-box-resource-id": "_file_scope",
         "description": "A relation between a file and the scopes for which the file can be accessed",
         "properties": {
-          "object": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/File"
-              },
-              {
-                "description": "The file for which the file can be accessed"
-              }
-            ]
-          },
           "scope": {
             "type": "string",
             "description": "The file scopes for the file access",
@@ -1958,7 +1926,17 @@
               "item_preview",
               "item_rename",
               "item_share",
-              "item_upload"
+              null
+            ]
+          },
+          "object": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/File--Mini"
+              },
+              {
+                "description": "The file for which the file can be accessed"
+              }
             ]
           }
         }
@@ -2844,7 +2822,7 @@
       },
       "Metadata": {
         "x-box-resource-id": "metadata",
-        "description": "The metadata as applied by a metadata template to a file or\nfolder",
+        "description": "A piece of metadata as specified by a metadata template and\napplied to a file or folder.",
         "properties": {
           "$canEdit": {
             "type": "boolean",
@@ -2887,11 +2865,6 @@
             "example": 1,
             "description": "The version of the metadata object. Starts at 0 and increases every time\na user-defined property is modified."
           }
-        },
-        "additionalProperties": {
-          "type": "string",
-          "description": "Additional data",
-          "example": "foo=bar"
         }
       },
       "MetadataCascadePolicy": {
