@@ -556,7 +556,7 @@
       "delete": {
         "operationId": "delete_folders_id",
         "summary": "Delete a folder",
-        "description": "Deletes a folder, either permanently or by moving it to\nthe trash.\n\nThe the enterprise settings determine wether the item will\nbe permanently deleted from Box or moved to the trash.",
+        "description": "Deletes a folder, either permanently or by moving it to\nthe trash.\n\nThe the enterprise settings determine whether the item will\nbe permanently deleted from Box or moved to the trash.",
         "tags": [
           "Folders"
         ],
@@ -1048,7 +1048,7 @@
         "properties": {
           "type": {
             "description": "Always `error`",
-            "example": "`error`",
+            "example": "error",
             "type": "string",
             "enum": [
               "error"
@@ -1495,7 +1495,7 @@
       },
       "EventType": {
         "x-box-resource-id": "event_type",
-        "example": "FILE.UPLOADED",
+        "example": "FILE_MARKED_MALICIOUS",
         "type": "string",
         "description": "An event type that can trigger an event",
         "enum": [
