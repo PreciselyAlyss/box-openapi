@@ -240,6 +240,365 @@
             }
           }
         }
+      },
+      "put": {
+        "operationId": "put_files_id",
+        "summary": "Update a file",
+        "tags": [
+          "Files"
+        ],
+        "x-box-reference-category": "files",
+        "description": "Updates a file. This can be used to rename or move a file,\ncreate a shared link, or lock a file.",
+        "parameters": [
+          {
+            "name": "file_id",
+            "description": "The ID of the file.",
+            "example": "12345",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.",
+            "in": "query",
+            "example": "id,type,name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "If-Match",
+            "description": "Ensure this item hasn't recently changed\nby ensuring the item's current `etag` matches the\n`etag` passed into this header.",
+            "in": "header",
+            "required": false,
+            "example": 1,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "The new name for the file",
+                    "example": "NewFile.txt"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "The description for a file",
+                    "maxLength": 256,
+                    "example": "Amazing Photo"
+                  },
+                  "parent": {
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/Parent"
+                      },
+                      {
+                        "description": "The parent folder for this file. Use this to move the file."
+                      }
+                    ]
+                  },
+                  "shared_link": {
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/SharedLink--Writable"
+                      },
+                      {
+                        "description": "Enables the creation of a shared link for this file"
+                      }
+                    ]
+                  },
+                  "permissions": {
+                    "description": "Whether the shared link allows downloads",
+                    "type": "object",
+                    "properties": {
+                      "can_download": {
+                        "description": "Who is allowed to download this file",
+                        "type": "string",
+                        "example": "open",
+                        "enum": [
+                          "open",
+                          "company"
+                        ]
+                      }
+                    }
+                  },
+                  "tags": {
+                    "type": "array",
+                    "example": [
+                      "approved"
+                    ],
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "The tags for this item.\n\nTo add or remove a tag, retrieve the item's current tags,\nmodify them, and then update them using this field."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns a file object.\n\n[Some fields are optional](#file) and need to be explicitly\nrequested using the [fields](#get-files-id--request--fields)\nparameter.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/File"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "A client error can occur of the user does not have access to the file,\nthe file does not exists, or incorrect parameters are passed in the\nrequest.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "delete_files_id",
+        "summary": "Delete a file",
+        "tags": [
+          "Files"
+        ],
+        "x-box-reference-category": "files",
+        "description": "Deletes a file, either permanently or by moving it to\nthe trash.\n\nThe the enterprise settings determine whether the item will\nbe permanently deleted from Box or moved to the trash.",
+        "parameters": [
+          {
+            "name": "file_id",
+            "description": "The ID of the file.",
+            "example": "12345",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "If-Match",
+            "description": "Ensure this item hasn't recently changed\nby ensuring the item's current `etag` matches the\n`etag` passed into this header.",
+            "in": "header",
+            "required": false,
+            "example": 1,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Returns an empty response when the file has been successfully\ndeleted."
+          },
+          "412": {
+            "description": "If the `If-Match` header was sent and the file has since changed, the\nAPI will return a `412 Precondition Failed` error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Download file error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/files/{file_id}/content": {
+      "get": {
+        "operationId": "get_files_id_content",
+        "summary": "Download a file",
+        "tags": [
+          "Files"
+        ],
+        "x-box-reference-category": "files",
+        "description": "Returns the contents of a file in binary format.",
+        "parameters": [
+          {
+            "name": "file_id",
+            "description": "The ID of the file.",
+            "example": "12345",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Range",
+            "description": "The byte range of the content to download.\n\nThe format `{start_byte}-{end_byte}` can be used to specify\nwhat section of the file to download.",
+            "example": "0-1024",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "BoxApi",
+            "description": "The URL and password for a file that has\nbeen shared using a shared link, as this file would otherwise\nnot be accessible to the user.\n\nUse the format `shared_link=SHARED_LINK_URL` or if a password was set\nuse `shared_link=[link]&shared_link_password=[password]`",
+            "example": "shared_link=[link]",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "description": "The file version to download",
+            "example": 4,
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "If the file is not ready to be downloaded yet `Retry-After` header will\nbe returned indicating the time in seconds after which the file will\nbe available for the client to download.\n\nThis response can occur when the file was uploaded immediately before the\ndownload request.",
+            "headers": {
+              "Retry-After": {
+                "description": "The time in seconds after which to retry the download",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "302": {
+            "description": "If the file is available to be downloaded the response will include a\n`Location` header for the file on `dl.boxcloud.com`.\n\nThe `dl.boxcloud.com` URL is not persistent and clients will need\nto follow the redirect in order to actually download the file.",
+            "headers": {
+              "Location": {
+                "description": "A pointer to the download URL",
+                "schema": {
+                  "type": "string",
+                  "format": "url"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Download file error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/files/content": {
+      "options": {
+        "operationId": "options_files_content",
+        "summary": "Preflight check",
+        "tags": [
+          "Files"
+        ],
+        "x-box-reference-category": "files",
+        "description": "Performs a check to verify that a file will be accepted by Box\nbefore you upload the entire file.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "The name for the file",
+                    "example": "File.mp4"
+                  },
+                  "size": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "The size of the file in bytes",
+                    "example": 1024
+                  },
+                  "parent": {
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/Parent"
+                      },
+                      {
+                        "description": "The parent folder for the new file"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "If the check passed, the response will include a session URL that\ncan be used to upload the file to.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "The details for the upload session for the file.",
+                  "properties": {
+                    "upload_url": {
+                      "type": "string",
+                      "example": "https://upload-las.app.box.com/api/2.0/files/content?\\\nupload_session_id=1234",
+                      "description": "A URL for an upload session that can be used to upload\nthe file."
+                    },
+                    "upload_token": {
+                      "type": "string",
+                      "example": "Pc3FIOG9vSGV4VHo4QzAyg5T1JvNnJoZ3ExaVNyQWw6WjRsanRKZG5lQk9qUE1BVQP",
+                      "description": "An optional access token to use to upload the file"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "If the check did not pass, the response will include some details on\nwhy it did not pass.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConflictError"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "A generic client error can occur when incorrect file\npermissions were passed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/files/{file_id}/thumbnail.{extension}": {
@@ -571,7 +930,7 @@
                     "items": {
                       "type": "string"
                     },
-                    "description": "The tags for this folder.\n\nTo add or remove a tag, retrieve the folder’s current tags,\nmodify them, and then update them using this field."
+                    "description": "The tags for this item.\n\nTo add or remove a tag, retrieve the item's current tags,\nmodify them, and then update them using this field."
                   },
                   "collections": {
                     "type": "array",
@@ -1423,6 +1782,44 @@
           }
         ]
       },
+      "ConflictError": {
+        "x-box-resource-id": "conflict_error",
+        "description": "The error that occurs when a file can not be created due\nto a conflict.",
+        "x-box-reference-category": "files",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ClientError"
+          },
+          {
+            "properties": {
+              "context_info": {
+                "type": "object",
+                "properties": {
+                  "conflicts": {
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/File--Mini"
+                      },
+                      {
+                        "properties": {
+                          "sha1": {
+                            "type": "string",
+                            "example": "85136C79CBF9FE36BB9D05D0639C70C265C18D37",
+                            "description": "The SHA1 hash of the file."
+                          },
+                          "file_version": {
+                            "$ref": "#/components/schemas/FileVersion--Mini"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
       "DevicePinner": {
         "x-box-resource-id": "device_pinner",
         "description": "Device pins allow enterprises to control what devices can\nuse native Box applications.",
@@ -2165,7 +2562,7 @@
                 "items": {
                   "type": "string"
                 },
-                "description": "The tags for this folder.\n\nTo add or remove a tag, retrieve the folder’s current tags,\nmodify them, and then update them using this field."
+                "description": "The tags for this item.\n\nTo add or remove a tag, retrieve the item's current tags,\nmodify them, and then update them using this field."
               },
               "can_non_owners_invite": {
                 "type": "boolean",
