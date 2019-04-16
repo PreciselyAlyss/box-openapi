@@ -914,7 +914,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollaborationCollection"
+                  "$ref": "#/components/schemas/Collaborations"
                 }
               }
             }
@@ -991,11 +991,67 @@
         ],
         "responses": {
           "200": {
-            "description": "Returns a collection of collaboration objects. If there are no\ncomments on this file an empty collection will be returned.",
+            "description": "Returns a collection of comment objects. If there are no\ncomments on this file an empty collection will be returned.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CommentCollection"
+                  "$ref": "#/components/schemas/Comments"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "A client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/files/{file_id}/tasks": {
+      "get": {
+        "operationId": "get_files_id_tasks",
+        "summary": "Retrieve file tasks",
+        "description": "Retrieves a list of all the tasks for a file. This\nendpoint does not support paging.",
+        "tags": [
+          "Tasks",
+          "Files"
+        ],
+        "x-box-reference-category": "tasks",
+        "parameters": [
+          {
+            "name": "file_id",
+            "description": "The ID of the file.",
+            "example": "12345",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.",
+            "in": "query",
+            "example": "id,type,name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a collection of task objects. If there are no\ntasks on this file an empty collection will be returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tasks"
                 }
               }
             }
@@ -1347,7 +1403,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ItemReferenceCollection"
+                  "$ref": "#/components/schemas/ItemReferences"
                 }
               }
             }
@@ -1581,7 +1637,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollaborationCollection"
+                  "$ref": "#/components/schemas/Collaborations"
                 }
               }
             }
@@ -1857,7 +1913,7 @@
           }
         ]
       },
-      "CollaborationCollection": {
+      "Collaborations": {
         "x-box-resource-id": "collaboration_collection",
         "description": "A list of collaborations",
         "x-box-reference-category": "collaborations",
@@ -1985,7 +2041,7 @@
           }
         ]
       },
-      "CommentCollection": {
+      "Comments": {
         "x-box-resource-id": "comment_collection",
         "description": "A list of comments",
         "x-box-reference-category": "comments",
@@ -3282,7 +3338,7 @@
           }
         ]
       },
-      "ItemReferenceCollection": {
+      "ItemReferences": {
         "x-box-resource-id": "item_reference_collection",
         "description": "A list of generic mini representations of a file, folder, user or enterprise",
         "allOf": [
@@ -4504,7 +4560,7 @@
               "task_assignment_collection": {
                 "allOf": [
                   {
-                    "$ref": "#/components/schemas/TaskAssignmentCollection"
+                    "$ref": "#/components/schemas/TaskAssignments"
                   },
                   {
                     "description": "A collection of task assignment objects\nassociated with the task"
@@ -4535,6 +4591,25 @@
             }
           }
         ]
+      },
+      "Tasks": {
+        "x-box-resource-id": "tasks_collection",
+        "description": "A list of tasks",
+        "x-box-reference-category": "tasks",
+        "properties": {
+          "total_count": {
+            "description": "One greater than the offset of the last entry in the entire collection.\nThe total number of entries in the collection may be less than\n`total_count`.",
+            "example": 5000,
+            "type": "integer",
+            "format": "int64"
+          },
+          "entries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Task"
+            }
+          }
+        }
       },
       "TaskAssignment": {
         "x-box-resource-id": "task_assignment",
@@ -4613,7 +4688,7 @@
           }
         ]
       },
-      "TaskAssignmentCollection": {
+      "TaskAssignments": {
         "x-box-resource-id": "task_assignment_collection",
         "type": "object",
         "description": "A list of task assignments",
@@ -5401,6 +5476,10 @@
     {
       "name": "Comments",
       "x-box-reference-category": "comments"
+    },
+    {
+      "name": "Tasks",
+      "x-box-reference-category": "tasks"
     }
   ]
 }
