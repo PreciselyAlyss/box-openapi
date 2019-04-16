@@ -1243,7 +1243,64 @@
             }
           },
           "default": {
-            "description": "View file version error",
+            "description": "Generic client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "delete_files_id_versions_id",
+        "summary": "Delete a file version",
+        "tags": [
+          "Files",
+          "File Versions"
+        ],
+        "x-box-reference-category": "file_versions",
+        "description": "Move a file version to the trash.\n\nVersions are only tracked for Box users with premium accounts.",
+        "parameters": [
+          {
+            "name": "file_id",
+            "description": "The ID of the file.",
+            "example": "12345",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "file_version_id",
+            "description": "The ID of the file version",
+            "in": "path",
+            "required": true,
+            "example": "1234",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "If-Match",
+            "description": "Ensure this item hasn't recently changed\nby ensuring the item's current `etag` matches the\n`etag` passed into this header.",
+            "in": "header",
+            "required": false,
+            "example": 1,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Returns an empty response when the file has been successfully\ndeleted."
+          },
+          "default": {
+            "description": "Generic client error",
             "content": {
               "application/json": {
                 "schema": {
