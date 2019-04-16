@@ -1392,6 +1392,130 @@
         }
       }
     },
+    "/files/{file_id}/metadata": {
+      "get": {
+        "operationId": "get_files_id_metadata",
+        "summary": "Retrieve all file metadata",
+        "tags": [
+          "File & Folder Metadata"
+        ],
+        "x-box-reference-category": "metadata",
+        "description": "Retrieves all metadata for a given file.",
+        "parameters": [
+          {
+            "name": "file_id",
+            "description": "The ID of the file.",
+            "example": "12345",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns all the metadata associated with a file.\n\nThis API does not support pagination and will therefore always return\nall of the metadata associated to the file.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Metadatas"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Generic client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/files/{file_id}/metadata/{scope}/{template}": {
+      "get": {
+        "operationId": "get_files_id_metadata_id_id",
+        "summary": "Retrieve specific file metadata",
+        "tags": [
+          "Files & Folder Metadata"
+        ],
+        "x-box-reference-category": "metadata",
+        "description": "Retrieve a specific metadata template instance for a file",
+        "parameters": [
+          {
+            "name": "file_id",
+            "description": "The ID of the file.",
+            "example": "12345",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "scope",
+            "description": "The scope of the metadata template",
+            "example": "enterprise_27335",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "global",
+                "enterprise_<id>"
+              ]
+            }
+          },
+          {
+            "name": "template",
+            "description": "The name of the metadata template",
+            "example": "blueprintTemplate",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "An instance of the metadata template that includes\nadditional `key:value` pairs defined by the user or\nan application.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Metadata"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned if the metadata template specified\nwas not applied to this file.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Generic client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/folders/{folder_id}": {
       "get": {
         "operationId": "get_folders_id",
@@ -2003,6 +2127,130 @@
         "responses": {
           "204": {
             "description": "An empty `204 No Content` response will be returned upon successful\ndeletion."
+          },
+          "default": {
+            "description": "Generic client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/folders/{folder_id}/metadata": {
+      "get": {
+        "operationId": "get_folders_id_metadata",
+        "summary": "Retrieve all folder metadata",
+        "tags": [
+          "File & Folder Metadata"
+        ],
+        "x-box-reference-category": "metadata",
+        "description": "Retrieves all metadata for a given folder.",
+        "parameters": [
+          {
+            "name": "folder_id",
+            "description": "The ID of the folder.\n\nThe root folder of a Box account is\nalways represented by the id `\"0\"`.",
+            "example": "12345",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns all the metadata associated with a folder.\n\nThis API does not support pagination and will therefore always return\nall of the metadata associated to the folder.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Metadatas"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Generic client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/folders/{folder_id}/metadata/{scope}/{template}": {
+      "get": {
+        "operationId": "get_folders_id_metadata_id_id",
+        "summary": "Retrieve specific folder metadata",
+        "tags": [
+          "File & Folder Metadata"
+        ],
+        "x-box-reference-category": "metadata",
+        "description": "Retrieve a specific metadata template instance for a folder",
+        "parameters": [
+          {
+            "name": "folder_id",
+            "description": "The ID of the folder.\n\nThe root folder of a Box account is\nalways represented by the id `\"0\"`.",
+            "example": "12345",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "scope",
+            "description": "The scope of the metadata template",
+            "example": "enterprise_27335",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "global",
+                "enterprise_<id>"
+              ]
+            }
+          },
+          {
+            "name": "template",
+            "description": "The name of the metadata template",
+            "example": "blueprintTemplate",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "An instance of the metadata template that includes\nadditional `key:value` pairs defined by the user or\nan application.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Metadata"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned if the metadata template specified\nwas not applied to this folder.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
           },
           "default": {
             "description": "Generic client error",
@@ -4062,6 +4310,19 @@
           }
         }
       },
+      "Metadatas": {
+        "x-box-resource-id": "metadata_collection",
+        "description": "A list of metadata",
+        "x-box-reference-category": "metadata",
+        "properties": {
+          "entries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Metadata"
+            }
+          }
+        }
+      },
       "MetadataCascadePolicy": {
         "x-box-resource-id": "metadata_cascade_policy",
         "description": "A cascade policy that applies to metadata policy template\nto a folder",
@@ -5854,6 +6115,14 @@
     {
       "name": "Folders",
       "x-box-reference-category": "folders"
+    },
+    {
+      "name": "File & Folder Metadata",
+      "x-box-reference-category": "metadata"
+    },
+    {
+      "name": "Metadata Templates",
+      "x-box-reference-category": "metadata_teplates"
     },
     {
       "name": "Collaborations",
