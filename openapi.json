@@ -601,6 +601,94 @@
         }
       }
     },
+    "/files/{file_id}/copy": {
+      "post": {
+        "operationId": "post_files_id_copy",
+        "summary": "Copy a file",
+        "description": "Creates a copy of a file.",
+        "tags": [
+          "Files"
+        ],
+        "x-box-reference-category": "files",
+        "parameters": [
+          {
+            "name": "file_id",
+            "description": "The ID of the file.",
+            "example": "12345",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.",
+            "in": "query",
+            "example": "id,type,name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "parent"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "An optional different name for the new file",
+                    "example": "FileCopy.txt"
+                  },
+                  "version": {
+                    "type": "string",
+                    "description": "An optional ID of the specific file version you want to copy",
+                    "example": "0"
+                  },
+                  "parent": {
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/Parent"
+                      },
+                      {
+                        "description": "The parent folder"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Returns a new file object representing the copied file.\n\n[Some fields are optional](#file) and need to be explicitly\nrequested using the [fields](#post-files-id-copy--request--fields)\nparameter.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/File"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "A client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/files/{file_id}/thumbnail.{extension}": {
       "get": {
         "operationId": "get_files_id_thumbnail_id",
