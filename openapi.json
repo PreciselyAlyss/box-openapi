@@ -1514,6 +1514,245 @@
             }
           }
         }
+      },
+      "post": {
+        "operationId": "post_files_id_metadata_id_id",
+        "summary": "Create metadata on folder",
+        "tags": [
+          "File & Folder Metadata"
+        ],
+        "x-box-reference-category": "metadata",
+        "description": "Creates a piece of metadata on a file based on the specified template.\n\nOnly values that are present in the metadata template\nwill be accepted.",
+        "parameters": [
+          {
+            "name": "file_id",
+            "description": "The ID of the file.",
+            "example": "12345",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "scope",
+            "description": "The scope of the metadata template",
+            "example": "enterprise_27335",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "global",
+                "enterprise_<id>"
+              ]
+            }
+          },
+          {
+            "name": "template",
+            "description": "The name of the metadata template",
+            "example": "blueprintTemplate",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "example_key": "Example Value"
+                },
+                "additionalProperties": {
+                  "type": "string",
+                  "example": "Example Value"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns an instance of the template that was specified, with the\ncustom template data included.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Metadata"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "If the piece of metadata already exists, a conflict error\nwill be returned. The metadata can then instead be updated with the\n`put` method.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Generic client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "put_files_id_metadata_id_id",
+        "summary": "Update metadata on file",
+        "tags": [
+          "File & Folder Metadata"
+        ],
+        "x-box-reference-category": "metadata",
+        "description": "Updates a piece of metadata on a file based.\n\nThe metadata instance can only be updated if the instance\nalready exists. When editing metadata, only values that adhere to the\nmetadata template schema will be accepted.\n\nThe update is applied atomically. If any errors occur during the\napplication of the operations, the metadata instance remains unchanged.",
+        "parameters": [
+          {
+            "name": "file_id",
+            "description": "The ID of the file.",
+            "example": "12345",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "scope",
+            "description": "The scope of the metadata template",
+            "example": "enterprise_27335",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "global",
+                "enterprise_<id>"
+              ]
+            }
+          },
+          {
+            "name": "template",
+            "description": "The name of the metadata template",
+            "example": "blueprintTemplate",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MetadataPatch"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns the updated metadata template instance, with the\ncustom template data included.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Metadata"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "If the piece of metadata already exists, a conflict error\nwill be returned. The metadata can then instead be updated with the\n`put` method.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Generic client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "delete_files_id_metadata_id_id",
+        "summary": "Delete metadata on file",
+        "tags": [
+          "File & Folder Metadata"
+        ],
+        "x-box-reference-category": "metadata",
+        "description": "Deletes a piece of file metadata.",
+        "parameters": [
+          {
+            "name": "file_id",
+            "description": "The ID of the file.",
+            "example": "12345",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "scope",
+            "description": "The scope of the metadata template",
+            "example": "enterprise_27335",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "global",
+                "enterprise_<id>"
+              ]
+            }
+          },
+          {
+            "name": "template",
+            "description": "The name of the metadata template",
+            "example": "blueprintTemplate",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Returns an empty response when the metadata is\nsuccessfully deleted."
+          },
+          "default": {
+            "description": "A client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/folders/{folder_id}": {
@@ -2254,6 +2493,245 @@
           },
           "default": {
             "description": "Generic client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "post_folders_id_metadata_id_id",
+        "summary": "Create metadata on folder",
+        "tags": [
+          "File & Folder Metadata"
+        ],
+        "x-box-reference-category": "metadata",
+        "description": "Creates a piece of metadata on a folder based on the specified template.\n\nOnly values that are present in the metadata template\nwill be accepted.",
+        "parameters": [
+          {
+            "name": "folder_id",
+            "description": "The ID of the folder.\n\nThe root folder of a Box account is\nalways represented by the id `\"0\"`.",
+            "example": "12345",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "scope",
+            "description": "The scope of the metadata template",
+            "example": "enterprise_27335",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "global",
+                "enterprise_<id>"
+              ]
+            }
+          },
+          {
+            "name": "template",
+            "description": "The name of the metadata template",
+            "example": "blueprintTemplate",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "example_key": "Example Value"
+                },
+                "additionalProperties": {
+                  "type": "string",
+                  "example": "Example Value"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns an instance of the template that was specified, with the\ncustom template data included.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Metadata"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "If the piece of metadata already exists, a conflict error\nwill be returned. The metadata can then instead be updated with the\n`put` method.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Generic client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "put_folders_id_metadata_id_id",
+        "summary": "Update metadata on folder",
+        "tags": [
+          "File & Folder Metadata"
+        ],
+        "x-box-reference-category": "metadata",
+        "description": "Updates a piece of metadata on a folder based.\n\nThe metadata instance can only be updated if the instance\nalready exists. When editing metadata, only values that adhere to the\nmetadata template schema will be accepted.\n\nThe update is applied atomically. If any errors occur during the\napplication of the operations, the metadata instance remains unchanged.",
+        "parameters": [
+          {
+            "name": "folder_id",
+            "description": "The ID of the folder.\n\nThe root folder of a Box account is\nalways represented by the id `\"0\"`.",
+            "example": "12345",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "scope",
+            "description": "The scope of the metadata template",
+            "example": "enterprise_27335",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "global",
+                "enterprise_<id>"
+              ]
+            }
+          },
+          {
+            "name": "template",
+            "description": "The name of the metadata template",
+            "example": "blueprintTemplate",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MetadataPatch"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns the updated metadata template instance, with the\ncustom template data included.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Metadata"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "If the piece of metadata already exists, a conflict error\nwill be returned. The metadata can then instead be updated with the\n`put` method.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Generic client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "delete_folders_id_metadata_id_id",
+        "summary": "Delete metadata on folder",
+        "tags": [
+          "File & Folder Metadata"
+        ],
+        "x-box-reference-category": "metadata",
+        "description": "Deletes a piece of folder metadata.",
+        "parameters": [
+          {
+            "name": "folder_id",
+            "description": "The ID of the folder.\n\nThe root folder of a Box account is\nalways represented by the id `\"0\"`.",
+            "example": "12345",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "scope",
+            "description": "The scope of the metadata template",
+            "example": "enterprise_27335",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "global",
+                "enterprise_<id>"
+              ]
+            }
+          },
+          {
+            "name": "template",
+            "description": "The name of the metadata template",
+            "example": "blueprintTemplate",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Returns an empty response when the metadata is\nsuccessfully deleted."
+          },
+          "default": {
+            "description": "A client error",
             "content": {
               "application/json": {
                 "schema": {
@@ -4320,6 +4798,49 @@
             "items": {
               "$ref": "#/components/schemas/Metadata"
             }
+          }
+        }
+      },
+      "MetadataPatch": {
+        "x-box-resource-id": "metadata-patch",
+        "description": "A [JSON-Patch](https://tools.ietf.org/html/rfc6902) specification for the\nchanges to make to the metadata. The changes are represented as a\nJSON array of operation objects.",
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/MetadataPatchItem"
+        }
+      },
+      "MetadataPatchItem": {
+        "x-box-resource-id": "metadata-patch-item",
+        "type": "object",
+        "description": "A [JSON-Patch](https://tools.ietf.org/html/rfc6902) operation for a\nchange to make to the metadata.",
+        "properties": {
+          "op": {
+            "type": "string",
+            "example": "add",
+            "enum": [
+              "add",
+              "replace",
+              "remove",
+              "test",
+              "move",
+              "copy"
+            ],
+            "description": "The operation type"
+          },
+          "path": {
+            "type": "string",
+            "example": "/currentState",
+            "description": "The location in the metadata JSON object\nto apply the changes to, in the format of a\n[JSON-Pointer](https://tools.ietf.org/html/rfc6901).\n\nThe path must always be prefixed with a `/`.\n\nSpecial characters `~` and `/` in the key must be escaped\nto ensure the operation can be executed as intended."
+          },
+          "value": {
+            "type": "string",
+            "example": "reviewed",
+            "description": "The value to be set or tested.\n\nRequired for `add`, `replace`, and `test` operations.\n\nFor `add`, if the value exists already the previous value will be\noverwritten by the new value.\n\nFor `replace`, the value must exist before replacing.\n\nFor `test`, the existing value at the `path` location must match\nthe specified value."
+          },
+          "from": {
+            "type": "string",
+            "example": "/nextState",
+            "description": "Required for `move` or `copy`.\n\nThe location in the metadata JSON object to move or copy from,\nin the format of a\n[JSON-Pointer](https://tools.ietf.org/html/rfc6901)."
           }
         }
       },
