@@ -190,7 +190,7 @@
     "/files/{file_id}": {
       "get": {
         "operationId": "get_files_id",
-        "summary": "Retrieve a file",
+        "summary": "Get file information",
         "tags": [
           "Files"
         ],
@@ -702,7 +702,7 @@
     "/files/{file_id}/thumbnail.{extension}": {
       "get": {
         "operationId": "get_files_id_thumbnail_id",
-        "summary": "Retrieve a file thumbnail",
+        "summary": "Get a file thumbnail",
         "description": "Retrieves a thumbnail, or smaller image representation, of a file.\n\nSizes of `32x32`,`64x64`, `128x128`, and `256x256` can be returned in\nthe `.png` format and sizes of `32x32`, `94x94`, `160x160`, and `320x320`\ncan be returned in the `.jpg` format.\n\nThumbnails can be generated for the image and video file formats listed\n[found on our community site](http://community.box.com/t5/Managing-\\\nYour-Content/What-file-types-are-supported-by-Box-s-Content-Preview/\\\nta-p/327).",
         "tags": [
           "Files",
@@ -854,7 +854,7 @@
     "/files/{file_id}/collaborations": {
       "get": {
         "operationId": "get_files_id_collaborations",
-        "summary": "Retrieve file collaborations",
+        "summary": "Get file collaborations",
         "description": "Retrieves a list of collaborations for a file. This\nreturns all the users that have access to the file.",
         "tags": [
           "Collaborations",
@@ -935,7 +935,7 @@
     "/files/{file_id}/comments": {
       "get": {
         "operationId": "get_files_id_comments",
-        "summary": "Retrieve file comments",
+        "summary": "Get file comments",
         "description": "Retrieves a list of comments for a file.",
         "tags": [
           "Comments",
@@ -1016,7 +1016,7 @@
     "/files/{file_id}/tasks": {
       "get": {
         "operationId": "get_files_id_tasks",
-        "summary": "Retrieve file tasks",
+        "summary": "Get file tasks",
         "description": "Retrieves a list of all the tasks for a file. This\nendpoint does not support paging.",
         "tags": [
           "Tasks",
@@ -1111,7 +1111,7 @@
     "/files/{file_id}/versions": {
       "get": {
         "operationId": "get_files_id_versions",
-        "summary": "Retrieve all file version",
+        "summary": "Get all file versions",
         "tags": [
           "Files",
           "File Versions"
@@ -1192,7 +1192,7 @@
     "/files/{file_id}/versions/{file_version_id}": {
       "get": {
         "operationId": "get_files_id_versions_id",
-        "summary": "Retrieve a file version",
+        "summary": "Get a file version",
         "tags": [
           "Files",
           "File Versions"
@@ -1395,7 +1395,7 @@
     "/files/{file_id}/metadata": {
       "get": {
         "operationId": "get_files_id_metadata",
-        "summary": "Retrieve all file metadata",
+        "summary": "Get all file metadata",
         "tags": [
           "File & Folder Metadata"
         ],
@@ -1440,7 +1440,7 @@
     "/files/{file_id}/metadata/{scope}/{template_key}": {
       "get": {
         "operationId": "get_files_id_metadata_id_id",
-        "summary": "Retrieve specific file metadata",
+        "summary": "Get a specific file metadata",
         "tags": [
           "Files & Folder Metadata"
         ],
@@ -1517,7 +1517,7 @@
       },
       "post": {
         "operationId": "post_files_id_metadata_id_id",
-        "summary": "Create metadata on folder",
+        "summary": "Create metadata on file",
         "tags": [
           "File & Folder Metadata"
         ],
@@ -1758,7 +1758,7 @@
     "/folders/{folder_id}": {
       "get": {
         "operationId": "get_folders_id",
-        "summary": "Retrieve a folder",
+        "summary": "Get folder information",
         "tags": [
           "Folders"
         ],
@@ -2029,7 +2029,7 @@
     "/folders/{folder_id}/items": {
       "get": {
         "operationId": "get_folders_id_items",
-        "summary": "Retrieve folder items",
+        "summary": "Get folder items",
         "tags": [
           "Folders",
           "Files"
@@ -2263,7 +2263,7 @@
     "/folders/{folder_id}/collaborations": {
       "get": {
         "operationId": "get_folders_id_collaborations",
-        "summary": "Retrieve folder collaborations",
+        "summary": "Get folder collaborations",
         "description": "Retrieves a list of collaborations for a folder. This\nreturns all the users that have access to the folder.",
         "tags": [
           "Collaborations",
@@ -2383,7 +2383,7 @@
     "/folders/{folder_id}/metadata": {
       "get": {
         "operationId": "get_folders_id_metadata",
-        "summary": "Retrieve all folder metadata",
+        "summary": "Get all folder metadata",
         "tags": [
           "File & Folder Metadata"
         ],
@@ -2428,7 +2428,7 @@
     "/folders/{folder_id}/metadata/{scope}/{template_key}": {
       "get": {
         "operationId": "get_folders_id_metadata_id_id",
-        "summary": "Retrieve specific folder metadata",
+        "summary": "Get a specific folder metadata",
         "tags": [
           "File & Folder Metadata"
         ],
@@ -2746,7 +2746,7 @@
     "/metadata_templates/{scope}/{template_key}/schema": {
       "get": {
         "operationId": "get_metadata_templates_id_id_schema",
-        "summary": "Retrieve metadata template by name",
+        "summary": "Get metadata template by name",
         "tags": [
           "Metadata Templates"
         ],
@@ -2971,7 +2971,7 @@
     "/metadata_templates/{template_id}": {
       "get": {
         "operationId": "get_metadata_templates_id",
-        "summary": "Retrieve metadata template by ID",
+        "summary": "Get metadata template by ID",
         "tags": [
           "Metadata Templates"
         ],
@@ -3016,7 +3016,7 @@
     "/metadata_templates/enterprise": {
       "get": {
         "operationId": "get_metadata_templates_enterprise",
-        "summary": "Retrieve enterprise metadata templates",
+        "summary": "Get enterprise metadata templates",
         "tags": [
           "Metadata Templates"
         ],
