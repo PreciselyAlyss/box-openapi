@@ -425,7 +425,7 @@
             }
           },
           "default": {
-            "description": "Download file error",
+            "description": "Generic file error",
             "content": {
               "application/json": {
                 "schema": {
@@ -1058,6 +1058,45 @@
           },
           "default": {
             "description": "A client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/files/{file_id}/trash": {
+      "delete": {
+        "operationId": "delete_files_id_trash",
+        "summary": "Permanently delete file",
+        "tags": [
+          "Files",
+          "Trash"
+        ],
+        "x-box-reference-category": "files",
+        "description": "Permanently deletes a file in the trash. The item will no longer\nexist in Box. This action cannot be undone.",
+        "parameters": [
+          {
+            "name": "file_id",
+            "description": "The ID of the file.",
+            "example": "12345",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "An empty `204 No Content` response will be returned upon successful\ndeletion."
+          },
+          "default": {
+            "description": "Generic file error",
             "content": {
               "application/json": {
                 "schema": {
