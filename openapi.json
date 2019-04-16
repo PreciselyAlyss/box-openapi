@@ -3600,7 +3600,6 @@
       "ConflictError": {
         "x-box-resource-id": "conflict_error",
         "description": "The error that occurs when a file can not be created due\nto a conflict.",
-        "x-box-reference-category": "files",
         "allOf": [
           {
             "$ref": "#/components/schemas/ClientError"
