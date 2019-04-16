@@ -1437,7 +1437,7 @@
         }
       }
     },
-    "/files/{file_id}/metadata/{scope}/{template}": {
+    "/files/{file_id}/metadata/{scope}/{template_key}": {
       "get": {
         "operationId": "get_files_id_metadata_id_id",
         "summary": "Retrieve specific file metadata",
@@ -1472,7 +1472,7 @@
             }
           },
           {
-            "name": "template",
+            "name": "template_key",
             "description": "The name of the metadata template",
             "example": "blueprintTemplate",
             "in": "path",
@@ -1549,7 +1549,7 @@
             }
           },
           {
-            "name": "template",
+            "name": "template_key",
             "description": "The name of the metadata template",
             "example": "blueprintTemplate",
             "in": "path",
@@ -1615,7 +1615,7 @@
           "File & Folder Metadata"
         ],
         "x-box-reference-category": "metadata",
-        "description": "Updates a piece of metadata on a file based.\n\nThe metadata instance can only be updated if the instance\nalready exists. When editing metadata, only values that adhere to the\nmetadata template schema will be accepted.\n\nThe update is applied atomically. If any errors occur during the\napplication of the operations, the metadata instance remains unchanged.",
+        "description": "Updates a piece of metadata on a file.\n\nThe metadata instance can only be updated if the instance\nalready exists. When editing metadata, only values that adhere to the\nmetadata template schema will be accepted.\n\nThe update is applied atomically. If any errors occur during the\napplication of the operations, the metadata instance remains unchanged.",
         "parameters": [
           {
             "name": "file_id",
@@ -1642,7 +1642,7 @@
             }
           },
           {
-            "name": "template",
+            "name": "template_key",
             "description": "The name of the metadata template",
             "example": "blueprintTemplate",
             "in": "path",
@@ -1728,7 +1728,7 @@
             }
           },
           {
-            "name": "template",
+            "name": "template_key",
             "description": "The name of the metadata template",
             "example": "blueprintTemplate",
             "in": "path",
@@ -2425,7 +2425,7 @@
         }
       }
     },
-    "/folders/{folder_id}/metadata/{scope}/{template}": {
+    "/folders/{folder_id}/metadata/{scope}/{template_key}": {
       "get": {
         "operationId": "get_folders_id_metadata_id_id",
         "summary": "Retrieve specific folder metadata",
@@ -2460,7 +2460,7 @@
             }
           },
           {
-            "name": "template",
+            "name": "template_key",
             "description": "The name of the metadata template",
             "example": "blueprintTemplate",
             "in": "path",
@@ -2537,7 +2537,7 @@
             }
           },
           {
-            "name": "template",
+            "name": "template_key",
             "description": "The name of the metadata template",
             "example": "blueprintTemplate",
             "in": "path",
@@ -2630,7 +2630,7 @@
             }
           },
           {
-            "name": "template",
+            "name": "template_key",
             "description": "The name of the metadata template",
             "example": "blueprintTemplate",
             "in": "path",
@@ -2716,7 +2716,7 @@
             }
           },
           {
-            "name": "template",
+            "name": "template_key",
             "description": "The name of the metadata template",
             "example": "blueprintTemplate",
             "in": "path",
@@ -2732,6 +2732,397 @@
           },
           "default": {
             "description": "A client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/metadata_templates/{scope}/{template_key}/schema": {
+      "get": {
+        "operationId": "get_metadata_templates_id_id_schema",
+        "summary": "Retrieve metadata template by name",
+        "tags": [
+          "Metadata Templates"
+        ],
+        "x-box-reference-category": "metadata_templates",
+        "description": "Retrieves a metadata template by its scope and template name.",
+        "parameters": [
+          {
+            "name": "scope",
+            "description": "The scope of the metadata template",
+            "example": "enterprise_27335",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "global",
+                "enterprise_<id>"
+              ]
+            }
+          },
+          {
+            "name": "template_key",
+            "description": "The name of the metadata template",
+            "example": "blueprintTemplate",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the metadata template matching the `scope`\nand `template` name.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MetadataTemplate"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Generic client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "put_metadata_templates_id_id_schema",
+        "tags": [
+          "Metadata Templates"
+        ],
+        "x-box-reference-category": "metadata_templates",
+        "summary": "Update a metadata template",
+        "description": "Updates a metadata template.\n\nThe metadata template can only be updated if the template\nalready exists.\n\nThe update is applied atomically. If any errors occur during the\napplication of the operations, the metadata template remains unchanged.",
+        "parameters": [
+          {
+            "name": "scope",
+            "description": "The scope of the metadata template",
+            "example": "enterprise_27335",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "global",
+                "enterprise_<id>"
+              ]
+            }
+          },
+          {
+            "name": "template_key",
+            "description": "The name of the metadata template",
+            "example": "blueprintTemplate",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MetadataTemplatePatch"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns the updated metadata template, with the\ncustom template data included.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MetadataTemplate"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request body contains an invalid metadata schema.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The request body contains a scope that the user is not\nallowed to create templates for.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The requested template could not be found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Generic client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "delete_metadata_templates_id_id_schema",
+        "summary": "Delete metadata template",
+        "tags": [
+          "Metadata Templates"
+        ],
+        "x-box-reference-category": "metadata_templates",
+        "description": "Delete a metadata template and its instances.\nThis deletion is permanent and can not be reversed.",
+        "parameters": [
+          {
+            "name": "scope",
+            "description": "The scope of the metadata template",
+            "example": "enterprise_27335",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "global",
+                "enterprise_<id>"
+              ]
+            }
+          },
+          {
+            "name": "template_key",
+            "description": "The name of the metadata template",
+            "example": "blueprintTemplate",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Returns an empty response when the metadata\ntemplate is successfully deleted."
+          },
+          "400": {
+            "description": "Request body contains an invalid metadata schema.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request body contains a scope that the user is not allowed to\ncreate a template for.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "A client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/metadata_templates/{template_id}": {
+      "get": {
+        "operationId": "get_metadata_templates_id",
+        "summary": "Retrieve metadata template by ID",
+        "tags": [
+          "Metadata Templates"
+        ],
+        "x-box-reference-category": "metadata_templates",
+        "description": "Retrieves a metadata template by its ID.",
+        "parameters": [
+          {
+            "name": "template_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "in": "path",
+            "example": "f7a9891f",
+            "description": "The ID of the template"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the metadata template matching the `scope`\nand `template` name.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MetadataTemplate"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Generic client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/metadata_templates/enterprise": {
+      "get": {
+        "operationId": "get_metadata_templates_enterprise",
+        "summary": "Retrieve enterprise metadata templates",
+        "tags": [
+          "Metadata Templates"
+        ],
+        "x-box-reference-category": "metadata_templates",
+        "description": "Used to retrieve all metadata templates within a user's enterprise",
+        "parameters": [
+          {
+            "name": "marker",
+            "description": "The position marker at which to begin the response.",
+            "in": "query",
+            "required": false,
+            "example": 1234,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "limit",
+            "description": "The maximum number of items to return per page.",
+            "in": "query",
+            "required": false,
+            "example": 1000,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": 100,
+              "maximum": 1000
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns all of the metadata templates within an enterprise\nand their corresponding schema.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MetadataTemplates"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Generic client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/metadata_templates/schema": {
+      "post": {
+        "operationId": "post_metadata_templates_schema",
+        "summary": "Create metadata template",
+        "tags": [
+          "Metadata Templates"
+        ],
+        "description": "Creates a new metadata template that can be applied to files and folders.",
+        "x-box-reference-category": "metadata_templates",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MetadataTemplate--Writable"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The schema representing the metadata template created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MetadataTemplate"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request body contains an invalid metadata schema.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Request body contains a scope that the user is not allowed to\ncreate a template for.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Create Metadata template error",
             "content": {
               "application/json": {
                 "schema": {
@@ -4741,6 +5132,30 @@
           }
         }
       },
+      "MarkerPagination": {
+        "x-box-resource-id": "_marker_pagination",
+        "description": "The part of an API response that describes marker\nbased pagination",
+        "properties": {
+          "limit": {
+            "description": "The limit that was used for these entries. This will be the same as the\n`limit` query parameter unless that value exceeded the maximum value\nallowed. The maximum value varies by API.",
+            "example": 1000,
+            "type": "integer",
+            "format": "int64"
+          },
+          "next_marker": {
+            "description": "The marker for the start of the next page of results.",
+            "example": 3000,
+            "type": "integer",
+            "format": "int64"
+          },
+          "prev_marker": {
+            "description": "The marker for the start of the previous page of results.",
+            "example": 1000,
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
       "Metadata": {
         "x-box-resource-id": "metadata",
         "description": "A piece of metadata as specified by a metadata template and\napplied to a file or folder.",
@@ -4899,19 +5314,57 @@
       },
       "MetadataTemplate": {
         "x-box-resource-id": "metadata_template",
-        "description": "A template for metadata as can be applied to files and folders",
+        "description": "A template for metadata that can be applied to files and folders",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/MetadataTemplate--Writable"
+          },
+          {
+            "properties": {
+              "id": {
+                "type": "string",
+                "example": "f7a9891f",
+                "description": "The ID of the template"
+              }
+            }
+          }
+        ]
+      },
+      "MetadataTemplates": {
+        "x-box-resource-id": "metadata_templates_collection",
+        "description": "A list of metadata templates",
+        "x-box-reference-category": "metadata_templates",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/MarkerPagination"
+          },
+          {
+            "properties": {
+              "entries": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/MetadataTemplate"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "MetadataTemplate--Writable": {
+        "x-box-resource-id": "metadata_template--writable",
+        "description": "The writable parts of a metadata template that can be\napplied to files and folders",
         "properties": {
+          "scope": {
+            "type": "string",
+            "description": "The scope of the object. `global` and `enterprise_*` scopes are supported.\n\nThe `global` scope contains the template with a key of `properties`,\nwhile the enterprise scope pertains to custom templates created within\nthe enterprise.\n\n The ID of the enterprise will be appended to the enterprise scope.",
+            "example": "enterprise_123456"
+          },
           "templateKey": {
             "type": "string",
             "example": "productInfo",
             "description": "A unique identifier for the template. The identifier must be unique across\nthe scope of the enterprise to which the metadata template is being\napplied.",
             "maxLength": 64,
             "pattern": "^[a-zA-Z_][-a-zA-Z0-9_]*$"
-          },
-          "scope": {
-            "type": "string",
-            "description": "The scope of the object. `global` and `enterprise_*` scopes are supported.\n\nThe `global` scope contains the template with a key of `properties`,\nwhile the enterprise scope pertains to custom templates created within\nthe enterprise.\n\n The ID of the enterprise will be appended to the enterprise scope.",
-            "example": "enterprise_123456"
           },
           "displayName": {
             "type": "string",
@@ -4993,6 +5446,70 @@
             "description": "The text value of the option",
             "example": "category1",
             "type": "string"
+          }
+        }
+      },
+      "MetadataTemplatePatch": {
+        "x-box-resource-id": "metadata-template-patch",
+        "description": "A patch specification for the changes to make to the metadata template.\nThe changes are represented as a JSON array of operation objects.",
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/MetadataTemplatePatchItem"
+        }
+      },
+      "MetadataTemplatePatchItem": {
+        "x-box-resource-id": "metadata-template-patch-item",
+        "type": "object",
+        "description": "A patch operation for the\nchanges to make to the metadata template.\n\nThe possible operations are as follows.\n\n* `addEnumOption` Adds an enum option at the\n  end of the enum option list for the specified ``fieldKey`.\n\n  Example `{\"op\":\"addEnumOption\",\"fieldKey\":\"category\",\n  \"data\":{\"key\":\"New Option\"}}`\n\n* `addField` Adds a field at the end of the field list\n  for the template.\n\n  Example `{\"op\":\"addField\",\"data\":{\"displayName\":\"Category\",\n  \"key\":\"category\",\"hidden\":false,\"type\":\"string\"}}`.\n\n* `editTemplate` Allows for editing the base properties\n  of a template, mainly the `displayName` and `hidden`\n  properties.\n\n  Example `{\"op\":\"editTemplate\",\"data\":{\"displayName\":\"Client\"}}`.\n\n* `reorderEnumOptions` Reorders the enum option list to\n  match the requested enum option list.\n\n  Example `{\"op\":\"reorderEnumOptions\",\"fieldKey\":\"category\",\n  \"enumOptionKeys\":[\"option2\",\"option1\",\"option3\"]}`\n\n* `reorderFields`  Reorders the field list to match the requested\n  field list\n\n  Example `{\"op\":\"reorderFields\",\"fieldKeys\":[\"field2\",\"field1\",\"field3\"]}`\n\nThe following changes can affect existing instances of this template.\n\n* `editField` Edits any number of the base properties of a field, mainly\n  the `displayName`, `hidden`, `description`, and `key` properties.\n\n  If the key is changed, existing values of the specified field are\n  migrated to the new key. Search indexes are updated, which can take\n  time depending on how many files are affected by the change.\n\n  Example `{\"op\":\"editField\",\"fieldKey\":\"category\",\n  \"data\":{\"displayName\":\"Customer Group\"}}`\n\n* `editEnumOption` Edits one of the options of an enum field.\n\n  Example `{\"op\":\"editEnumOption\",\"fieldKey\":\"years\",\"enumOptionKey\":\"2011\",\n  \"data\":{\"key\":\"2020\"}}`\n\n* `removeEnumOption` Removes the specified enum option from the\n  specified enum field.\n\n  Example `{\"op\":\"removeEnumOption\",\"fieldKey\":\"years\",\n  \"enumOptionKey\":\"2011\"}`\n\n* `removeField` Removes the specified field from the template.\n\n  Example `{\"op\":\"removeField\",\"fieldKey\":\"brand\"}`",
+        "properties": {
+          "op": {
+            "type": "string",
+            "example": "addEnumOption",
+            "enum": [
+              "addEnumOption",
+              "addField",
+              "editTemplate",
+              "reorderEnumOptions",
+              "reorderFields",
+              "editField",
+              "editEnumOption",
+              "removeEnumOption",
+              "removeField"
+            ],
+            "description": "The operation type to perform on the template."
+          },
+          "data": {
+            "description": "The data for the operation. Can vary depending on the operation.",
+            "example": {
+              "displayName": "New name"
+            },
+            "additionalProperties": {
+              "type": "string",
+              "example": "New name"
+            }
+          },
+          "fieldKeys": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "category",
+              "name"
+            ],
+            "description": "For operations that affect multiple fields, the keys of the\nfields to be affected."
+          },
+          "enumOptionKeys": {
+            "description": "For operations that affect multiple enum options,\nthe keys of the enum options to be affected.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "option1",
+              "option2",
+              "option3"
+            ]
           }
         }
       },
@@ -6643,7 +7160,7 @@
     },
     {
       "name": "Metadata Templates",
-      "x-box-reference-category": "metadata_teplates"
+      "x-box-reference-category": "metadata_templates"
     },
     {
       "name": "Collaborations",
