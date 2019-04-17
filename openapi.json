@@ -1644,7 +1644,11 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/MetadataPatch"
+                "description": "A [JSON-Patch](https://tools.ietf.org/html/rfc6902)\nspecification for the changes to make to the metadata.\nThe changes are represented as a JSON array of\noperation objects.",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/MetadataPatchItem"
+                }
               }
             }
           }
@@ -2632,7 +2636,11 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/MetadataPatch"
+                "description": "A [JSON-Patch](https://tools.ietf.org/html/rfc6902)\nspecification for the changes to make to the metadata.\nThe changes are represented as a JSON array of\noperation objects.",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/MetadataPatchItem"
+                }
               }
             }
           }
@@ -3115,6 +3123,602 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/comments/{comment_id}": {
+      "get": {
+        "operationId": "get_comments_id",
+        "summary": "Get a comment",
+        "tags": [
+          "Comments"
+        ],
+        "x-box-reference-category": "comments",
+        "description": "Retrieves the message and metadata for a specific comment, as well\nas information on the user who created the comment.",
+        "parameters": [
+          {
+            "name": "comment_id",
+            "description": "The ID of the comment.",
+            "example": "12345",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.",
+            "in": "query",
+            "example": "id,type,name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a full comment object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Comment"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "A client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "put_comments_id",
+        "summary": "Update a comment",
+        "tags": [
+          "Comments"
+        ],
+        "x-box-reference-category": "comments",
+        "description": "Update the message of a comment.",
+        "parameters": [
+          {
+            "name": "comment_id",
+            "description": "The ID of the comment.",
+            "example": "12345",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.",
+            "in": "query",
+            "example": "id,type,name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "message": {
+                    "type": "string",
+                    "description": "The text of the comment to update",
+                    "example": "Review completed!"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns the updated comment object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Comment"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "A client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "delete_comments_id",
+        "summary": "Delete a comment",
+        "tags": [
+          "Comments"
+        ],
+        "x-box-reference-category": "comments",
+        "description": "Permanently deletes a comment.",
+        "parameters": [
+          {
+            "name": "comment_id",
+            "description": "The ID of the comment.",
+            "example": "12345",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Returns an empty response when the comment has been deleted."
+          }
+        }
+      }
+    },
+    "/comments": {
+      "post": {
+        "operationId": "post_comments",
+        "tags": [
+          "Comments"
+        ],
+        "x-box-reference-category": "comments",
+        "summary": "Create a comment",
+        "description": "Adds a comment comment by the user to a specific file, or\nas a reply to an other comment.",
+        "parameters": [
+          {
+            "name": "fields",
+            "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.",
+            "in": "query",
+            "example": "id,type,name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "message"
+                ],
+                "properties": {
+                  "message": {
+                    "type": "string",
+                    "description": "The text of the comment.\n\nTo mention a user, user the `tagged_message`\nparameter instead.",
+                    "example": "Review completed!"
+                  },
+                  "tagged_message": {
+                    "type": "string",
+                    "description": "The text of the comment, including `@[user_id:name]`\nsomewhere in the message to mention another user, which\nwill send them an email notification, letting them know\nthey have been mentioned.\n\nThe `user_id` is the target user's ID, where the `name`\ncan be any custom phrase. In the Box UI this name will\nlink to the user's profile.\n\nIf you are not mentioning another user, use`message`\ninstead.",
+                    "example": "@[1234:John] Review completed!"
+                  },
+                  "item": {
+                    "type": "object",
+                    "description": "The item to attach the comment to.",
+                    "required": [
+                      "id",
+                      "type"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "The ID of the item",
+                        "example": "11446498"
+                      },
+                      "type": {
+                        "type": "string",
+                        "description": "The type of the item that this comment will be placed on.",
+                        "example": "file",
+                        "enum": [
+                          "file",
+                          "comment"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Returns the newly created comment object.\n\n[Some fields are optional](#comment) and need to be explicitly\nrequested using the [fields](#post-comments--request--fields) parameter.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Comment"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/collaborations/{collaboration_id}": {
+      "get": {
+        "operationId": "get_collaborations_id",
+        "summary": "Get a collaboration",
+        "x-box-reference-category": "collaborations",
+        "tags": [
+          "Collaborations"
+        ],
+        "description": "Retrieves a single collaboration.",
+        "parameters": [
+          {
+            "name": "collaboration_id",
+            "description": "The ID of the collaboration",
+            "in": "path",
+            "required": true,
+            "example": "1234",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.",
+            "in": "query",
+            "example": "id,type,name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a collaboration object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Collaboration"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "put_collaborations_id",
+        "tags": [
+          "Collaborations"
+        ],
+        "x-box-reference-category": "collaborations",
+        "summary": "Updates a collaboration",
+        "description": "Updates a collaboration.\n\nCan be used to change the owner of an item, or to\naccept collaboration invites.",
+        "parameters": [
+          {
+            "name": "collaboration_id",
+            "description": "The ID of the collaboration",
+            "in": "path",
+            "required": true,
+            "example": "1234",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.",
+            "in": "query",
+            "example": "id,type,name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "role": {
+                    "type": "string",
+                    "description": "The level of access granted.",
+                    "example": "editor",
+                    "enum": [
+                      "editor",
+                      "viewer",
+                      "previewer",
+                      "uploader",
+                      "previewer uploader",
+                      "viewer uploader",
+                      "co-owner"
+                    ]
+                  },
+                  "can_view_path": {
+                    "type": "boolean",
+                    "description": "Determines if the invited users can see the entire parent path to\nthe associated folder. The user will not gain privileges in any\nparent folder and therefore can not see content the user is not\ncollaborated on.",
+                    "example": true
+                  },
+                  "status": {
+                    "type": "string",
+                    "description": "Set the status of a `pending` collaboration invitation,\neffectively accepting, or rejecting the invite.",
+                    "example": "accepted",
+                    "enum": [
+                      "pending",
+                      "accepted",
+                      "rejected"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns an updated collaboration object unless the owner has changed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Collaboration"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "If the role is changed to `owner`, the collaboration is deleted\nand a new collaboration is created. The previous `owner` of\nthe old collaboration will be a `co-owner` on the new collaboration.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Collaboration"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "delete_collaborations_id",
+        "summary": "Delete a collaboration",
+        "tags": [
+          "Collaborations"
+        ],
+        "x-box-reference-category": "collaborations",
+        "description": "Deletes a single collaboration.",
+        "parameters": [
+          {
+            "name": "collaboration_id",
+            "description": "The ID of the collaboration",
+            "in": "path",
+            "required": true,
+            "example": "1234",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "A blank response is returned if the collaboration was\nsuccessfully deleted."
+          }
+        }
+      }
+    },
+    "/collaborations": {
+      "get": {
+        "operationId": "get_collaborations",
+        "summary": "Get pending collaborations",
+        "tags": [
+          "Collaborations"
+        ],
+        "x-box-reference-category": "collaborations",
+        "description": "Retrieves all pending collaboration invites for this user.",
+        "parameters": [
+          {
+            "name": "status",
+            "description": "The status of the collaborations to retrieve",
+            "in": "query",
+            "required": true,
+            "example": "pending",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "pending"
+              ]
+            }
+          },
+          {
+            "name": "fields",
+            "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.",
+            "in": "query",
+            "example": "id,type,name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "description": "The offset of the item at which to begin the response.",
+            "in": "query",
+            "required": false,
+            "example": 1000,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": 0
+            }
+          },
+          {
+            "name": "limit",
+            "description": "The maximum number of items to return per page.",
+            "in": "query",
+            "required": false,
+            "example": 1000,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": 100,
+              "maximum": 1000
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a collection of pending collaboration objects.\n\nIf the user has no pending collaborations, the collection\nwill be empty.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Collaborations"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "post_collaborations",
+        "tags": [
+          "Collaborations"
+        ],
+        "x-box-reference-category": "collaborations",
+        "summary": "Creates a collaboration",
+        "description": "Adds a collaboration for a single user or a single group to a file\nor folder.\n\nCollaborations can be created using email address, user IDs, or a\ngroup IDs.\n\nIf a collaboration is being created with a group, access to\nthis endpoint is dependent on the group's ability to be invited.",
+        "parameters": [
+          {
+            "name": "fields",
+            "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.",
+            "in": "query",
+            "example": "id,type,name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "notify",
+            "description": "Determines if users should receive email notification\nfor the action performed.",
+            "in": "query",
+            "required": false,
+            "example": true,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "item",
+                  "accessible_by",
+                  "role"
+                ],
+                "properties": {
+                  "item": {
+                    "type": "object",
+                    "description": "The item to attach the comment to.",
+                    "required": [
+                      "id",
+                      "type"
+                    ],
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "description": "The type of the item that this collaboration will be\ngranted access to",
+                        "example": "file",
+                        "enum": [
+                          "file",
+                          "folder"
+                        ]
+                      },
+                      "id": {
+                        "type": "string",
+                        "description": "The ID of the item that will be granted access to",
+                        "example": "11446498"
+                      }
+                    }
+                  },
+                  "accessible_by": {
+                    "type": "object",
+                    "description": "The user or group to give access to the item.",
+                    "required": [
+                      "type"
+                    ],
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "description": "The type of collaborator to invite.",
+                        "example": "user",
+                        "enum": [
+                          "user",
+                          "group"
+                        ]
+                      },
+                      "id": {
+                        "type": "string",
+                        "description": "The ID of the user or group.\n\nAlternatively, use `login` to specify a user by email\naddress.",
+                        "example": "23522323"
+                      },
+                      "login": {
+                        "type": "string",
+                        "description": "The email address of the user to grant access to the item.\n\nAlternatively, use `id` to specify a user by user ID.",
+                        "example": "john@example.com"
+                      }
+                    }
+                  },
+                  "role": {
+                    "type": "string",
+                    "description": "The level of access granted.",
+                    "example": "editor",
+                    "enum": [
+                      "editor",
+                      "viewer",
+                      "previewer",
+                      "uploader",
+                      "previewer uploader",
+                      "viewer uploader",
+                      "co-owner"
+                    ]
+                  },
+                  "can_view_path": {
+                    "type": "boolean",
+                    "description": "Determines if the invited users can see the entire parent path to\nthe associated folder. The user will not gain privileges in any\nparent folder and therefore can not see content the user is not\ncollaborated on.",
+                    "example": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Returns a new collaboration object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Collaboration"
                 }
               }
             }
@@ -5204,14 +5808,6 @@
               "$ref": "#/components/schemas/Metadata"
             }
           }
-        }
-      },
-      "MetadataPatch": {
-        "x-box-resource-id": "metadata-patch",
-        "description": "A [JSON-Patch](https://tools.ietf.org/html/rfc6902) specification for the\nchanges to make to the metadata. The changes are represented as a\nJSON array of operation objects.",
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/MetadataPatchItem"
         }
       },
       "MetadataPatchItem": {
