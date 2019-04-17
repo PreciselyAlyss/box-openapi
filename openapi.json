@@ -3894,6 +3894,210 @@
           }
         }
       }
+    },
+    "/search": {
+      "get": {
+        "operationId": "get_search",
+        "summary": "Search for content",
+        "tags": [
+          "Search"
+        ],
+        "x-box-reference-category": "search",
+        "description": "Searches for items that are available to the user or an entire enterprise.",
+        "parameters": [
+          {
+            "name": "query",
+            "description": "The string to search for. This query is matched against item names,\ndescriptions, text content of files, and various other fields of\nthe different item types.",
+            "in": "query",
+            "required": true,
+            "example": "sales",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "scope",
+            "description": "Limits search results to a user scope.\n\nDefaults to `user_content` which limits the search to content\navailable to the current user\n\nSetting this to `enterprise_content` widens the search to content\navailable to the entire enterprise. To enable this scope for an\nadministrator, please reach out to support.",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "user_content",
+                "enterprise_content"
+              ]
+            },
+            "example": "user_content"
+          },
+          {
+            "name": "file_extensions",
+            "description": "Limits search results to a comma-separated list of\nfile extensions.",
+            "example": "pdf,png,gif",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "created_at_range",
+            "description": "Limits search results to items created within\na given date range.\n\nDate ranges are defined as comma separated RFC3339\ntimestamps.\n\nIf the she start date is omitted (`\",[end_date]\"`) the\nearliest known date will be used as the start date instead.\n\nIf the end date is omitted (`\"[start_date],\"`) the current\ndate will be used as the end date instead.",
+            "example": "2014-05-15T13:35:01-07:00,2014-05-17T13:35:01-07:00",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "updated_at_range",
+            "description": "Limits search results to items updated within\na given date range.\n\nDate ranges are defined as comma separated RFC3339\ntimestamps.\n\nIf the she start date is omitted (`\",[end_date]\"`) the\nearliest known date will be used as the start date instead.\n\nIf the end date is omitted (`\"[start_date],\"`) the current\ndate will be used as the end date instead.",
+            "example": "2014-05-15T13:35:01-07:00,2014-05-17T13:35:01-07:00",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "size_range",
+            "description": "Limits search results to items within a given file size\nrange.\n\nFile size ranges are defined as comma separated byte sizes.\n\nThe upper and lower bound can be omitted to create open ranges.",
+            "example": "1000000,5000000",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "owner_user_ids",
+            "description": "Limits search results to items owned\nby the given list of owners.\n\nOwners are defined as a comma separated list of user IDs.",
+            "example": "123422,23532,3241212",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ancestor_folder_ids",
+            "description": "Limits search results to items within the given\nlist of folders.\n\nFolders are defined as a comma separated lists\nof folder IDs.\n\nSearch results will also include items within subfolders.",
+            "example": "4535234,234123235,2654345",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "content_types",
+            "description": "Limits search results to items with the given\ncontent types.\n\nContent types are defined as a comma separated lists\nof Box recognized content types.\n\nAvailable content types are:\n\n* `name`\n* `description`\n* `file_content`\n* `comments`\n* `tags",
+            "in": "query",
+            "example": "name,description",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "type",
+            "description": "Limits search results to items of this type.",
+            "example": "file",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "file",
+                "folder",
+                "web_link"
+              ]
+            }
+          },
+          {
+            "name": "trash_content",
+            "description": "Controls if search results include the trash.\n\nDefaults to `non_trashed_only`",
+            "in": "query",
+            "required": false,
+            "example": "non_trashed_only",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "non_trashed_only",
+                "trashed_only"
+              ]
+            }
+          },
+          {
+            "name": "mdfilters",
+            "description": "Limits search results to items that match the\nmetadata template name and content.",
+            "in": "query",
+            "required": false,
+            "example": [
+              {
+                "scope": "enterprise",
+                "templateKey": "marketingCollateral",
+                "filters": {
+                  "documentType": "datasheet"
+                }
+              }
+            ],
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/MetadataFilter"
+              }
+            }
+          },
+          {
+            "name": "fields",
+            "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.",
+            "in": "query",
+            "example": "id,type,name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "description": "The offset of the item at which to begin the response.",
+            "in": "query",
+            "required": false,
+            "example": 1000,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": 0
+            }
+          },
+          {
+            "name": "limit",
+            "description": "The maximum number of items to return per page.",
+            "in": "query",
+            "required": false,
+            "example": 1000,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": 100,
+              "maximum": 1000
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a collection of search results. If there are no matching\nsearch results, the `entries` array will be empty.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Items"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -4742,7 +4946,20 @@
               "metadata": {
                 "type": "object",
                 "description": "An associative array of metadata objects within their\nscopes.\n\nTo access the metadata for a file, first use the\n[Metadata](#metadata) endpoints to determine\nthe metadata templates available to your enterprise.\n\nThe use the [Retrieve File](#get-file-id) endpoint with\nthe `fields` query parameter to get the metadata by ID. The\nID for the metadata template will be in the format\n`metadata.<scope>.<templatename>`, for example\n`fields=metadata.global.properties`.",
-                "example": "global",
+                "example": {
+                  "global": {
+                    "marketingCollateral": {
+                      "$canEdit": true,
+                      "$id": "01234500-12f1-1234-aa12-b1d234cb567e",
+                      "$parent": "folder_59449484661",
+                      "$scope": "enterprise_27335",
+                      "$template": "blueprintTemplate",
+                      "$type": "blueprintTemplate-6bcba49f-ca6d-4d2a-a758-57fe6edf44d0",
+                      "$typeVersion": 2,
+                      "$version": 1
+                    }
+                  }
+                },
                 "enum": [
                   "global",
                   "enteprise_<:enterprise_id>"
@@ -4750,7 +4967,18 @@
                 "additionalProperties": {
                   "type": "object",
                   "description": "The name of the metadata template",
-                  "example": "properties",
+                  "example": {
+                    "marketingCollateral": {
+                      "$canEdit": true,
+                      "$id": "01234500-12f1-1234-aa12-b1d234cb567e",
+                      "$parent": "folder_59449484661",
+                      "$scope": "enterprise_27335",
+                      "$template": "blueprintTemplate",
+                      "$type": "blueprintTemplate-6bcba49f-ca6d-4d2a-a758-57fe6edf44d0",
+                      "$typeVersion": 2,
+                      "$version": 1
+                    }
+                  },
                   "additionalProperties": {
                     "$ref": "#/components/schemas/Metadata"
                   }
@@ -6064,6 +6292,39 @@
             "type": "string",
             "example": "demo",
             "description": "The template key of the target metadata template to cascade down.\nThe `scope` & `templateKey` together identify the metadata on the f\nolder that is to be cascaded down."
+          }
+        }
+      },
+      "MetadataFilter": {
+        "x-box-resource-id": "metadata_filter",
+        "description": "A metadata filter used for searching by metadata\ntemplate",
+        "type": "object",
+        "properties": {
+          "scope": {
+            "description": "Specifies the scope of the template to search for.",
+            "type": "string",
+            "example": "global",
+            "enum": [
+              "global",
+              "enterprise"
+            ]
+          },
+          "templateKey": {
+            "description": "The key name of the template to search for. Only\none template name can be specified per filter.",
+            "type": "string",
+            "example": "marketingCollateral"
+          },
+          "filters": {
+            "type": "object",
+            "description": "Additional key/value pairs for the template to search for.\n\nFor floats and dates, you can include an (inclusive) upper\nbound parameter `lt` or (inclusive) lower bound parameter\n`gt`, or both.\n\nAn example filter for a `“contractExpiration”` on or before\n`08-01-16 UTC` would be listed as follow.\n\n`{\"contractExpiration\":{\"lt\":\"2016-08-01T00:00:00Z\"}}`",
+            "example": {
+              "documentType": "datasheet"
+            },
+            "additionalProperties": {
+              "description": "The value for the custom field",
+              "example": "datasheet",
+              "type": "string"
+            }
           }
         }
       },
@@ -7935,6 +8196,10 @@
     {
       "name": "Metadata Templates",
       "x-box-reference-category": "metadata_templates"
+    },
+    {
+      "name": "Search",
+      "x-box-reference-category": "search"
     },
     {
       "name": "Trash",
