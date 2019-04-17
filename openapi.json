@@ -556,7 +556,7 @@
                         "$ref": "#/components/schemas/Parent"
                       },
                       {
-                        "description": "The parent folder for the new file"
+                        "description": "The parent folder to upload the file to"
                       }
                     ]
                   }
@@ -571,19 +571,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "description": "The details for the upload session for the file.",
-                  "properties": {
-                    "upload_url": {
-                      "type": "string",
-                      "example": "https://upload-las.app.box.com/api/2.0/files/content?\\\nupload_session_id=1234",
-                      "description": "A URL for an upload session that can be used to upload\nthe file."
-                    },
-                    "upload_token": {
-                      "type": "string",
-                      "example": "Pc3FIOG9vSGV4VHo4QzAyg5T1JvNnJoZ3ExaVNyQWw6WjRsanRKZG5lQk9qUE1BVQP",
-                      "description": "An optional access token to use to upload the file"
-                    }
-                  }
+                  "$ref": "#/components/schemas/UploadUrl"
                 }
               }
             }
@@ -3220,7 +3208,7 @@
         }
       },
       "AssignmentCounts": {
-        "x-box-resource-id": "_assignment_counts",
+        "x-box-resource-id": "assignment_counts",
         "description": "Counts of assignments within this a legal hold policy by item type",
         "properties": {
           "user": {
@@ -3393,7 +3381,7 @@
         ]
       },
       "Collaborations": {
-        "x-box-resource-id": "collaboration_collection",
+        "x-box-resource-id": "collaborations",
         "description": "A list of collaborations",
         "x-box-reference-category": "collaborations",
         "allOf": [
@@ -3503,6 +3491,7 @@
       },
       "Comment": {
         "x-box-resource-id": "comment",
+        "x-box-reference-category": "comments",
         "description": "Comments are messages created on files. Comments\ncan be made independently or created as responses to other\ncomments",
         "type": "object",
         "allOf": [
@@ -3521,7 +3510,7 @@
         ]
       },
       "Comments": {
-        "x-box-resource-id": "comment_collection",
+        "x-box-resource-id": "comments",
         "description": "A list of comments",
         "x-box-reference-category": "comments",
         "allOf": [
@@ -4167,7 +4156,7 @@
         ]
       },
       "FileScope": {
-        "x-box-resource-id": "_file_scope",
+        "x-box-resource-id": "file_scope",
         "description": "A relation between a file and the scopes for which the file can be accessed",
         "properties": {
           "scope": {
@@ -4204,6 +4193,7 @@
       },
       "FileVersion": {
         "x-box-resource-id": "file_version",
+        "x-box-reference-category": "file_versions",
         "description": "A full representation of a file version",
         "allOf": [
           {
@@ -4261,7 +4251,7 @@
         ]
       },
       "FileVersions": {
-        "x-box-resource-id": "file_version_collection",
+        "x-box-resource-id": "file_versions",
         "description": "A list of file versions",
         "x-box-reference-category": "file_versions",
         "allOf": [
@@ -4809,7 +4799,7 @@
         ]
       },
       "ItemReference": {
-        "x-box-resource-id": "_item_reference",
+        "x-box-resource-id": "item_reference",
         "description": "A generic mini representation of a file, folder, user or enterprise",
         "allOf": [
           {
@@ -4837,7 +4827,7 @@
         ]
       },
       "ItemReferences": {
-        "x-box-resource-id": "item_reference_collection",
+        "x-box-resource-id": "item_references",
         "description": "A list of generic mini representations of a file, folder, user or enterprise",
         "allOf": [
           {
@@ -5132,7 +5122,7 @@
         }
       },
       "MarkerPagination": {
-        "x-box-resource-id": "_marker_pagination",
+        "x-box-resource-id": "marker_pagination",
         "description": "The part of an API response that describes marker\nbased pagination",
         "properties": {
           "limit": {
@@ -5158,6 +5148,7 @@
       "Metadata": {
         "x-box-resource-id": "metadata",
         "description": "A piece of metadata as specified by a metadata template and\napplied to a file or folder.",
+        "x-box-reference-category": "metadata",
         "properties": {
           "$canEdit": {
             "type": "boolean",
@@ -5203,7 +5194,7 @@
         }
       },
       "Metadatas": {
-        "x-box-resource-id": "metadata_collection",
+        "x-box-resource-id": "metadatas",
         "description": "A list of metadata",
         "x-box-reference-category": "metadata",
         "properties": {
@@ -5313,6 +5304,7 @@
       },
       "MetadataTemplate": {
         "x-box-resource-id": "metadata_template",
+        "x-box-reference-category": "metadata_templates",
         "description": "A template for metadata that can be applied to files and folders",
         "allOf": [
           {
@@ -5330,7 +5322,7 @@
         ]
       },
       "MetadataTemplates": {
-        "x-box-resource-id": "metadata_templates_collection",
+        "x-box-resource-id": "metadata_templates",
         "description": "A list of metadata templates",
         "x-box-reference-category": "metadata_templates",
         "allOf": [
@@ -5387,7 +5379,7 @@
         }
       },
       "MetadataTemplateField": {
-        "x-box-resource-id": "_metadata_template_field",
+        "x-box-resource-id": "metadata_template_field",
         "description": "An ordered set of key-value pairs that are part of a\nmetadata template",
         "properties": {
           "type": {
@@ -5433,7 +5425,7 @@
         }
       },
       "MetadataTemplateFieldOption": {
-        "x-box-resource-id": "_metadata_template_field_option",
+        "x-box-resource-id": "metadata_template_field_option",
         "description": "For type `enum` and `multiSelect`, one of the potential values\nthat can be selected",
         "properties": {
           "id": {
@@ -5541,7 +5533,7 @@
         }
       },
       "Pagination": {
-        "x-box-resource-id": "_pagination",
+        "x-box-resource-id": "pagination",
         "description": "The part of an API response that describes pagination",
         "properties": {
           "total_count": {
@@ -5572,7 +5564,7 @@
         }
       },
       "PaginationOrder": {
-        "x-box-resource-id": "_pagination_order",
+        "x-box-resource-id": "pagination_order",
         "description": "The order in which a pagination is ordered",
         "properties": {
           "by": {
@@ -5592,7 +5584,7 @@
         }
       },
       "Parent": {
-        "x-box-resource-id": "_parent",
+        "x-box-resource-id": "parent",
         "description": "The parent for this item",
         "properties": {
           "id": {
@@ -5603,7 +5595,7 @@
         }
       },
       "Permissions": {
-        "x-box-resource-id": "_permissions",
+        "x-box-resource-id": "permissions",
         "description": "The part of an API response that describes permissions",
         "properties": {
           "can_access": {
@@ -5688,7 +5680,7 @@
         }
       },
       "Reference": {
-        "x-box-resource-id": "_reference",
+        "x-box-resource-id": "reference",
         "description": "The bare basic reference for an object",
         "properties": {
           "id": {
@@ -6201,6 +6193,7 @@
       },
       "Task": {
         "x-box-resource-id": "task",
+        "x-box-reference-category": "tasks",
         "description": "Tasks enabled file-centric workflows in Box. Users can\ncreate tasks on files and assign them to collaborators on\nBox.",
         "allOf": [
           {
@@ -6273,7 +6266,7 @@
         ]
       },
       "Tasks": {
-        "x-box-resource-id": "tasks_collection",
+        "x-box-resource-id": "tasks",
         "description": "A list of tasks",
         "x-box-reference-category": "tasks",
         "properties": {
@@ -6369,7 +6362,7 @@
         ]
       },
       "TaskAssignments": {
-        "x-box-resource-id": "task_assignment_collection",
+        "x-box-resource-id": "task_assignments",
         "type": "object",
         "description": "A list of task assignments",
         "allOf": [
@@ -6617,6 +6610,23 @@
           }
         }
       },
+      "UploadUrl": {
+        "x-box-resource-id": "upload_url",
+        "x-box-reference-category": "files",
+        "description": "The details for the upload session for the file.",
+        "properties": {
+          "upload_url": {
+            "type": "string",
+            "example": "https://upload-las.app.box.com/api/2.0/files/content?upload_session_id=1234",
+            "description": "A URL for an upload session that can be used to upload\nthe file."
+          },
+          "upload_token": {
+            "type": "string",
+            "example": "Pc3FIOG9vSGV4VHo4QzAyg5T1JvNnJoZ3ExaVNyQWw6WjRsanRKZG5lQk9qUE1BVQP",
+            "description": "An optional access token to use to upload the file"
+          }
+        }
+      },
       "User": {
         "x-box-resource-id": "user",
         "description": "A full representation of a user, as can be returned from any\nuser API endpoints by default",
@@ -6841,7 +6851,7 @@
         }
       },
       "WatermarkInfo": {
-        "x-box-resource-id": "_watermark_info",
+        "x-box-resource-id": "watermark_info",
         "description": "The watermark information about this item",
         "properties": {
           "is_watermarked": {
