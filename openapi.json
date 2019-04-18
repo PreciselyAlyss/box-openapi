@@ -228,16 +228,6 @@
                 }
               }
             }
-          },
-          "default": {
-            "description": "A client error can occur of the user does not have access to the file,\nthe file does not exists, or incorrect parameters are passed in the\nrequest.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClientError"
-                }
-              }
-            }
           }
         }
       },
