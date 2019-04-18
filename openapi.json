@@ -501,16 +501,6 @@
                 }
               }
             }
-          },
-          "default": {
-            "description": "Download file error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClientError"
-                }
-              }
-            }
           }
         }
       }
