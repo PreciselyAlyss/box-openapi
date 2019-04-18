@@ -4485,6 +4485,197 @@
           }
         }
       }
+    },
+    "/web_links": {
+      "post": {
+        "operationId": "post_web_links",
+        "summary": "Create a web link",
+        "tags": [
+          "Web Links"
+        ],
+        "x-box-reference-category": "web_links",
+        "description": "Creates a web link object within a folder.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "parent",
+                  "url"
+                ],
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "example": "https://box.com",
+                    "description": "The URL that the web link points to. Must start with\n`\"http://\"` or `\"https://\"`."
+                  },
+                  "parent": {
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/Parent"
+                      },
+                      {
+                        "description": "The parent folder to put the web link in"
+                      }
+                    ]
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "Box Website",
+                    "description": "Name of the web link. Defaults to the URL if not set."
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "Cloud Content Management",
+                    "description": "Description of the web link."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns the newly created web link object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebLink"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/web_links/{web_link_id}": {
+      "get": {
+        "operationId": "get_web_links_id",
+        "summary": "Get a web link",
+        "tags": [
+          "Web Links"
+        ],
+        "x-box-reference-category": "web_links",
+        "description": "Retrieve information about a web link.",
+        "parameters": [
+          {
+            "name": "web_link_id",
+            "description": "The ID of the web link.",
+            "example": "12345",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the web link object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebLink"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "put_web_links_id",
+        "summary": "Update a web link",
+        "tags": [
+          "Web Links"
+        ],
+        "x-box-reference-category": "web_links",
+        "description": "Updates a web link object.",
+        "parameters": [
+          {
+            "name": "web_link_id",
+            "description": "The ID of the web link.",
+            "example": "12345",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "example": "https://box.com",
+                    "description": "The new URL that the web link points to. Must start with\n`\"http://\"` or `\"https://\"`."
+                  },
+                  "parent": {
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/Parent"
+                      },
+                      {
+                        "description": "The new parent folder to put the web link in.\nUse this to move the web link to a different folder."
+                      }
+                    ]
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "Box Website",
+                    "description": "A new name for the web link. Defaults to the URL if not set."
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "Cloud Content Management",
+                    "description": "A new description of the web link."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns the updated web link object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebLink"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "delete_web_links_id",
+        "summary": "Delete a web link",
+        "tags": [
+          "Web Links"
+        ],
+        "x-box-reference-category": "web_links",
+        "description": "Deletes a web link.",
+        "parameters": [
+          {
+            "name": "web_link_id",
+            "description": "The ID of the web link.",
+            "example": "12345",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "An empty response will be returned when the web link\nwas successfully deleted."
+          }
+        }
+      }
     }
   },
   "components": {
@@ -8443,6 +8634,7 @@
       "WebLink": {
         "x-box-resource-id": "web_link",
         "description": "Web links are objects that point to URLs. These objects\nare also known as bookmarks within the Box web application.\n\nWeb link objects are treated similarly to file objects,\nthey will also support most actions that apply to regular files.",
+        "x-box-reference-category": "web_links",
         "allOf": [
           {
             "$ref": "#/components/schemas/Item"
@@ -8605,6 +8797,10 @@
     {
       "name": "Tasks",
       "x-box-reference-category": "tasks"
+    },
+    {
+      "name": "Web Links",
+      "x-box-reference-category": "web_links"
     }
   ]
 }
