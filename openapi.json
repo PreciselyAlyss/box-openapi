@@ -1021,16 +1021,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "fields",
-            "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.",
-            "in": "query",
-            "example": "id,type,name",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "responses": {
@@ -1040,16 +1030,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Tasks"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "A client error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClientError"
                 }
               }
             }
@@ -2508,16 +2488,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Metadatas"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Generic client error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClientError"
                 }
               }
             }
@@ -4095,6 +4065,443 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/tasks": {
+      "post": {
+        "operationId": "post_tasks",
+        "tags": [
+          "Tasks"
+        ],
+        "summary": "Create a task",
+        "x-box-reference-category": "tasks",
+        "description": "Creates a single task on a file.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "item",
+                  "action"
+                ],
+                "properties": {
+                  "item": {
+                    "type": "object",
+                    "description": "The file to attach the task to.",
+                    "required": [
+                      "id",
+                      "type"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "The ID of the file",
+                        "example": "11446498"
+                      },
+                      "type": {
+                        "type": "string",
+                        "description": "The type of the item to attach this task to.",
+                        "example": "file",
+                        "enum": [
+                          "file"
+                        ]
+                      }
+                    }
+                  },
+                  "action": {
+                    "type": "string",
+                    "description": "The action the task assignee will be prompted to complete.\n\nCurrently only `review` is supported. This will provide the\nassigned user the ability to approve or reject the\nassociated request.",
+                    "example": "review",
+                    "enum": [
+                      "review"
+                    ]
+                  },
+                  "message": {
+                    "type": "string",
+                    "description": "An optional message to include with the task",
+                    "example": "Please review"
+                  },
+                  "due_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "When the task is due",
+                    "example": "2012-12-12T10:53:43-08:00"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Returns a new task object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Task"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tasks/{task_id}": {
+      "get": {
+        "operationId": "get_tasks_id",
+        "summary": "Get a task",
+        "tags": [
+          "Tasks"
+        ],
+        "x-box-reference-category": "tasks",
+        "description": "Fetches a specific task.",
+        "parameters": [
+          {
+            "name": "task_id",
+            "description": "The ID of the task.",
+            "example": "12345",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a task object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Task"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "put_tasks_id",
+        "tags": [
+          "Tasks"
+        ],
+        "summary": "Update a task",
+        "x-box-reference-category": "tasks",
+        "description": "Updates a specific task.",
+        "parameters": [
+          {
+            "name": "task_id",
+            "description": "The ID of the task.",
+            "example": "12345",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "item",
+                  "action"
+                ],
+                "properties": {
+                  "action": {
+                    "type": "string",
+                    "description": "The action the task assignee will be prompted to complete.\n\nCurrently only `review` is supported. This will provide the\nassigned user the ability to approve or reject the\nassociated request.",
+                    "example": "review",
+                    "enum": [
+                      "review"
+                    ]
+                  },
+                  "message": {
+                    "type": "string",
+                    "description": "The message included with the task",
+                    "example": "Please review"
+                  },
+                  "due_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "When the task is due",
+                    "example": "2012-12-12T10:53:43-08:00"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns the updated task object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Task"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "delete_tasks_id",
+        "tags": [
+          "Tasks"
+        ],
+        "summary": "Delete a task",
+        "x-box-reference-category": "tasks",
+        "description": "Deletes a specific task.",
+        "parameters": [
+          {
+            "name": "task_id",
+            "description": "The ID of the task.",
+            "example": "12345",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "An empty response will be returned when the task was successfully deleted."
+          }
+        }
+      }
+    },
+    "/tasks/{task_id}/assignments": {
+      "get": {
+        "operationId": "get_tasks_id_assignments",
+        "summary": "Get task assignments",
+        "tags": [
+          "Tasks"
+        ],
+        "x-box-reference-category": "tasks",
+        "description": "Retrieves all of the assignments for a given task.",
+        "parameters": [
+          {
+            "name": "task_id",
+            "description": "The ID of the task.",
+            "example": "12345",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a collection of task assignment specifying what task on\na file has been assigned to which users and by who.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskAssignments"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/task_assignments": {
+      "post": {
+        "operationId": "post_task_assignments",
+        "summary": "Create task assignment",
+        "tags": [
+          "Tasks"
+        ],
+        "x-box-reference-category": "tasks",
+        "description": "Assigns a task to a user.\n\nMultiple assignments to different users\nare allowed per task.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "task",
+                  "assign_to"
+                ],
+                "properties": {
+                  "task": {
+                    "type": "object",
+                    "description": "The task to assign to a user.",
+                    "required": [
+                      "id",
+                      "type"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "The ID of the task",
+                        "example": "11446498"
+                      },
+                      "type": {
+                        "type": "string",
+                        "description": "The type of the item to assign.",
+                        "example": "task",
+                        "enum": [
+                          "task"
+                        ]
+                      }
+                    }
+                  },
+                  "assign_to": {
+                    "type": "object",
+                    "description": "The user to assign the task to.",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "The ID of the user to assign to the\ntask.\n\nTo specify a user by their email\naddress use the `login` parameter.",
+                        "example": "3242343"
+                      },
+                      "login": {
+                        "type": "string",
+                        "description": "The email address of the user to assign to the task.\nTo specify a user by their user ID please use the `id` parameter.",
+                        "example": "john@example.com"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Returns a new task assignment object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskAssignment"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/task_assignments/{task_assignment_id}": {
+      "get": {
+        "operationId": "get_task_assignments_id",
+        "summary": "Get task assignment",
+        "tags": [
+          "Tasks"
+        ],
+        "x-box-reference-category": "tasks",
+        "description": "Fetches a specific task assignment.",
+        "parameters": [
+          {
+            "name": "task_assignment_id",
+            "description": "The ID of the task assignment.",
+            "example": "12345",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the requested task assignment, specifying who\nthe task has been assigned to and by whom.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskAssignment"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "put_task_assignments_id",
+        "summary": "Update task assignment",
+        "tags": [
+          "Tasks"
+        ],
+        "x-box-reference-category": "tasks",
+        "description": "Updates a task assignment. This endpoint can be\nused to update the state of a task.",
+        "parameters": [
+          {
+            "name": "task_assignment_id",
+            "description": "The ID of the task assignment.",
+            "example": "12345",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "message": {
+                    "type": "string",
+                    "description": "A message from the assignee about this task",
+                    "example": "Please review"
+                  },
+                  "resolution_state": {
+                    "type": "string",
+                    "description": "The state of the task. This can be used to\nmark the task as completed.",
+                    "example": "completed",
+                    "enum": [
+                      "completed",
+                      "incomplete",
+                      "approved",
+                      "rejected"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns the updated task assignment object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskAssignment"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "delete_task_assignments_id",
+        "summary": "Delete task assignment",
+        "tags": [
+          "Tasks"
+        ],
+        "x-box-reference-category": "tasks",
+        "description": "Deletes a specific task assignment.",
+        "parameters": [
+          {
+            "name": "task_assignment_id",
+            "description": "The ID of the task assignment.",
+            "example": "12345",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "An empty response will be returned when the task\nassignment was successfully deleted."
           }
         }
       }
@@ -7220,7 +7627,7 @@
       "Task": {
         "x-box-resource-id": "task",
         "x-box-reference-category": "tasks",
-        "description": "Tasks enabled file-centric workflows in Box. Users can\ncreate tasks on files and assign them to collaborators on\nBox.",
+        "description": "Tasks allow for file-centric workflows in Box. Users can\ncreate tasks on files and assign them to collaborators on\nBox.",
         "allOf": [
           {
             "$ref": "#/components/schemas/Reference"
@@ -7312,6 +7719,7 @@
       },
       "TaskAssignment": {
         "x-box-resource-id": "task_assignment",
+        "x-box-reference-category": "tasks",
         "description": "An assignment of a task to a file and user",
         "allOf": [
           {
@@ -7389,6 +7797,7 @@
       },
       "TaskAssignments": {
         "x-box-resource-id": "task_assignments",
+        "x-box-reference-category": "tasks",
         "type": "object",
         "description": "A list of task assignments",
         "allOf": [
