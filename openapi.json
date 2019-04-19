@@ -6093,6 +6093,7 @@
       },
       "EmailAlias": {
         "x-box-resource-id": "users",
+        "x-box-reference-category": "users",
         "description": "An email alias for a user.",
         "type": "object",
         "allOf": [
@@ -9261,6 +9262,7 @@
       },
       "Users": {
         "x-box-resource-id": "users",
+        "x-box-reference-category": "users",
         "description": "A list of users.",
         "allOf": [
           {
