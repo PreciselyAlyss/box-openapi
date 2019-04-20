@@ -620,8 +620,9 @@
                 "properties": {
                   "name": {
                     "type": "string",
-                    "description": "An optional different name for the new file",
-                    "example": "FileCopy.txt"
+                    "description": "An optional different name for the new file.\n\nNames can only contain basic, printable\nASCII characters, without any slashes or\ntrailing spaces.\n\nBot `.` and `..` are protected names.",
+                    "example": "FileCopy.txt",
+                    "maxLength": 255
                   },
                   "version": {
                     "type": "string",
