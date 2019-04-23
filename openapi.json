@@ -6414,7 +6414,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/StoragePolicies"
+                  "$ref": "#/components/schemas/StoragePolicyAssignments"
                 }
               }
             }
@@ -9816,6 +9816,7 @@
       },
       "StoragePolicy": {
         "x-box-resource-id": "storage_policy",
+        "x-box-reference-category": "multizones",
         "description": "The Storage Policy object describes the storage zone.",
         "allOf": [
           {
@@ -9867,6 +9868,7 @@
       },
       "StoragePolicyAssignment": {
         "x-box-resource-id": "storage_policy_assignment",
+        "x-box-reference-category": "multizones",
         "description": "The assignment of a storage policy to a user or enterprise",
         "properties": {
           "storage_policy": {
@@ -9897,6 +9899,26 @@
             ]
           }
         }
+      },
+      "StoragePolicyAssignments": {
+        "x-box-resource-id": "storage_policy_assignments",
+        "x-box-reference-category": "multizones",
+        "description": "A list of storage policy assignments.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/MarkerPagination"
+          },
+          {
+            "properties": {
+              "entries": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/StoragePolicyAssignment"
+                }
+              }
+            }
+          }
+        ]
       },
       "Task": {
         "x-box-resource-id": "task",
@@ -10933,6 +10955,10 @@
     {
       "name": "Groups",
       "x-box-reference-category": "groups"
+    },
+    {
+      "name": "Collaboration Whitelists",
+      "x-box-reference-category": "collaboration_whitelists"
     },
     {
       "name": "Multi Zones",
