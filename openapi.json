@@ -8035,7 +8035,7 @@
         ]
       },
       "GroupMemberships": {
-        "x-box-resource-id": "groups",
+        "x-box-resource-id": "group_memberships",
         "x-box-reference-category": "groups",
         "description": "A list of group memberships.",
         "allOf": [
