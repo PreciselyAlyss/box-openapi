@@ -6268,6 +6268,520 @@
         }
       }
     },
+    "/device_pinners/{device_pinner_id}": {
+      "get": {
+        "operationId": "get_device_pinners_id",
+        "summary": "Get device pin",
+        "tags": [
+          "Device Pins"
+        ],
+        "x-box-reference-category": "device_pins",
+        "description": "Retrieves information about an individual device pin.",
+        "parameters": [
+          {
+            "name": "device_pinner_id",
+            "description": "The ID of the device pin",
+            "in": "path",
+            "required": true,
+            "example": "2324234",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns information about a single device pin.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DevicePinner"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "delete_device_pinners_id",
+        "summary": "Delete device pin",
+        "tags": [
+          "Device Pins"
+        ],
+        "x-box-reference-category": "device_pins",
+        "description": "Deletes an individual device pin.",
+        "parameters": [
+          {
+            "name": "device_pinner_id",
+            "description": "The ID of the device pin",
+            "in": "path",
+            "required": true,
+            "example": "2324234",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Returns an empty response when the pin has been deleted."
+          }
+        }
+      }
+    },
+    "/enterprises/{enterprise_id}/device_pinners": {
+      "get": {
+        "operationId": "get_enterprises_id_device_pinners",
+        "summary": "Get enterprise device pins",
+        "tags": [
+          "Device Pins"
+        ],
+        "x-box-reference-category": "device_pins",
+        "description": "Retrieves all the device pins within an enterprise.\n\nThe user must have admin privileges, and the application\nneeds the `manage enterprise` scope to make this call.",
+        "parameters": [
+          {
+            "name": "enterprise_id",
+            "description": "The ID of the enterprise",
+            "in": "path",
+            "required": true,
+            "example": "3442311",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "marker",
+            "description": "The position marker at which to begin the response.",
+            "in": "query",
+            "required": false,
+            "example": 1234,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "limit",
+            "description": "The maximum number of items to return per page.",
+            "in": "query",
+            "required": false,
+            "example": 1000,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": 100,
+              "maximum": 1000
+            }
+          },
+          {
+            "name": "direction",
+            "description": "The sorting direction",
+            "in": "query",
+            "required": false,
+            "example": "ASC",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ASC",
+                "DESC"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a list of device pins for a given enterprise.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DevicePinners"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/terms_of_services": {
+      "get": {
+        "operationId": "get_terms_of_services",
+        "x-box-reference-category": "terms_of_services",
+        "summary": "Get all terms of services",
+        "tags": [
+          "Terms of Service"
+        ],
+        "description": "Returns the current terms of service text and settings\nfor the enterprise.",
+        "parameters": [
+          {
+            "name": "tos_type",
+            "description": "Limits the results to the terms of service of the given type.",
+            "in": "query",
+            "required": false,
+            "example": "managed",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "external",
+                "managed"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a collection of terms of service text and settings for the\nenterprise.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TermsOfServices"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "post_terms_of_services",
+        "tags": [
+          "Terms of Service"
+        ],
+        "summary": "Create a terms of service",
+        "x-box-reference-category": "terms_of_services",
+        "description": "Creates a terms of service for a given enterprise\nand type of user.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "status",
+                  "action",
+                  "text"
+                ],
+                "properties": {
+                  "status": {
+                    "description": "Whether this terms of service is active.",
+                    "example": "enabled",
+                    "type": "string",
+                    "enum": [
+                      "enabled",
+                      "disabled"
+                    ]
+                  },
+                  "tos_type": {
+                    "description": "The type of user to set the terms of\nservice for.",
+                    "example": "managed",
+                    "type": "string",
+                    "enum": [
+                      "external",
+                      "managed"
+                    ]
+                  },
+                  "text": {
+                    "description": "The terms of service text to display to users.\n\nThe text can be set to empty if the `status` is set to `disabled`.",
+                    "example": "By collaborating on this file you are accepting...",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns a new task object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Task"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/terms_of_services/{terms_of_service_id}": {
+      "get": {
+        "operationId": "get_terms_of_services_id",
+        "summary": "Get a terms of service",
+        "tags": [
+          "Terms of Service"
+        ],
+        "x-box-reference-category": "terms_of_services",
+        "description": "Fetches a specific terms of service.",
+        "parameters": [
+          {
+            "name": "terms_of_service_id",
+            "description": "The ID of the terms of service.",
+            "example": "324234",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a terms of service object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TermsOfService"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "put_terms_of_services_id",
+        "summary": "Update a terms of service",
+        "tags": [
+          "Terms of Service"
+        ],
+        "x-box-reference-category": "terms_of_services",
+        "description": "Updates a specific terms of service.",
+        "parameters": [
+          {
+            "name": "terms_of_service_id",
+            "description": "The ID of the terms of service.",
+            "example": "324234",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "status",
+                  "action",
+                  "text"
+                ],
+                "properties": {
+                  "status": {
+                    "description": "Whether this terms of service is active.",
+                    "example": "enabled",
+                    "type": "string",
+                    "enum": [
+                      "enabled",
+                      "disabled"
+                    ]
+                  },
+                  "text": {
+                    "description": "The terms of service text to display to users.\n\nThe text can be set to empty if the `status` is set to `disabled`.",
+                    "example": "By collaborating on this file you are accepting...",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns an updated terms of service object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TermsOfService"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/terms_of_service_user_statuses": {
+      "get": {
+        "operationId": "get_terms_of_service_user_statuses",
+        "summary": "Get terms of service status",
+        "tags": [
+          "Terms of Service"
+        ],
+        "x-box-reference-category": "terms_of_services",
+        "description": "Retrieves an overview of users and their status for a\nterms of service, including Whether they have accepted\nthe terms and when.",
+        "parameters": [
+          {
+            "name": "tos_id",
+            "description": "The ID of the terms of service.",
+            "example": "324234",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "user_id",
+            "description": "Limits results to the given user ID.",
+            "example": "123334",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a list of terms of service statuses.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TermsOfServiceUserStatuses"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "post_terms_of_service_user_statuses",
+        "summary": "Set user's terms of service status",
+        "tags": [
+          "Terms of Service"
+        ],
+        "x-box-reference-category": "terms_of_services",
+        "description": "Sets the status for a terms of service for a user.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "tos",
+                  "user",
+                  "is_accepted"
+                ],
+                "properties": {
+                  "tos": {
+                    "type": "object",
+                    "description": "The terms of service to set the status for.",
+                    "required": [
+                      "id",
+                      "type"
+                    ],
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "description": "The type of object.",
+                        "example": "terms_of_service",
+                        "enum": [
+                          "terms_of_service"
+                        ]
+                      },
+                      "id": {
+                        "type": "string",
+                        "description": "The ID of terms of service",
+                        "example": "1232132"
+                      }
+                    }
+                  },
+                  "user": {
+                    "type": "object",
+                    "description": "The user to set the status for.",
+                    "required": [
+                      "id",
+                      "type"
+                    ],
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "description": "The type of object.",
+                        "example": "user",
+                        "enum": [
+                          "user"
+                        ]
+                      },
+                      "id": {
+                        "type": "string",
+                        "description": "The ID of user",
+                        "example": "3423423"
+                      }
+                    }
+                  },
+                  "is_accepted": {
+                    "type": "boolean",
+                    "example": true,
+                    "description": "Whether the user has accepted the terms."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns a terms of service status object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TermsOfServiceUserStatus"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/terms_of_service_user_statuses/{terms_of_service_user_status_id}": {
+      "put": {
+        "operationId": "put_terms_of_service_user_statuses_id",
+        "summary": "Update user's terms of service status",
+        "tags": [
+          "Terms of Service"
+        ],
+        "x-box-reference-category": "terms_of_services",
+        "description": "Updates the status for a terms of service for a user.",
+        "parameters": [
+          {
+            "name": "terms_of_service_user_status_id",
+            "description": "The ID of the terms of service status.",
+            "example": "324234",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "is_accepted"
+                ],
+                "properties": {
+                  "is_accepted": {
+                    "type": "boolean",
+                    "example": true,
+                    "description": "Whether the user has accepted the terms."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns the updated terms of service status object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TermsOfServiceUserStatus"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/collaboration_whitelist_entries": {
       "get": {
         "operationId": "get_collaboration_whitelist_entries",
@@ -7206,6 +7720,16 @@
                 "format": "date-time",
                 "example": "2012-12-12T10:53:43-08:00",
                 "description": "When the collaboration object was last modified"
+              },
+              "acceptance_requirements": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/TermsOfService--Mini"
+                  },
+                  {
+                    "description": "The terms of service for the collaboration"
+                  }
+                ]
               }
             }
           }
@@ -7531,6 +8055,26 @@
                 "format": "date-time",
                 "description": "The time the device pin was modified",
                 "example": "2012-12-12T10:53:43-08:00"
+              }
+            }
+          }
+        ]
+      },
+      "DevicePinners": {
+        "x-box-resource-id": "device_pinners",
+        "description": "A list of device pins",
+        "x-box-reference-category": "device_pins",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/MarkerPagination"
+          },
+          {
+            "properties": {
+              "entries": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/DevicePinner"
+                }
               }
             }
           }
@@ -10530,6 +11074,25 @@
           }
         ]
       },
+      "TermsOfServices": {
+        "x-box-resource-id": "terms_of_services",
+        "description": "A list of terms of services",
+        "x-box-reference-category": "terms_of_services",
+        "properties": {
+          "total_count": {
+            "description": "The total number of objects.",
+            "example": 2,
+            "type": "integer",
+            "format": "int64"
+          },
+          "entries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TermsOfService"
+            }
+          }
+        }
+      },
       "TermsOfService--Mini": {
         "x-box-resource-id": "terms_of_service--mini",
         "description": "The root-level record that is supposed to represent a\nsingle Terms of Service.",
@@ -10545,6 +11108,7 @@
       },
       "TermsOfServiceUserStatus": {
         "x-box-resource-id": "terms_of_service_user_status",
+        "x-box-reference-category": "terms_of_services",
         "description": "The association between a Terms of Service and a user",
         "allOf": [
           {
@@ -10592,6 +11156,25 @@
             }
           }
         ]
+      },
+      "TermsOfServiceUserStatuses": {
+        "x-box-resource-id": "terms_of_services_user_statuses",
+        "description": "A list of terms of service user statuses",
+        "x-box-reference-category": "terms_of_services",
+        "properties": {
+          "total_count": {
+            "description": "The total number of objects.",
+            "example": 2,
+            "type": "integer",
+            "format": "int64"
+          },
+          "entries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TermsOfServiceUserStatus"
+            }
+          }
+        }
       },
       "TokenRequest": {
         "x-box-resource-id": "token_request",
@@ -11315,6 +11898,14 @@
     {
       "name": "Groups",
       "x-box-reference-category": "groups"
+    },
+    {
+      "name": "Device Pins",
+      "x-box-reference-category": "device_pins"
+    },
+    {
+      "name": "Terms of Service",
+      "x-box-reference-category": "terms_of_services"
     },
     {
       "name": "Collaboration Whitelist",
