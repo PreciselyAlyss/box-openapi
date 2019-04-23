@@ -6268,6 +6268,596 @@
         }
       }
     },
+    "/legal_hold_policies": {
+      "get": {
+        "operationId": "get_legal_hold_policies",
+        "summary": "Get all legal hold policies",
+        "tags": [
+          "Legal Hold Policies"
+        ],
+        "x-box-reference-category": "legal_hold_policies",
+        "description": "Retrieves a list of legal hold policies that belong to\nan enterprise.",
+        "parameters": [
+          {
+            "name": "policy_name",
+            "description": "Limits results to policies for which the names start with\nthis search term. This is a case-insensitive prefix.",
+            "in": "query",
+            "example": "Sales Policy",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.",
+            "in": "query",
+            "example": "id,type,name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "marker",
+            "description": "The position marker at which to begin the response.",
+            "in": "query",
+            "required": false,
+            "example": 1234,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "limit",
+            "description": "The maximum number of items to return per page.",
+            "in": "query",
+            "required": false,
+            "example": 1000,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": 100,
+              "maximum": 1000
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a list of legal hold policies.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LegalHoldPolicies"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "post_legal_hold_policies",
+        "summary": "Create legal hold policy",
+        "tags": [
+          "Legal Hold Policies"
+        ],
+        "x-box-reference-category": "legal_hold_policies",
+        "description": "Create a new legal hold policy.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "policy_name"
+                ],
+                "properties": {
+                  "policy_name": {
+                    "description": "The name of the policy.",
+                    "example": "Sales Policy",
+                    "type": "string",
+                    "maxLength": 254
+                  },
+                  "description": {
+                    "description": "A description for the policy.",
+                    "example": "A custom policy for the sales team",
+                    "type": "string",
+                    "maxLength": 500
+                  },
+                  "filter_started_at": {
+                    "description": "The filter start date.\n\nWhen this policy is applied using a `custodian` legal\nhold assignments, it will only apply to file versions\ncreated or uploaded inside of the\ndate range. Other assignment types, such as folders and\nfiles, will ignore the date filter.\n\nRequired if `is_ongoing` is set to `false`.",
+                    "example": "2012-12-12T10:53:43-08:00",
+                    "type": "string",
+                    "maxLength": 500,
+                    "format": "date-time"
+                  },
+                  "filter_ended_at": {
+                    "description": "The filter end date.\n\nWhen this policy is applied using a `custodian` legal\nhold assignments, it will only apply to file versions\ncreated or uploaded inside of the\ndate range. Other assignment types, such as folders and\nfiles, will ignore the date filter.\n\nRequired if `is_ongoing` is set to `false`.",
+                    "example": "2012-12-18T10:53:43-08:00",
+                    "type": "string",
+                    "maxLength": 500,
+                    "format": "date-time"
+                  },
+                  "is_ongoing": {
+                    "description": "Whether new assignments under this policy should\ncontinue applying to files even after initialization.\n\nWhen this policy is applied using a legal hold assignment,\nit will continue applying the policy to any new file versions\neven after it has been applied.\n\nFor example, if a legal hold assignment is placed on a user\ntoday, and that user uploads a file tomorrow, that file will\nget held. This will continue until the policy is retired.\n\nRequired if no filter dates are set.",
+                    "example": true,
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Returns a new legal hold policy object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LegalHoldPolicy"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Returns an error if required parameters are missing,\nor neither `is_ongoing` or filter dates are specified.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LegalHoldPolicy"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returns an error if a policy with this name already exists.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/legal_hold_policies/{legal_hold_policy_id}": {
+      "get": {
+        "operationId": "get_legal_hold_policies_id",
+        "summary": "Get legal hold policy",
+        "tags": [
+          "Legal Hold Policies"
+        ],
+        "x-box-reference-category": "legal_hold_policies",
+        "description": "Retrieve a legal hold policy.",
+        "parameters": [
+          {
+            "name": "legal_hold_policy_id",
+            "description": "The ID of the legal hold policy",
+            "example": "324432",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a legal hold policy object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LegalHoldPolicy"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "put_legal_hold_policies_id",
+        "summary": "Update a legal hold policy",
+        "tags": [
+          "Legal Hold Policies"
+        ],
+        "x-box-reference-category": "legal_hold_policies",
+        "description": "Update legal hold policy.",
+        "parameters": [
+          {
+            "name": "legal_hold_policy_id",
+            "description": "The ID of the legal hold policy",
+            "example": "324432",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "policy_name": {
+                    "description": "The name of the policy.",
+                    "example": "Sales Policy",
+                    "type": "string",
+                    "maxLength": 254
+                  },
+                  "description": {
+                    "description": "A description for the policy.",
+                    "example": "A custom policy for the sales team",
+                    "type": "string",
+                    "maxLength": 500
+                  },
+                  "release_notes": {
+                    "description": "Notes around why the policy was released.",
+                    "example": "Required for GDPR",
+                    "type": "string",
+                    "maxLength": 500
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns a new legal hold policy object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LegalHoldPolicy"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returns an error if a policy with this name already exists.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "delete_legal_hold_policies_id",
+        "x-box-reference-category": "legal_hold_policies",
+        "tags": [
+          "Legal Hold Policies"
+        ],
+        "summary": "Delete legal hold policy",
+        "description": "Delete an existing legal hold policy.\n\nThis is an asynchronous process. The policy will not be\nfully deleted yet when the response returns.",
+        "parameters": [
+          {
+            "name": "legal_hold_policy_id",
+            "description": "The ID of the legal hold policy",
+            "example": "324432",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "A blank response is returned if the policy was\nsuccessfully deleted."
+          }
+        }
+      }
+    },
+    "/legal_hold_policy_assignments": {
+      "get": {
+        "operationId": "get_legal_hold_policy_assignments",
+        "summary": "Get legal hold policy's assignments",
+        "tags": [
+          "Legal Hold Policies"
+        ],
+        "x-box-reference-category": "legal_hold_policies",
+        "description": "Retrieves a list of items a legal hold policy has been assigned to.",
+        "parameters": [
+          {
+            "name": "policy_id",
+            "description": "The ID of the legal hold policy",
+            "example": "324432",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "assign_to_type",
+            "description": "Filters the results by the type of item the\npolicy was applied to.",
+            "example": "file",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "file",
+                "file_version",
+                "folder",
+                "user"
+              ]
+            }
+          },
+          {
+            "name": "assign_to_id",
+            "description": "Filters the results by the ID of item the\npolicy was applied to.",
+            "example": "1234323",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "marker",
+            "description": "The position marker at which to begin the response.",
+            "in": "query",
+            "required": false,
+            "example": 1234,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "limit",
+            "description": "The maximum number of items to return per page.",
+            "in": "query",
+            "required": false,
+            "example": 1000,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": 100,
+              "maximum": 1000
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a list of legal hold policy assignments.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LegalHoldPolicyAssignment"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "post_legal_hold_policy_assignments",
+        "summary": "Create legal hold policy assignment",
+        "tags": [
+          "Legal Hold Policies"
+        ],
+        "x-box-reference-category": "legal_hold_policies",
+        "description": "Assign a legal hold to a file, file version, folder, or user.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "policy_id",
+                  "assign_to"
+                ],
+                "properties": {
+                  "policy_id": {
+                    "description": "The ID of the policy to assign.",
+                    "example": "123244",
+                    "type": "string"
+                  },
+                  "assign_to": {
+                    "type": "object",
+                    "description": "The item to assign the policy to",
+                    "required": [
+                      "type",
+                      "id"
+                    ],
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "description": "The type of item to assign the policy to",
+                        "example": "folder",
+                        "enum": [
+                          "file",
+                          "file_version",
+                          "folder",
+                          "user"
+                        ]
+                      },
+                      "id": {
+                        "type": "string",
+                        "description": "The ID of item to assign the policy to",
+                        "example": "6564564"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Returns a new legal hold policy assignment.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LegalHoldPolicyAssignment"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/legal_hold_policy_assignments/{legal_hold_policy_assignment_id}": {
+      "get": {
+        "operationId": "get_legal_hold_policy_assignments_id",
+        "summary": "Get legal hold policy assignment",
+        "tags": [
+          "Legal Hold Policies"
+        ],
+        "x-box-reference-category": "legal_hold_policies",
+        "description": "Retrieve a legal hold policy assignment.",
+        "parameters": [
+          {
+            "name": "legal_hold_policy_assignment_id",
+            "description": "The ID of the legal hold policy assignment",
+            "example": "753465",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a legal hold policy object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LegalHoldPolicyAssignment"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "delete_legal_hold_policy_assignments_id",
+        "x-box-reference-category": "legal_hold_policies",
+        "tags": [
+          "Legal Hold Policies"
+        ],
+        "summary": "Delete legal hold policy assignment",
+        "description": "Remove a legal hold from an item.\n\nThis is an asynchronous process. The policy will not be\nfully removed yet when the response returns.",
+        "parameters": [
+          {
+            "name": "legal_hold_policy_assignment_id",
+            "description": "The ID of the legal hold policy assignment",
+            "example": "753465",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "A blank response is returned if the assignment was\nsuccessfully deleted."
+          }
+        }
+      }
+    },
+    "/file_version_legal_holds/{file_id}": {
+      "get": {
+        "operationId": "get_file_version_legal_holds_id",
+        "summary": "Get a file version's legal hold",
+        "tags": [
+          "Legal Hold Policies"
+        ],
+        "x-box-reference-category": "legal_hold_policies",
+        "description": "Retrieves information about the legal hold policies\nassigned to a file version.",
+        "parameters": [
+          {
+            "name": "file_id",
+            "description": "The ID of the file.",
+            "example": "12345",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the legal hold policy assignments for the file version.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LegalHold"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/file_version_legal_holds": {
+      "get": {
+        "operationId": "get_file_version_legal_holds",
+        "summary": "Get list of file version legal holds for a policy",
+        "tags": [
+          "Legal Hold Policies"
+        ],
+        "x-box-reference-category": "legal_hold_policies",
+        "description": "Get list of non-deleted legal holds for a single legal\nhold policy.",
+        "parameters": [
+          {
+            "name": "policy_id",
+            "description": "The ID of the legal hold policy to get the file version legal\nholds for.",
+            "in": "query",
+            "example": "133870",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "marker",
+            "description": "The position marker at which to begin the response.",
+            "in": "query",
+            "required": false,
+            "example": 1234,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "limit",
+            "description": "The maximum number of items to return per page.",
+            "in": "query",
+            "required": false,
+            "example": 1000,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": 100,
+              "maximum": 1000
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the list of file version legal holds for a specific legal\nhold policy.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LegalHolds"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/device_pinners/{device_pinner_id}": {
       "get": {
         "operationId": "get_device_pinners_id",
@@ -9414,6 +10004,7 @@
       },
       "LegalHold": {
         "x-box-resource-id": "file_version_legal_hold",
+        "x-box-reference-category": "legal_hold_policies",
         "description": "File-Version-Legal-Hold is an entity representing all\nholds on a File Version.",
         "allOf": [
           {
@@ -9458,8 +10049,29 @@
           }
         ]
       },
+      "LegalHolds": {
+        "x-box-resource-id": "file_version_legal_holds",
+        "x-box-reference-category": "legal_hold_policies",
+        "description": "A list of file version legal holds.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/MarkerPagination"
+          },
+          {
+            "properties": {
+              "entries": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/LegalHold"
+                }
+              }
+            }
+          }
+        ]
+      },
       "LegalHoldPolicy": {
         "x-box-resource-id": "legal_hold_policy",
+        "x-box-reference-category": "legal_hold_policies",
         "description": "Legal Hold Policy information describes the basic\ncharacteristics of the Policy, such as name, description,\nand filter dates.",
         "allOf": [
           {
@@ -9550,6 +10162,26 @@
           }
         ]
       },
+      "LegalHoldPolicies": {
+        "x-box-resource-id": "legal_hold_policies",
+        "x-box-reference-category": "legal_hold_policies",
+        "description": "A list of legal hold policies.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/MarkerPagination"
+          },
+          {
+            "properties": {
+              "entries": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/LegalHoldPolicy"
+                }
+              }
+            }
+          }
+        ]
+      },
       "LegalHoldPolicy--Mini": {
         "x-box-resource-id": "legal_hold_policy--mini",
         "description": "A mini legal hold policy",
@@ -9565,6 +10197,7 @@
       },
       "LegalHoldPolicyAssignment": {
         "x-box-resource-id": "legal_hold_policy_assignment",
+        "x-box-reference-category": "legal_hold_policies",
         "description": "Legal Hold Assignments are used to assign Legal Hold\nPolicies to Users, Folders, Files, or File Versions.\n\nCreating a Legal Hold Assignment puts a hold\non the File-Versions that belong to the Assignment's\n'apply-to' entity.",
         "allOf": [
           {
@@ -9613,6 +10246,26 @@
                 "format": "date-time",
                 "description": "When the assignment release request was sent.\n(Because it can take time for an assignment to fully\ndelete, this isn't quite the same time that the\nassignment is fully deleted). If null, Assignment\nwas not deleted.",
                 "example": "2012-12-12T10:53:43-08:00"
+              }
+            }
+          }
+        ]
+      },
+      "LegalHoldPolicyAssignments": {
+        "x-box-resource-id": "legal_hold_policy_assignments",
+        "x-box-reference-category": "legal_hold_policies",
+        "description": "A list of legal hold policies assignments.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/MarkerPagination"
+          },
+          {
+            "properties": {
+              "entries": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/LegalHoldPolicyAssignment"
+                }
               }
             }
           }
@@ -11899,6 +12552,10 @@
     {
       "name": "Groups",
       "x-box-reference-category": "groups"
+    },
+    {
+      "name": "Legal Hold Policies",
+      "x-box-reference-category": "legal_hold_policies"
     },
     {
       "name": "Device Pins",
