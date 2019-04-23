@@ -1762,6 +1762,160 @@
         }
       }
     },
+    "/files/{file_id}/watermark": {
+      "get": {
+        "operationId": "get_files_id_watermark",
+        "summary": "Get watermark on file",
+        "tags": [
+          "Watermarks"
+        ],
+        "x-box-reference-category": "watermarks",
+        "description": "Retrieve the watermark for a file.",
+        "parameters": [
+          {
+            "name": "file_id",
+            "description": "The ID of the file.",
+            "example": "12345",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns an object containing information about the\nwatermark associated for to this file.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Watermark"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returns an error if the file does not have a watermark applied.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "put_files_id_watermark",
+        "summary": "Apply watermark to file",
+        "tags": [
+          "Watermarks"
+        ],
+        "x-box-reference-category": "watermarks",
+        "description": "Applies or update a watermark on a file.",
+        "parameters": [
+          {
+            "name": "file_id",
+            "description": "The ID of the file.",
+            "example": "12345",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "watermark"
+                ],
+                "properties": {
+                  "watermark": {
+                    "type": "object",
+                    "description": "The watermark to imprint on the file",
+                    "required": [
+                      "imprint"
+                    ],
+                    "properties": {
+                      "imprint": {
+                        "type": "string",
+                        "example": "default",
+                        "description": "The type of watermark to apply.\n\nCurrently only supports one option.",
+                        "enum": [
+                          "default"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns an updated watermark if a watermark already\nexisted on this file.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Watermark"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Returns a new watermark if no watermark existed on\nthis file yet.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Watermark"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "delete_files_id_watermark",
+        "summary": "Remove watermark from file",
+        "tags": [
+          "Watermark"
+        ],
+        "x-box-reference-category": "watermarks",
+        "description": "Removes the watermark from a file.",
+        "parameters": [
+          {
+            "name": "file_id",
+            "description": "The ID of the file.",
+            "example": "12345",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "An empty response will be returned when the watermark\nwas successfully deleted."
+          },
+          "404": {
+            "description": "Returns an error if the file did not have\na watermark applied to it",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/folders/{folder_id}": {
       "get": {
         "operationId": "get_folders_id",
@@ -2852,6 +3006,160 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Items"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/folders/{folder_id}/watermark": {
+      "get": {
+        "operationId": "get_folders_id_watermark",
+        "summary": "Get watermark on folder",
+        "tags": [
+          "Watermarks"
+        ],
+        "x-box-reference-category": "watermarks",
+        "description": "Retrieve the watermark for a folder.",
+        "parameters": [
+          {
+            "name": "folder_id",
+            "description": "The ID of the folder.\n\nThe root folder of a Box account is\nalways represented by the id `\"0\"`.",
+            "example": "12345",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns an object containing information about the\nwatermark associated for to this folder.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Watermark"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returns an error if the folder does not have a watermark applied.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "put_folders_id_watermark",
+        "summary": "Apply watermark to folder",
+        "tags": [
+          "Watermarks"
+        ],
+        "x-box-reference-category": "watermarks",
+        "description": "Applies or update a watermark on a folder.",
+        "parameters": [
+          {
+            "name": "folder_id",
+            "description": "The ID of the folder.\n\nThe root folder of a Box account is\nalways represented by the id `\"0\"`.",
+            "example": "12345",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "watermark"
+                ],
+                "properties": {
+                  "watermark": {
+                    "type": "object",
+                    "description": "The watermark to imprint on the folder",
+                    "required": [
+                      "imprint"
+                    ],
+                    "properties": {
+                      "imprint": {
+                        "type": "string",
+                        "example": "default",
+                        "description": "The type of watermark to apply.\n\nCurrently only supports one option.",
+                        "enum": [
+                          "default"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns an updated watermark if a watermark already\nexisted on this folder.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Watermark"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Returns a new watermark if no watermark existed on\nthis folder yet.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Watermark"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "delete_folders_id_watermark",
+        "summary": "Remove watermark from folder",
+        "tags": [
+          "Watermark"
+        ],
+        "x-box-reference-category": "watermarks",
+        "description": "Removes the watermark from a folder.",
+        "parameters": [
+          {
+            "name": "folder_id",
+            "description": "The ID of the folder.\n\nThe root folder of a Box account is\nalways represented by the id `\"0\"`.",
+            "example": "12345",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "An empty response will be returned when the watermark\nwas successfully deleted."
+          },
+          "404": {
+            "description": "Returns an error if the folder did not have\na watermark applied to it",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
                 }
               }
             }
@@ -13807,6 +14115,10 @@
     {
       "name": "Groups",
       "x-box-reference-category": "groups"
+    },
+    {
+      "name": "Watermarks",
+      "x-box-reference-category": "watermarks"
     },
     {
       "name": "Webhooks",
