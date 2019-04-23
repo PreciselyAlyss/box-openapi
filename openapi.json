@@ -7144,7 +7144,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LegalHoldPolicyAssignment"
+                  "$ref": "#/components/schemas/LegalHoldPolicyAssignments"
                 }
               }
             }
