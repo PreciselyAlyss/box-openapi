@@ -6268,6 +6268,166 @@
         }
       }
     },
+    "/collaboration_whitelist_entries": {
+      "get": {
+        "operationId": "get_collaboration_whitelist_entries",
+        "summary": "Get collaboration whitelist entries",
+        "tags": [
+          "Collaboration Whitelist"
+        ],
+        "x-box-reference-category": "collaboration_whitelist",
+        "description": "Returns the list of whitelist entries which specify what domains can\ncollaborate with the current enterprise.",
+        "parameters": [
+          {
+            "name": "marker",
+            "description": "The position marker at which to begin the response.",
+            "in": "query",
+            "required": false,
+            "example": 1234,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "limit",
+            "description": "The maximum number of items to return per page.",
+            "in": "query",
+            "required": false,
+            "example": 1000,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": 100,
+              "maximum": 1000
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a collection of collaboration whitelist entries.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CollaborationWhitelistEntries"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "post_collaboration_whitelist_entries",
+        "summary": "Create collaboration whitelist entry",
+        "tags": [
+          "Collaboration Whitelist"
+        ],
+        "x-box-reference-category": "collaboration_whitelist",
+        "description": "Creates a collaboration whitelist entry, specifying a domain\nand direction to allow collaboration for.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "domain",
+                  "direction"
+                ],
+                "properties": {
+                  "domain": {
+                    "type": "string",
+                    "description": "The domain to add to the whitelist.",
+                    "example": "example.com"
+                  },
+                  "direction": {
+                    "type": "string",
+                    "description": "The direction in which to allow collaborations.",
+                    "example": "inboud",
+                    "enum": [
+                      "inbound",
+                      "outbound",
+                      "both"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns a new collaboration whitelist entry.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CollaborationWhitelistEntry"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/collaboration_whitelist_entries/{collaboration_whitelist_entry_id}": {
+      "get": {
+        "operationId": "get_collaboration_whitelist_entries_id",
+        "summary": "Get collaboration whitelist entry",
+        "tags": [
+          "Collaboration Whitelist"
+        ],
+        "x-box-reference-category": "collaboration_whitelist",
+        "description": "Returns a specific collaboration whitelist entry.",
+        "parameters": [
+          {
+            "name": "collaboration_whitelist_entry_id",
+            "description": "The ID of the collaboration whitelist item",
+            "in": "path",
+            "required": true,
+            "example": "213123",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a collaboration whitelist entry.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CollaborationWhitelistEntry"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "delete_collaboration_whitelist_entries_id",
+        "summary": "Delete collaboration whitelist entry",
+        "tags": [
+          "Collaboration Whitelist"
+        ],
+        "x-box-reference-category": "collaboration_whitelist",
+        "description": "Deletes a specific collaboration whitelist entry.",
+        "parameters": [
+          {
+            "name": "collaboration_whitelist_entry_id",
+            "description": "The ID of the collaboration whitelist item",
+            "in": "path",
+            "required": true,
+            "example": "213123",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "A blank response is returned if the entry was\nsuccessfully deleted."
+          }
+        }
+      }
+    },
     "/storage_policies": {
       "get": {
         "operationId": "get_storage_policies",
@@ -6915,6 +7075,7 @@
       },
       "CollaborationWhitelistEntry": {
         "x-box-resource-id": "collaboration_whitelist_entry",
+        "x-box-reference-category": "collaboration_whitelist",
         "description": "A Collaboration Whitelist entry describes an\napproved domains that can collaborate with your enterprise",
         "allOf": [
           {
@@ -6952,6 +7113,26 @@
                 "format": "date-time",
                 "description": "The time the whitelist entry was created",
                 "example": "2012-12-12T10:53:43-08:00"
+              }
+            }
+          }
+        ]
+      },
+      "CollaborationWhitelistEntries": {
+        "x-box-resource-id": "collaboration_whitelist_entries",
+        "x-box-reference-category": "collaboration_whitelist",
+        "description": "A list of collaboration whitelist entries.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/MarkerPagination"
+          },
+          {
+            "properties": {
+              "entries": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/CollaborationWhitelistEntry"
+                }
               }
             }
           }
@@ -10957,8 +11138,8 @@
       "x-box-reference-category": "groups"
     },
     {
-      "name": "Collaboration Whitelists",
-      "x-box-reference-category": "collaboration_whitelists"
+      "name": "Collaboration Whitelist",
+      "x-box-reference-category": "collaboration_whitelist"
     },
     {
       "name": "Multi Zones",
