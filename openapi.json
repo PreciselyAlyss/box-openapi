@@ -8022,6 +8022,7 @@
       },
       "DevicePinner": {
         "x-box-resource-id": "device_pinner",
+        "x-box-reference-category": "device_pins",
         "description": "Device pins allow enterprises to control what devices can\nuse native Box applications.",
         "allOf": [
           {
