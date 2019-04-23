@@ -5456,6 +5456,66 @@
         }
       }
     },
+    "/users/{user_id}/memberships": {
+      "get": {
+        "operationId": "get_users_id_memberships",
+        "summary": "Get user's memberships",
+        "x-box-reference-category": "groups",
+        "tags": [
+          "Groups"
+        ],
+        "description": "Retrieves all the groups for a user. The user making\nan API call must have admin permissions to inspect the\nenterprise's groups.",
+        "parameters": [
+          {
+            "name": "user_id",
+            "description": "The ID of the user.",
+            "example": "12345",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "description": "The maximum number of items to return per page.",
+            "in": "query",
+            "required": false,
+            "example": 1000,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": 100,
+              "maximum": 1000
+            }
+          },
+          {
+            "name": "offset",
+            "description": "The offset of the item at which to begin the response.",
+            "in": "query",
+            "required": false,
+            "example": 1000,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a collection of membership objects. If there are no\nmemberships, an empty collection will be returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GroupMemberships"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/invites": {
       "post": {
         "operationId": "post_invites",
@@ -5842,7 +5902,368 @@
         ],
         "responses": {
           "204": {
-            "description": "A blank response is returned if the collaboration was\nsuccessfully deleted."
+            "description": "A blank response is returned if the group was\nsuccessfully deleted."
+          }
+        }
+      }
+    },
+    "/groups/{group_id}/memberships": {
+      "get": {
+        "operationId": "get_groups_id_memberships",
+        "summary": "Get group's memberships",
+        "x-box-reference-category": "groups",
+        "tags": [
+          "Groups"
+        ],
+        "description": "Retrieves all the members for a group. The user\nmust have admin permissions to inspect enterprise's groups.",
+        "parameters": [
+          {
+            "name": "group_id",
+            "description": "The ID of the group.",
+            "example": "57645",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "description": "The maximum number of items to return per page.",
+            "in": "query",
+            "required": false,
+            "example": 1000,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": 100,
+              "maximum": 1000
+            }
+          },
+          {
+            "name": "offset",
+            "description": "The offset of the item at which to begin the response.",
+            "in": "query",
+            "required": false,
+            "example": 1000,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a collection of membership objects. If there are no\nmemberships, an empty collection will be returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GroupMemberships"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/groups/{group_id}/collaborations": {
+      "get": {
+        "operationId": "get_groups_id_collaborations",
+        "summary": "Get group's collaborations",
+        "x-box-reference-category": "groups",
+        "tags": [
+          "Groups"
+        ],
+        "description": "Retrieves all the collaborations for a group. The user\nmust have admin permissions to inspect enterprise's groups.\n\nEach collaboration object has details on which files or\nfolders the group has access to and with what role.",
+        "parameters": [
+          {
+            "name": "group_id",
+            "description": "The ID of the group.",
+            "example": "57645",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "description": "The maximum number of items to return per page.",
+            "in": "query",
+            "required": false,
+            "example": 1000,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": 100,
+              "maximum": 1000
+            }
+          },
+          {
+            "name": "offset",
+            "description": "The offset of the item at which to begin the response.",
+            "in": "query",
+            "required": false,
+            "example": 1000,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a collection of collaboration objects. If there are no\ncollaborations, an empty collection will be returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Collaborations"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/group_memberships": {
+      "post": {
+        "operationId": "post_group_memberships",
+        "summary": "Create group membership",
+        "tags": [
+          "Groups"
+        ],
+        "x-box-reference-category": "groups",
+        "description": "Adds a user to a group.",
+        "parameters": [
+          {
+            "name": "fields",
+            "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.",
+            "in": "query",
+            "example": "id,type,name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "user",
+                  "group"
+                ],
+                "properties": {
+                  "user": {
+                    "type": "object",
+                    "description": "The user to add to the group.",
+                    "required": [
+                      "id"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "The ID of the user to add to the group",
+                        "example": "1434325"
+                      }
+                    }
+                  },
+                  "group": {
+                    "type": "object",
+                    "description": "The group to add the user to.",
+                    "required": [
+                      "id"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "The ID of the group to add the user to",
+                        "example": "4545523"
+                      }
+                    }
+                  },
+                  "role": {
+                    "type": "string",
+                    "example": "member",
+                    "description": "The role of the user in the group.",
+                    "enum": [
+                      "member",
+                      "admin"
+                    ]
+                  },
+                  "configurable_permissions": {
+                    "type": "object",
+                    "example": {
+                      "can_run_reports": false
+                    },
+                    "description": "Custom configuration for the permissions an admin\nif a group will receive. This option has no effect\non members with a role of `member`.\n\nSetting these permissions overwrites the default\naccess levels of an admin.\n\nSpecifying a value of \"null\" for this object will disable\nall configurable permissions. Specifying permissions will set\nthem accordingly, omitted permissions will be enabled by default.",
+                    "additionalProperties": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Returns a new group membership object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GroupMembership"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/group_memberships/{group_membership_id}": {
+      "get": {
+        "operationId": "get_group_memberships_id",
+        "summary": "Get group membership",
+        "tags": [
+          "Groups"
+        ],
+        "x-box-reference-category": "groups",
+        "description": "Retrieves a specific group membership.",
+        "parameters": [
+          {
+            "name": "group_membership_id",
+            "description": "The ID of the group membership.",
+            "example": "434534",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.",
+            "in": "query",
+            "example": "id,type,name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the group membership object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GroupMembership"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "put_group_memberships_id",
+        "summary": "Update group membership",
+        "tags": [
+          "Groups"
+        ],
+        "x-box-reference-category": "groups",
+        "description": "Updates a user's group membership.",
+        "parameters": [
+          {
+            "name": "group_membership_id",
+            "description": "The ID of the group membership.",
+            "example": "434534",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.",
+            "in": "query",
+            "example": "id,type,name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "role": {
+                    "type": "string",
+                    "example": "member",
+                    "description": "The role of the user in the group.",
+                    "enum": [
+                      "member",
+                      "admin"
+                    ]
+                  },
+                  "configurable_permissions": {
+                    "type": "object",
+                    "example": {
+                      "can_run_reports": false
+                    },
+                    "description": "Custom configuration for the permissions an admin\nif a group will receive. This option has no effect\non members with a role of `member`.\n\nSetting these permissions overwrites the default\naccess levels of an admin.\n\nSpecifying a value of \"null\" for this object will disable\nall configurable permissions. Specifying permissions will set\nthem accordingly, omitted permissions will be enabled by default.",
+                    "additionalProperties": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns a new group membership object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GroupMembership"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "delete_group_memberships_id",
+        "summary": "Delete group membership",
+        "tags": [
+          "Groups"
+        ],
+        "x-box-reference-category": "groups",
+        "description": "Deletes a specific group membership.",
+        "parameters": [
+          {
+            "name": "group_membership_id",
+            "description": "The ID of the group membership.",
+            "example": "434534",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "A blank response is returned if the membership was\nsuccessfully deleted."
           }
         }
       }
@@ -7560,6 +7981,7 @@
       },
       "GroupMembership": {
         "x-box-resource-id": "group_membership",
+        "x-box-reference-category": "groups",
         "description": "Membership is used to signify that a user is part of a\ngroup.",
         "allOf": [
           {
@@ -7607,6 +8029,26 @@
                 "format": "date-time",
                 "description": "The time this membership was last modified.",
                 "example": "2012-12-12T10:53:43-08:00"
+              }
+            }
+          }
+        ]
+      },
+      "GroupMemberships": {
+        "x-box-resource-id": "groups",
+        "x-box-reference-category": "groups",
+        "description": "A list of group memberships.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Pagination"
+          },
+          {
+            "properties": {
+              "entries": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/GroupMembership"
+                }
               }
             }
           }
