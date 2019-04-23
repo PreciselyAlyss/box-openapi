@@ -6268,6 +6268,65 @@
         }
       }
     },
+    "/recent_items": {
+      "get": {
+        "operationId": "get_recent_items",
+        "summary": "Get recent items",
+        "tags": [
+          "Recent Items"
+        ],
+        "description": "Returns information about the recent items accessed\nby a user, either in the last 90 days or up to the last\n1000 items accessed.",
+        "x-box-reference-category": "recent_items",
+        "parameters": [
+          {
+            "name": "fields",
+            "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.",
+            "in": "query",
+            "example": "id,type,name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "description": "The maximum number of items to return per page.",
+            "in": "query",
+            "required": false,
+            "example": 1000,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": 100,
+              "maximum": 1000
+            }
+          },
+          {
+            "name": "marker",
+            "description": "The position marker at which to begin the response.",
+            "in": "query",
+            "required": false,
+            "example": 1234,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a list recent items access by a user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecentItems"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/retention_policies": {
       "get": {
         "operationId": "get_retention_policies",
@@ -11427,7 +11486,8 @@
       },
       "RecentItem": {
         "x-box-resource-id": "recent_item",
-        "description": "Recent Items returns information about files that have\nbeen accessed by a user recently. It keeps track of items\nthat were accessed either in the last 90 days or the last\n1000 items accessed",
+        "description": "A recent item accessed by a user.",
+        "x-box-reference-category": "recent_items",
         "properties": {
           "type": {
             "type": "string",
@@ -11468,6 +11528,26 @@
             "description": "If the item was accessed through a shared link it will appear here,\notherwise this will be null."
           }
         }
+      },
+      "RecentItems": {
+        "x-box-resource-id": "recent_items",
+        "description": "A list of recent items.",
+        "x-box-reference-category": "recent_items",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/MarkerPagination"
+          },
+          {
+            "properties": {
+              "entries": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/RecentItem"
+                }
+              }
+            }
+          }
+        ]
       },
       "Reference": {
         "x-box-resource-id": "reference",
@@ -13137,6 +13217,10 @@
     {
       "name": "Groups",
       "x-box-reference-category": "groups"
+    },
+    {
+      "name": "Recent Items",
+      "x-box-reference-category": "recent_items"
     },
     {
       "name": "Retention Policies",
