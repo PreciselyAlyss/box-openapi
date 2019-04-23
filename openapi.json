@@ -6828,7 +6828,7 @@
         ]
       },
       "EmailAlias": {
-        "x-box-resource-id": "email_aliases",
+        "x-box-resource-id": "email_alias",
         "x-box-reference-category": "users",
         "description": "An email alias for a user.",
         "type": "object",
