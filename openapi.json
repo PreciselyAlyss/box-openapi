@@ -1059,6 +1059,12 @@
         ],
         "description": "Return information about an upload session.",
         "x-box-reference-category": "chunked_uploads",
+        "servers": [
+          {
+            "url": "https://upload.box.com/api/2.0",
+            "description": "Server for file uploads"
+          }
+        ],
         "parameters": [
           {
             "name": "upload_session_id",
@@ -1190,6 +1196,12 @@
           "Chunked Uploads"
         ],
         "description": "Abort an upload session and discard all data uploaded.\n\nThis cannot be reversed.",
+        "servers": [
+          {
+            "url": "https://upload.box.com/api/2.0",
+            "description": "Server for file uploads"
+          }
+        ],
         "x-box-reference-category": "chunked_uploads",
         "parameters": [
           {
@@ -1218,6 +1230,12 @@
           "Chunked Uploads"
         ],
         "x-box-reference-category": "chunked_uploads",
+        "servers": [
+          {
+            "url": "https://upload.box.com/api/2.0",
+            "description": "Server for file uploads"
+          }
+        ],
         "description": "Return a list of the chunks uploaded to the upload\nsession so far.",
         "parameters": [
           {
@@ -1278,6 +1296,12 @@
           "Chunked Uploads"
         ],
         "x-box-reference-category": "chunked_uploads",
+        "servers": [
+          {
+            "url": "https://upload.box.com/api/2.0",
+            "description": "Server for file uploads"
+          }
+        ],
         "description": "Close an upload session and create a file from the\nuploaded chunks.",
         "parameters": [
           {
@@ -8381,6 +8405,112 @@
         }
       }
     },
+    "/skill_invocations/{skill_invocation_id}": {
+      "put": {
+        "operationId": "put_skill_invocations_id",
+        "summary": "Update a skill invocation",
+        "tags": [
+          "Skills"
+        ],
+        "x-box-reference-category": "skills",
+        "description": "Updates the status, usage and response metadata of a\nskill invocation.",
+        "parameters": [
+          {
+            "name": "skill_invocation_id",
+            "description": "The ID of the skill invocation.",
+            "example": "33243242",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "status",
+                  "metadata",
+                  "file"
+                ],
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "description": "Sets the status of the skill invocation.",
+                    "example": "success",
+                    "enum": [
+                      "invoked",
+                      "processing",
+                      "success",
+                      "transient_failure",
+                      "permanent_failure"
+                    ]
+                  },
+                  "metadata": {
+                    "type": "object",
+                    "description": "The metadata to set for this skill",
+                    "properties": {
+                      "cards": {
+                        "description": "The metadata cards to set on the file.",
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/MetadataCard"
+                        }
+                      }
+                    }
+                  },
+                  "file": {
+                    "type": "object",
+                    "description": "The file to assign this metadata to",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "description": "`file`",
+                        "example": "file",
+                        "enum": [
+                          "file"
+                        ]
+                      },
+                      "id": {
+                        "type": "string",
+                        "description": "The ID of the file",
+                        "example": "3243244"
+                      }
+                    }
+                  },
+                  "file_version": {
+                    "type": "object",
+                    "description": "The file version to assign this metadata to",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "description": "`file_version`",
+                        "example": "file_version",
+                        "enum": [
+                          "file_version"
+                        ]
+                      },
+                      "id": {
+                        "type": "string",
+                        "description": "The ID of the file version",
+                        "example": "3"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns an empty response."
+          }
+        }
+      }
+    },
     "/events": {
       "options": {
         "operationId": "options_events",
@@ -11948,7 +12078,7 @@
           "entries": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Events"
+              "$ref": "#/components/schemas/Event"
             }
           }
         }
@@ -13960,6 +14090,167 @@
               "option2",
               "option3"
             ]
+          }
+        }
+      },
+      "MetadataCard": {
+        "x-box-resource-id": "metadata_card",
+        "description": "A Box Skills card that is applied to the metadata\nof a file.",
+        "x-box-reference-category": "skills",
+        "required": [
+          "type",
+          "created_at",
+          "skill",
+          "skill_card_title"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "`skill_card`",
+            "description": "`skill_card`",
+            "enum": [
+              "skills_card"
+            ]
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The time the card was created at",
+            "example": "2012-12-12T10:53:43-08:00"
+          },
+          "skill_card_type": {
+            "type": "string",
+            "description": "The type of card to create",
+            "example": "status",
+            "enum": [
+              "transcript",
+              "keyword",
+              "timeline",
+              "status",
+              "error"
+            ]
+          },
+          "skill": {
+            "type": "object",
+            "description": "The skill that is updating the cards",
+            "required": [
+              "type",
+              "id"
+            ],
+            "properties": {
+              "type": {
+                "type": "string",
+                "example": "`service`",
+                "description": "`service`",
+                "enum": [
+                  "service"
+                ]
+              },
+              "id": {
+                "type": "string",
+                "example": "43342423234",
+                "description": "The ID of the skill."
+              }
+            }
+          },
+          "skill_card_title": {
+            "type": "object",
+            "description": "The title of the card",
+            "required": [
+              "code",
+              "message"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "example": "my_transcripts",
+                "description": "An identifier for your title"
+              },
+              "message": {
+                "type": "string",
+                "example": "My Transcripts",
+                "description": "The actual title to show in the UI"
+              }
+            }
+          },
+          "invocation": {
+            "type": "object",
+            "description": "The current invocation of the skill",
+            "required": [
+              "type",
+              "id"
+            ],
+            "properties": {
+              "type": {
+                "type": "string",
+                "example": "`skill_invocation`",
+                "description": "`skill_invocation`",
+                "enum": [
+                  "skill_invocation"
+                ]
+              },
+              "id": {
+                "type": "string",
+                "example": "33243242",
+                "description": "The ID of the skill invocation."
+              }
+            }
+          },
+          "status": {
+            "type": "object",
+            "description": "Optional status. Used with a `card_type` of `status`.",
+            "properties": {
+              "code": {
+                "type": "string",
+                "description": "The type of status being set",
+                "enum": [
+                  "skills_pending_status",
+                  "custom_error"
+                ],
+                "example": "skills_pending_status"
+              },
+              "message": {
+                "type": "string",
+                "description": "The message for the status to show in the UI",
+                "example": "We're preparing to process your file. Please hold on!"
+              }
+            }
+          },
+          "entries": {
+            "description": "An optional list of entries.\n\nUsed with a `card_type` of`transcript`, `keyword` or\n`timeline`.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MetadataCardEntry"
+            }
+          },
+          "duration": {
+            "type": "integer",
+            "example": 1000,
+            "description": "An optional duration.\n\nUsed with a `card_type` of`transcript`, or\n`timeline`."
+          }
+        }
+      },
+      "MetadataCardEntry": {
+        "x-box-resource-id": "metadata_cards_entry",
+        "x-box-reference-category": "skills",
+        "description": "An entry in the `entries` attribute of a metadata card",
+        "required": [
+          "type",
+          "text"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "`text`",
+            "description": "`text`",
+            "enum": [
+              "text"
+            ]
+          },
+          "text": {
+            "type": "string",
+            "example": "keyword1",
+            "description": "The text of the entry"
           }
         }
       },
@@ -16088,6 +16379,10 @@
     {
       "name": "Webhooks",
       "x-box-reference-category": "webhooks"
+    },
+    {
+      "name": "Skills",
+      "x-box-reference-category": "skills"
     },
     {
       "name": "Events",
