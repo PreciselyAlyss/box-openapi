@@ -11294,6 +11294,7 @@
     },
     "schemas": {
       "AccessToken": {
+        "x-box-resource-display-name": "Access Token",
         "x-box-resource-id": "access_token",
         "description": "A token that can be used to make authenticated API calls.",
         "x-box-reference-category": "authorization",
@@ -11321,6 +11322,7 @@
         ]
       },
       "AccessToken--Mini": {
+        "x-box-resource-display-name": "Access Token Mini",
         "x-box-resource-id": "access_token--mini",
         "description": "The basics of an access token",
         "x-box-reference-hide": true,
@@ -11354,6 +11356,7 @@
         }
       },
       "AssignmentCounts": {
+        "x-box-resource-display-name": "Assignment Counts",
         "x-box-resource-id": "assignment_counts",
         "description": "Counts of assignments within this a legal hold policy by item type",
         "properties": {
@@ -11384,6 +11387,7 @@
         }
       },
       "ClientError": {
+        "x-box-resource-display-name": "Client Error",
         "x-box-resource-id": "client_error",
         "description": "A generic error",
         "properties": {
@@ -11424,6 +11428,7 @@
         }
       },
       "Collaboration": {
+        "x-box-resource-display-name": "Collaboration",
         "x-box-resource-id": "collaboration",
         "description": "Collaborations define access permissions for users and groups to files and\nfolders, similar to access control lists. A collaboration object grants a\nuser or group access to a file or folder with permissions defined by a\nspecific role.",
         "x-box-reference-category": "collaborations",
@@ -11537,6 +11542,7 @@
         ]
       },
       "Collaborations": {
+        "x-box-resource-display-name": "Collaborations",
         "x-box-resource-id": "collaborations",
         "description": "A list of collaborations",
         "x-box-reference-category": "collaborations",
@@ -11557,6 +11563,7 @@
         ]
       },
       "CollaborationWhitelistEntry": {
+        "x-box-resource-display-name": "Collaboration Whitelist Entry",
         "x-box-resource-id": "collaboration_whitelist_entry",
         "x-box-reference-category": "collaboration_whitelist",
         "description": "A Collaboration Whitelist entry describes an\napproved domains that can collaborate with your enterprise",
@@ -11602,6 +11609,7 @@
         ]
       },
       "CollaborationWhitelistEntries": {
+        "x-box-resource-display-name": "Collaboration Whitelist Entries",
         "x-box-resource-id": "collaboration_whitelist_entries",
         "x-box-reference-category": "collaboration_whitelist",
         "description": "A list of collaboration whitelist entries.",
@@ -11622,6 +11630,7 @@
         ]
       },
       "CollaborationWhitelistExemptTarget": {
+        "x-box-resource-display-name": "Collaboration Whitelist Exempt Target",
         "x-box-resource-id": "collaboration_whitelist_exempt_target",
         "x-box-reference-category": "collaboration_whitelist",
         "description": "The record that represents a target user that is exempt from the\ncollaboration whitelist.",
@@ -11668,6 +11677,7 @@
         ]
       },
       "CollaborationWhitelistExemptTargets": {
+        "x-box-resource-display-name": "Collaboration Whitelist Exempt Targets",
         "x-box-resource-id": "collaboration_whitelist_exempt_targets",
         "x-box-reference-category": "collaboration_whitelist",
         "description": "A list of collaboration whitelist exemptions.",
@@ -11688,6 +11698,7 @@
         ]
       },
       "Collection": {
+        "x-box-resource-display-name": "Collection",
         "x-box-resource-id": "collection",
         "description": "A collection of items, including files and folders.\n\nCurrently, the only collection available\nis the `favorites` collection.\n\nThe contents of a collection can be explored in a\nsimilar way to which the contents of a folder is\nexplored.",
         "x-box-reference-category": "collections",
@@ -11718,6 +11729,7 @@
         ]
       },
       "Collections": {
+        "x-box-resource-display-name": "Collections",
         "x-box-resource-id": "collections",
         "description": "A list of collections",
         "x-box-reference-category": "collections",
@@ -11738,6 +11750,7 @@
         ]
       },
       "Comment": {
+        "x-box-resource-display-name": "Comment",
         "x-box-resource-id": "comment",
         "x-box-reference-category": "comments",
         "description": "Comments are messages created on files. Comments\ncan be made independently or created as responses to other\ncomments",
@@ -11758,6 +11771,7 @@
         ]
       },
       "Comments": {
+        "x-box-resource-display-name": "Comments",
         "x-box-resource-id": "comments",
         "description": "A list of comments",
         "x-box-reference-category": "comments",
@@ -11778,6 +11792,7 @@
         ]
       },
       "Comment--Standard": {
+        "x-box-resource-display-name": "Comment Standard",
         "x-box-resource-id": "comment--standard",
         "description": "Standard representation of a comment, as returned by the\ncomment API endpoints and when nested within other resources.",
         "x-box-reference-hide": true,
@@ -11835,6 +11850,7 @@
         ]
       },
       "ConflictError": {
+        "x-box-resource-display-name": "Conflict Error",
         "x-box-resource-id": "conflict_error",
         "description": "The error that occurs when a file can not be created due\nto a conflict.",
         "allOf": [
@@ -11872,6 +11888,7 @@
         ]
       },
       "DevicePinner": {
+        "x-box-resource-display-name": "Device Pinner",
         "x-box-resource-id": "device_pinner",
         "x-box-reference-category": "device_pins",
         "description": "Device pins allow enterprises to control what devices can\nuse native Box applications.",
@@ -11913,6 +11930,7 @@
         ]
       },
       "DevicePinners": {
+        "x-box-resource-display-name": "Device Pinners",
         "x-box-resource-id": "device_pinners",
         "description": "A list of device pins",
         "x-box-reference-category": "device_pins",
@@ -11933,6 +11951,7 @@
         ]
       },
       "Enterprise": {
+        "x-box-resource-display-name": "Enterprise",
         "x-box-resource-id": "enterprise",
         "description": "A representation of a Box enterprise",
         "allOf": [
@@ -11951,6 +11970,7 @@
         ]
       },
       "EmailAlias": {
+        "x-box-resource-display-name": "Email Alias",
         "x-box-resource-id": "email_alias",
         "x-box-reference-category": "users",
         "description": "An email alias for a user.",
@@ -11976,6 +11996,7 @@
         ]
       },
       "EmailAliases": {
+        "x-box-resource-display-name": "Email Aliases",
         "x-box-resource-id": "email_aliases",
         "description": "A list of email aliases",
         "x-box-reference-category": "users",
@@ -11995,6 +12016,7 @@
         }
       },
       "Event": {
+        "x-box-resource-display-name": "Event",
         "x-box-resource-id": "event",
         "description": "The description of an event that happened within Box",
         "properties": {
@@ -12060,6 +12082,7 @@
         }
       },
       "Events": {
+        "x-box-resource-display-name": "Events",
         "x-box-resource-id": "events",
         "description": "A list of event objects",
         "x-box-reference-category": "events",
@@ -12084,6 +12107,7 @@
         }
       },
       "EventType": {
+        "x-box-resource-display-name": "Event Type",
         "x-box-resource-id": "event_type",
         "example": "FILE_MARKED_MALICIOUS",
         "type": "string",
@@ -12203,6 +12227,7 @@
         ]
       },
       "File": {
+        "x-box-resource-display-name": "File",
         "x-box-resource-id": "file",
         "description": "A full representation of a file, as can be returned from any\nfile API endpoints by default",
         "x-box-reference-category": "files",
@@ -12349,6 +12374,7 @@
         ]
       },
       "Files": {
+        "x-box-resource-display-name": "Files",
         "x-box-resource-id": "files",
         "description": "A list of files",
         "x-box-reference-category": "file_uploads",
@@ -12368,6 +12394,7 @@
         }
       },
       "File--Standard": {
+        "x-box-resource-display-name": "File Standard",
         "x-box-resource-id": "file--standard",
         "description": "A standard representation of a file, as returned from any\nfile API endpoints by default",
         "x-box-reference-hide": true,
@@ -12507,6 +12534,7 @@
         ]
       },
       "File--Mini": {
+        "x-box-resource-display-name": "File Mini",
         "x-box-resource-id": "file--mini",
         "description": "A mini representation of a file, used when\nnested under another resource.",
         "x-box-reference-hide": true,
@@ -12536,6 +12564,7 @@
         ]
       },
       "FileScope": {
+        "x-box-resource-display-name": "File Scope",
         "x-box-resource-id": "file_scope",
         "description": "A relation between a file and the scopes for which the file can be accessed",
         "properties": {
@@ -12572,6 +12601,7 @@
         }
       },
       "FileVersion": {
+        "x-box-resource-display-name": "File Version",
         "x-box-resource-id": "file_version",
         "x-box-reference-category": "file_versions",
         "description": "A full representation of a file version",
@@ -12631,6 +12661,7 @@
         ]
       },
       "FileVersions": {
+        "x-box-resource-display-name": "File Versions",
         "x-box-resource-id": "file_versions",
         "description": "A list of file versions",
         "x-box-reference-category": "file_versions",
@@ -12651,6 +12682,7 @@
         ]
       },
       "FileVersion--Mini": {
+        "x-box-resource-display-name": "File Version Mini",
         "x-box-resource-id": "file_version--mini",
         "description": "A mini representation of a file version, used when\nnested under another resource.",
         "x-box-reference-hide": true,
@@ -12670,6 +12702,7 @@
         ]
       },
       "FileVersionLegalHold": {
+        "x-box-resource-display-name": "File Version Legal Hold",
         "x-box-resource-id": "file_version_legal_hold",
         "x-box-reference-category": "legal_hold_policies",
         "description": "File-Version-Legal-Hold is an entity representing all\nholds on a File Version.",
@@ -12717,6 +12750,7 @@
         ]
       },
       "FileVersionLegalHolds": {
+        "x-box-resource-display-name": "File Version Legal Holds",
         "x-box-resource-id": "file_version_legal_holds",
         "x-box-reference-category": "legal_hold_policies",
         "description": "A list of file version legal holds.",
@@ -12737,6 +12771,7 @@
         ]
       },
       "FileVersionRetention": {
+        "x-box-resource-display-name": "File Version Retention",
         "x-box-resource-id": "file_version_retention",
         "description": "A retention policy blocks permanent deletion of content\nfor a specified amount of time. Admins can apply policies to\nspecified folders, or an entire enterprise. A file version retention\nis a  record for a retained file version. To use this feature,\nyou must  have the manage retention policies scope enabled for your\nAPI key via  your application management console. For more information\nabout retention policies, please visit our help documentation",
         "allOf": [
@@ -12792,6 +12827,7 @@
         ]
       },
       "FileVersionRetentions": {
+        "x-box-resource-display-name": "File Version Retentions",
         "x-box-resource-id": "file_version_retentions",
         "x-box-reference-category": "retention_policies",
         "description": "A list of file version retentions.",
@@ -12812,6 +12848,7 @@
         ]
       },
       "Folder": {
+        "x-box-resource-display-name": "Folder",
         "x-box-resource-id": "folder",
         "description": "A full representation of a folder, as can be returned from any\nfolder API endpoints by default",
         "x-box-reference-category": "folders",
@@ -12915,6 +12952,7 @@
         ]
       },
       "Folder--Standard": {
+        "x-box-resource-display-name": "Folder Standard",
         "x-box-resource-id": "folder--standard",
         "description": "A standard representation of a folder, as returned from any\nfolder API endpoints by default",
         "x-box-reference-hide": true,
@@ -13071,6 +13109,7 @@
         ]
       },
       "Folder--Mini": {
+        "x-box-resource-display-name": "Folder Mini",
         "x-box-resource-id": "folder--mini",
         "description": "A mini representation of a file version, used when\nnested under another resource.",
         "x-box-reference-hide": true,
@@ -13100,6 +13139,7 @@
         ]
       },
       "FolderUploadEmail": {
+        "x-box-resource-display-name": "Folder Upload Email",
         "x-box-resource-id": "folder_upload_email",
         "type": "object",
         "description": "The writable Folder Upload Email object",
@@ -13116,6 +13156,7 @@
         }
       },
       "Group": {
+        "x-box-resource-display-name": "Group",
         "x-box-resource-id": "group",
         "x-box-reference-category": "groups",
         "description": "Groups contain a set of users, and can be used in place of\nusers in some operations, such as collaborations.",
@@ -13167,6 +13208,7 @@
         ]
       },
       "Groups": {
+        "x-box-resource-display-name": "Groups",
         "x-box-resource-id": "groups",
         "x-box-reference-category": "groups",
         "description": "A list of groups.",
@@ -13187,6 +13229,7 @@
         ]
       },
       "Group--Standard": {
+        "x-box-resource-display-name": "Group Standard",
         "x-box-resource-id": "group--standard",
         "description": "A standard representation of a group, as returned from any\ngroup API endpoints by default",
         "x-box-reference-hide": true,
@@ -13213,6 +13256,7 @@
         ]
       },
       "Group--Mini": {
+        "x-box-resource-display-name": "Group Mini",
         "x-box-resource-id": "group--mini",
         "type": "object",
         "description": "Mini representation of a group, including id and name of\ngroup.",
@@ -13233,6 +13277,7 @@
         ]
       },
       "GroupMembership": {
+        "x-box-resource-display-name": "Group Membership",
         "x-box-resource-id": "group_membership",
         "x-box-reference-category": "groups",
         "description": "Membership is used to signify that a user is part of a\ngroup.",
@@ -13288,6 +13333,7 @@
         ]
       },
       "GroupMemberships": {
+        "x-box-resource-display-name": "Group Memberships",
         "x-box-resource-id": "group_memberships",
         "x-box-reference-category": "groups",
         "description": "A list of group memberships.",
@@ -13308,6 +13354,7 @@
         ]
       },
       "Invite": {
+        "x-box-resource-display-name": "Invite",
         "x-box-resource-id": "invite",
         "description": "An invite for a user to an enterprise.",
         "allOf": [
@@ -13347,6 +13394,7 @@
         ]
       },
       "Item": {
+        "x-box-resource-display-name": "Item",
         "x-box-resource-id": "item_reference",
         "description": "A generic mini representation of a file, folder, user or enterprise",
         "allOf": [
@@ -13375,6 +13423,7 @@
         ]
       },
       "Items": {
+        "x-box-resource-display-name": "Items",
         "x-box-resource-id": "item_references",
         "description": "A list of generic mini representations of a file, folder, user or enterprise",
         "allOf": [
@@ -13394,6 +13443,7 @@
         ]
       },
       "LegalHoldPolicy": {
+        "x-box-resource-display-name": "Legal Hold Policy",
         "x-box-resource-id": "legal_hold_policy",
         "x-box-reference-category": "legal_hold_policies",
         "description": "Legal Hold Policy information describes the basic\ncharacteristics of the Policy, such as name, description,\nand filter dates.",
@@ -13487,6 +13537,7 @@
         ]
       },
       "LegalHoldPolicies": {
+        "x-box-resource-display-name": "Legal Hold Policies",
         "x-box-resource-id": "legal_hold_policies",
         "x-box-reference-category": "legal_hold_policies",
         "description": "A list of legal hold policies.",
@@ -13507,6 +13558,7 @@
         ]
       },
       "LegalHoldPolicy--Mini": {
+        "x-box-resource-display-name": "Legal Hold Policy Mini",
         "x-box-resource-id": "legal_hold_policy--mini",
         "description": "A mini legal hold policy",
         "x-box-reference-hide": true,
@@ -13520,6 +13572,7 @@
         ]
       },
       "LegalHoldPolicyAssignment": {
+        "x-box-resource-display-name": "Legal Hold Policy Assignment",
         "x-box-resource-id": "legal_hold_policy_assignment",
         "x-box-reference-category": "legal_hold_policies",
         "description": "Legal Hold Assignments are used to assign Legal Hold\nPolicies to Users, Folders, Files, or File Versions.\n\nCreating a Legal Hold Assignment puts a hold\non the File-Versions that belong to the Assignment's\n'apply-to' entity.",
@@ -13576,6 +13629,7 @@
         ]
       },
       "LegalHoldPolicyAssignments": {
+        "x-box-resource-display-name": "Legal Hold Policy Assignments",
         "x-box-resource-id": "legal_hold_policy_assignments",
         "x-box-reference-category": "legal_hold_policies",
         "description": "A list of legal hold policies assignments.",
@@ -13596,6 +13650,7 @@
         ]
       },
       "Lock": {
+        "x-box-resource-display-name": "Lock",
         "x-box-resource-id": "lock",
         "description": "The lock held on a file.",
         "allOf": [
@@ -13636,6 +13691,7 @@
         ]
       },
       "Lock--Writable": {
+        "x-box-resource-display-name": "Lock Writable",
         "x-box-resource-id": "lock--writable",
         "type": "object",
         "description": "Defines a lock on an item",
@@ -13666,6 +13722,7 @@
         }
       },
       "MarkerPagination": {
+        "x-box-resource-display-name": "Marker Pagination",
         "x-box-resource-id": "marker_pagination",
         "description": "The part of an API response that describes marker\nbased pagination",
         "properties": {
@@ -13690,6 +13747,7 @@
         }
       },
       "Metadata": {
+        "x-box-resource-display-name": "Metadata",
         "x-box-resource-id": "metadata",
         "description": "A piece of metadata as specified by a metadata template and\napplied to a file or folder.",
         "x-box-reference-category": "metadata",
@@ -13738,6 +13796,7 @@
         }
       },
       "Metadatas": {
+        "x-box-resource-display-name": "Metadatas",
         "x-box-resource-id": "metadatas",
         "description": "A list of metadata",
         "x-box-reference-category": "metadata",
@@ -13751,6 +13810,7 @@
         }
       },
       "MetadataPatchItem": {
+        "x-box-resource-display-name": "Metadata Patch Item",
         "x-box-resource-id": "metadata-patch-item",
         "type": "object",
         "description": "A [JSON-Patch](https://tools.ietf.org/html/rfc6902) operation for a\nchange to make to the metadata.",
@@ -13786,6 +13846,7 @@
         }
       },
       "MetadataCascadePolicy": {
+        "x-box-resource-display-name": "Metadata Cascade Policy",
         "x-box-resource-id": "metadata_cascade_policy",
         "description": "A cascade policy that applies to metadata policy template\nto a folder",
         "properties": {
@@ -13839,6 +13900,7 @@
         }
       },
       "MetadataCascadePolicies": {
+        "x-box-resource-display-name": "Metadata Cascade Policies",
         "x-box-resource-id": "metadata_cascade_policies",
         "x-box-reference-category": "metadata_cascade_policies",
         "description": "A list of metadata cascade policies.",
@@ -13859,6 +13921,7 @@
         ]
       },
       "MetadataFilter": {
+        "x-box-resource-display-name": "Metadata Filter",
         "x-box-resource-id": "metadata_filter",
         "description": "A metadata filter used for searching by metadata\ntemplate",
         "type": "object",
@@ -13892,6 +13955,7 @@
         }
       },
       "MetadataTemplate": {
+        "x-box-resource-display-name": "Metadata Template",
         "x-box-resource-id": "metadata_template",
         "x-box-reference-category": "metadata_templates",
         "description": "A template for metadata that can be applied to files and folders",
@@ -13911,6 +13975,7 @@
         ]
       },
       "MetadataTemplates": {
+        "x-box-resource-display-name": "Metadata Templates",
         "x-box-resource-id": "metadata_templates",
         "description": "A list of metadata templates",
         "x-box-reference-category": "metadata_templates",
@@ -13931,6 +13996,7 @@
         ]
       },
       "MetadataTemplate--Writable": {
+        "x-box-resource-display-name": "Metadata Template Writable",
         "x-box-resource-id": "metadata_template--writable",
         "description": "The writable parts of a metadata template that can be\napplied to files and folders",
         "properties": {
@@ -13968,6 +14034,7 @@
         }
       },
       "MetadataTemplateField": {
+        "x-box-resource-display-name": "Metadata Template Field",
         "x-box-resource-id": "metadata_template_field",
         "description": "An ordered set of key-value pairs that are part of a\nmetadata template",
         "properties": {
@@ -14014,6 +14081,7 @@
         }
       },
       "MetadataTemplateFieldOption": {
+        "x-box-resource-display-name": "Metadata Template Field Option",
         "x-box-resource-id": "metadata_template_field_option",
         "description": "For type `enum` and `multiSelect`, one of the potential values\nthat can be selected",
         "properties": {
@@ -14030,6 +14098,7 @@
         }
       },
       "MetadataTemplatePatch": {
+        "x-box-resource-display-name": "Metadata Template Patch",
         "x-box-resource-id": "metadata-template-patch",
         "description": "A patch specification for the changes to make to the metadata template.\nThe changes are represented as a JSON array of operation objects.",
         "type": "array",
@@ -14038,6 +14107,7 @@
         }
       },
       "MetadataTemplatePatchItem": {
+        "x-box-resource-display-name": "Metadata Template Patch Item",
         "x-box-resource-id": "metadata-template-patch-item",
         "type": "object",
         "description": "A patch operation for the\nchanges to make to the metadata template.\n\nThe possible operations are as follows.\n\n* `addEnumOption` Adds an enum option at the\n  end of the enum option list for the specified ``fieldKey`.\n\n  Example `{\"op\":\"addEnumOption\",\"fieldKey\":\"category\",\n  \"data\":{\"key\":\"New Option\"}}`\n\n* `addField` Adds a field at the end of the field list\n  for the template.\n\n  Example `{\"op\":\"addField\",\"data\":{\"displayName\":\"Category\",\n  \"key\":\"category\",\"hidden\":false,\"type\":\"string\"}}`.\n\n* `editTemplate` Allows for editing the base properties\n  of a template, mainly the `displayName` and `hidden`\n  properties.\n\n  Example `{\"op\":\"editTemplate\",\"data\":{\"displayName\":\"Client\"}}`.\n\n* `reorderEnumOptions` Reorders the enum option list to\n  match the requested enum option list.\n\n  Example `{\"op\":\"reorderEnumOptions\",\"fieldKey\":\"category\",\n  \"enumOptionKeys\":[\"option2\",\"option1\",\"option3\"]}`\n\n* `reorderFields`  Reorders the field list to match the requested\n  field list\n\n  Example `{\"op\":\"reorderFields\",\"fieldKeys\":[\"field2\",\"field1\",\"field3\"]}`\n\nThe following changes can affect existing instances of this template.\n\n* `editField` Edits any number of the base properties of a field, mainly\n  the `displayName`, `hidden`, `description`, and `key` properties.\n\n  If the key is changed, existing values of the specified field are\n  migrated to the new key. Search indexes are updated, which can take\n  time depending on how many files are affected by the change.\n\n  Example `{\"op\":\"editField\",\"fieldKey\":\"category\",\n  \"data\":{\"displayName\":\"Customer Group\"}}`\n\n* `editEnumOption` Edits one of the options of an enum field.\n\n  Example `{\"op\":\"editEnumOption\",\"fieldKey\":\"years\",\"enumOptionKey\":\"2011\",\n  \"data\":{\"key\":\"2020\"}}`\n\n* `removeEnumOption` Removes the specified enum option from the\n  specified enum field.\n\n  Example `{\"op\":\"removeEnumOption\",\"fieldKey\":\"years\",\n  \"enumOptionKey\":\"2011\"}`\n\n* `removeField` Removes the specified field from the template.\n\n  Example `{\"op\":\"removeField\",\"fieldKey\":\"brand\"}`",
@@ -14094,6 +14164,7 @@
         }
       },
       "MetadataCard": {
+        "x-box-resource-display-name": "Metadata Card",
         "x-box-resource-id": "metadata_card",
         "description": "A Box Skills card that is applied to the metadata\nof a file.",
         "x-box-reference-category": "skills",
@@ -14231,6 +14302,7 @@
         }
       },
       "MetadataCardEntry": {
+        "x-box-resource-display-name": "Metadata Card Entry",
         "x-box-resource-id": "metadata_cards_entry",
         "x-box-reference-category": "skills",
         "description": "An entry in the `entries` attribute of a metadata card",
@@ -14255,6 +14327,7 @@
         }
       },
       "NotifiedUser": {
+        "x-box-resource-display-name": "Notified User",
         "x-box-resource-id": "notified_user",
         "description": "A user that is notified of an event.",
         "type": "object",
@@ -14285,6 +14358,7 @@
         }
       },
       "OAuth2Error": {
+        "x-box-resource-display-name": "O Auth2 Error",
         "x-box-resource-id": "oauth2_error",
         "description": "An OAuth2 error",
         "properties": {
@@ -14301,6 +14375,7 @@
         }
       },
       "Owner": {
+        "x-box-resource-display-name": "Owner",
         "x-box-resource-id": "owner",
         "description": "The owner of this item",
         "type": "object",
@@ -14313,6 +14388,7 @@
         }
       },
       "Pagination": {
+        "x-box-resource-display-name": "Pagination",
         "x-box-resource-id": "pagination",
         "description": "The part of an API response that describes pagination",
         "properties": {
@@ -14344,6 +14420,7 @@
         }
       },
       "PaginationOrder": {
+        "x-box-resource-display-name": "Pagination Order",
         "x-box-resource-id": "pagination_order",
         "description": "The order in which a pagination is ordered",
         "properties": {
@@ -14364,6 +14441,7 @@
         }
       },
       "Parent": {
+        "x-box-resource-display-name": "Parent",
         "x-box-resource-id": "parent",
         "description": "The parent for this item",
         "properties": {
@@ -14375,6 +14453,7 @@
         }
       },
       "Permissions": {
+        "x-box-resource-display-name": "Permissions",
         "x-box-resource-id": "permissions",
         "description": "The part of an API response that describes permissions",
         "properties": {
@@ -14416,6 +14495,7 @@
         }
       },
       "RealtimeServer": {
+        "x-box-resource-display-name": "Realtime Server",
         "x-box-resource-id": "realtime_server",
         "description": "A real-time server that can be used for\nlong polling user events",
         "properties": {
@@ -14447,6 +14527,7 @@
         }
       },
       "RealtimeServers": {
+        "x-box-resource-display-name": "Realtime Servers",
         "x-box-resource-id": "realtime_servers",
         "description": "A list of real-time servers that can\nbe used for long-polling.",
         "x-box-reference-category": "events",
@@ -14466,6 +14547,7 @@
         }
       },
       "RecentItem": {
+        "x-box-resource-display-name": "Recent Item",
         "x-box-resource-id": "recent_item",
         "description": "A recent item accessed by a user.",
         "x-box-reference-category": "recent_items",
@@ -14511,6 +14593,7 @@
         }
       },
       "RecentItems": {
+        "x-box-resource-display-name": "Recent Items",
         "x-box-resource-id": "recent_items",
         "description": "A list of recent items.",
         "x-box-reference-category": "recent_items",
@@ -14531,6 +14614,7 @@
         ]
       },
       "Reference": {
+        "x-box-resource-display-name": "Reference",
         "x-box-resource-id": "reference",
         "description": "The bare basic reference for an object",
         "properties": {
@@ -14577,6 +14661,7 @@
         }
       },
       "RetentionPolicy": {
+        "x-box-resource-display-name": "Retention Policy",
         "x-box-resource-id": "retention_policy",
         "title": "Retention Policy Object",
         "description": "A retention policy blocks permanent deletion of content\nfor a specified amount of time. Admins can create retention\npolicies and then later assign them to specific folders\nor their entire enterprise.  To use this feature, you must\nhave the manage retention policies scope enabled\nfor your API key via your application management console.",
@@ -14646,6 +14731,7 @@
         ]
       },
       "RetentionPolicies": {
+        "x-box-resource-display-name": "Retention Policies",
         "x-box-resource-id": "retention_policies",
         "description": "A list of retention policies",
         "x-box-reference-category": "retention_policies",
@@ -14665,6 +14751,7 @@
         }
       },
       "RetentionPolicy--Mini": {
+        "x-box-resource-display-name": "Retention Policy Mini",
         "x-box-resource-id": "retention_policy--mini",
         "description": "Mini representation of the retention policy",
         "x-box-reference-hide": true,
@@ -14684,6 +14771,7 @@
         ]
       },
       "RetentionPolicyAssignment": {
+        "x-box-resource-display-name": "Retention Policy Assignment",
         "x-box-resource-id": "retention_policy_assignment",
         "description": "The retention policy assignment endpoint provides a way\nfor admins to apply a retention policy on a per-folder\nbasis, or place a blanket policy over the entire\nenterprise.",
         "allOf": [
@@ -14740,6 +14828,7 @@
         ]
       },
       "RetentionPolicyAssignments": {
+        "x-box-resource-display-name": "Retention Policy Assignments",
         "x-box-resource-id": "retention_policy_assignments",
         "description": "A list of retention policy assignments",
         "x-box-reference-category": "retention_policies",
@@ -14760,6 +14849,7 @@
         ]
       },
       "SharedLink": {
+        "x-box-resource-display-name": "Shared Link",
         "x-box-resource-id": "shared_link",
         "description": "Shared links provide direct, read-only access to files or folder on Box\nusing a URL. Shared links with open access level allow anyone with the URL\nto access the item, while shared links with company or collaborators access\nlevels can only be accessed by appropriate authenticated Box users.",
         "properties": {
@@ -14837,6 +14927,7 @@
         }
       },
       "SharedLink--Writable": {
+        "x-box-resource-display-name": "Shared Link Writable",
         "x-box-resource-id": "shared_link--writable",
         "type": "object",
         "description": "The writable attributes for a Shared Link.",
@@ -14876,6 +14967,7 @@
         }
       },
       "Skill": {
+        "x-box-resource-display-name": "Skill",
         "x-box-resource-id": "skill",
         "description": "An object representing a skill",
         "allOf": [
@@ -14899,6 +14991,7 @@
         ]
       },
       "SkillInvocation": {
+        "x-box-resource-display-name": "Skill Invocation",
         "x-box-resource-id": "skill_invocation",
         "description": "The payload of a Box skill as sent to a Custom Skill's\n`invocation_url`.",
         "allOf": [
@@ -15019,6 +15112,7 @@
         ]
       },
       "StoragePolicy": {
+        "x-box-resource-display-name": "Storage Policy",
         "x-box-resource-id": "storage_policy",
         "x-box-reference-category": "multizones",
         "description": "The Storage Policy object describes the storage zone.",
@@ -15038,6 +15132,7 @@
         ]
       },
       "StoragePolicies": {
+        "x-box-resource-display-name": "Storage Policies",
         "x-box-resource-id": "storage_policies",
         "x-box-reference-category": "multizones",
         "description": "A list of storage policies.",
@@ -15058,6 +15153,7 @@
         ]
       },
       "StoragePolicy--Mini": {
+        "x-box-resource-display-name": "Storage Policy Mini",
         "x-box-resource-id": "storage_policy--mini",
         "description": "A mini description of a Storage Policy object",
         "x-box-reference-hide": true,
@@ -15071,6 +15167,7 @@
         ]
       },
       "StoragePolicyAssignment": {
+        "x-box-resource-display-name": "Storage Policy Assignment",
         "x-box-resource-id": "storage_policy_assignment",
         "x-box-reference-category": "multizones",
         "description": "The assignment of a storage policy to a user or enterprise",
@@ -15105,6 +15202,7 @@
         }
       },
       "StoragePolicyAssignments": {
+        "x-box-resource-display-name": "Storage Policy Assignments",
         "x-box-resource-id": "storage_policy_assignments",
         "x-box-reference-category": "multizones",
         "description": "A list of storage policy assignments.",
@@ -15125,6 +15223,7 @@
         ]
       },
       "Task": {
+        "x-box-resource-display-name": "Task",
         "x-box-resource-id": "task",
         "x-box-reference-category": "tasks",
         "description": "Tasks allow for file-centric workflows in Box. Users can\ncreate tasks on files and assign them to collaborators on\nBox.",
@@ -15199,6 +15298,7 @@
         ]
       },
       "Tasks": {
+        "x-box-resource-display-name": "Tasks",
         "x-box-resource-id": "tasks",
         "description": "A list of tasks",
         "x-box-reference-category": "tasks",
@@ -15218,6 +15318,7 @@
         }
       },
       "TaskAssignment": {
+        "x-box-resource-display-name": "Task Assignment",
         "x-box-resource-id": "task_assignment",
         "x-box-reference-category": "tasks",
         "description": "An assignment of a task to a file and user",
@@ -15296,6 +15397,7 @@
         ]
       },
       "TaskAssignments": {
+        "x-box-resource-display-name": "Task Assignments",
         "x-box-resource-id": "task_assignments",
         "x-box-reference-category": "tasks",
         "type": "object",
@@ -15317,6 +15419,7 @@
         ]
       },
       "TermsOfService": {
+        "x-box-resource-display-name": "Terms Of Service",
         "x-box-resource-id": "terms_of_service",
         "description": "The root-level record that is supposed to represent a\nsingle Terms of Service.",
         "allOf": [
@@ -15375,6 +15478,7 @@
         ]
       },
       "TermsOfServices": {
+        "x-box-resource-display-name": "Terms Of Services",
         "x-box-resource-id": "terms_of_services",
         "description": "A list of terms of services",
         "x-box-reference-category": "terms_of_services",
@@ -15394,6 +15498,7 @@
         }
       },
       "TermsOfService--Mini": {
+        "x-box-resource-display-name": "Terms Of Service Mini",
         "x-box-resource-id": "terms_of_service--mini",
         "description": "The root-level record that is supposed to represent a\nsingle Terms of Service.",
         "x-box-reference-hide": true,
@@ -15407,6 +15512,7 @@
         ]
       },
       "TermsOfServiceUserStatus": {
+        "x-box-resource-display-name": "Terms Of Service User Status",
         "x-box-resource-id": "terms_of_service_user_status",
         "x-box-reference-category": "terms_of_services",
         "description": "The association between a Terms of Service and a user",
@@ -15458,6 +15564,7 @@
         ]
       },
       "TermsOfServiceUserStatuses": {
+        "x-box-resource-display-name": "Terms Of Service User Statuses",
         "x-box-resource-id": "terms_of_services_user_statuses",
         "description": "A list of terms of service user statuses",
         "x-box-reference-category": "terms_of_services",
@@ -15477,6 +15584,7 @@
         }
       },
       "TokenRequest": {
+        "x-box-resource-display-name": "Token Request",
         "x-box-resource-id": "token_request",
         "description": "A request for a new OAuth2 token",
         "required": [
@@ -15561,6 +15669,7 @@
         }
       },
       "TokenRevocationRequest": {
+        "x-box-resource-display-name": "Token Revocation Request",
         "x-box-resource-id": "token_revocation_request",
         "description": "A request to revoke an OAuth2 token",
         "required": [
@@ -15585,6 +15694,7 @@
         }
       },
       "UploadPart": {
+        "x-box-resource-display-name": "Upload Part",
         "x-box-resource-id": "upload_part",
         "description": "A chunk of a file uploaded as part of\nan upload session.",
         "x-box-reference-category": "chunked_uploads",
@@ -15604,6 +15714,7 @@
         ]
       },
       "UploadPart--Mini": {
+        "x-box-resource-display-name": "Upload Part Mini",
         "x-box-resource-id": "upload_part--mini",
         "description": "The basic representation of an upload\nsession chunk.",
         "properties": {
@@ -15627,6 +15738,7 @@
         }
       },
       "UploadParts": {
+        "x-box-resource-display-name": "Upload Parts",
         "x-box-resource-id": "upload_parts",
         "x-box-reference-category": "chunked_uploads",
         "description": "A list of uploaded chunks for an upload\nsession.",
@@ -15647,6 +15759,7 @@
         ]
       },
       "UploadSession": {
+        "x-box-resource-display-name": "Upload Session",
         "x-box-resource-id": "upload_session",
         "description": "An upload session for chunk uploading a file.",
         "x-box-reference-category": "chunked_uploads",
@@ -15721,6 +15834,7 @@
         ]
       },
       "UploadUrl": {
+        "x-box-resource-display-name": "Upload Url",
         "x-box-resource-id": "upload_url",
         "x-box-reference-category": "file_uploads",
         "description": "The details for the upload session for the file.",
@@ -15738,6 +15852,7 @@
         }
       },
       "User": {
+        "x-box-resource-display-name": "User",
         "x-box-resource-id": "user",
         "description": "A full representation of a user, as can be returned from any\nuser API endpoint.",
         "x-box-reference-category": "users",
@@ -15827,6 +15942,7 @@
         ]
       },
       "Users": {
+        "x-box-resource-display-name": "Users",
         "x-box-resource-id": "users",
         "x-box-reference-category": "users",
         "description": "A list of users.",
@@ -15847,6 +15963,7 @@
         ]
       },
       "User--Standard": {
+        "x-box-resource-display-name": "User Standard",
         "x-box-resource-id": "user--standard",
         "description": "A standard representation of a user, as returned from any\nuser API endpoints by default",
         "x-box-reference-hide": true,
@@ -15934,6 +16051,7 @@
         ]
       },
       "User--Mini": {
+        "x-box-resource-display-name": "User Mini",
         "x-box-resource-id": "user--mini",
         "description": "A mini representation of a user, used when\nnested under another resource.",
         "x-box-reference-hide": true,
@@ -15959,6 +16077,7 @@
         ]
       },
       "Watermark": {
+        "x-box-resource-display-name": "Watermark",
         "x-box-resource-id": "watermark",
         "description": "A watermark is a semi-transparent overlay on an embedded file\npreview that displays a viewer's email address or user ID\nand the time of access over a file's content",
         "properties": {
@@ -15982,6 +16101,7 @@
         }
       },
       "WatermarkInfo": {
+        "x-box-resource-display-name": "Watermark Info",
         "x-box-resource-id": "watermark_info",
         "description": "The watermark information about this item",
         "properties": {
@@ -15993,6 +16113,7 @@
         }
       },
       "Webhook": {
+        "x-box-resource-display-name": "Webhook",
         "x-box-resource-id": "webhook",
         "x-box-reference-category": "webhooks",
         "description": "Represents a configured webhook.",
@@ -16048,6 +16169,7 @@
         ]
       },
       "Webhooks": {
+        "x-box-resource-display-name": "Webhooks",
         "x-box-resource-id": "webhooks",
         "x-box-reference-category": "webhooks",
         "description": "A list of webhooks.",
@@ -16068,6 +16190,7 @@
         ]
       },
       "WebhookEvent": {
+        "x-box-resource-display-name": "Webhook Event",
         "x-box-resource-id": "webhook_event",
         "description": "The event that is sent to a webhook address when an event happens",
         "allOf": [
@@ -16134,6 +16257,7 @@
         ]
       },
       "WebhookTrigger": {
+        "x-box-resource-display-name": "Webhook Trigger",
         "x-box-resource-id": "webhook_trigger",
         "example": "FILE.UPLOADED",
         "type": "string",
@@ -16178,6 +16302,7 @@
         ]
       },
       "WebLink": {
+        "x-box-resource-display-name": "Web Link",
         "x-box-resource-id": "web_link",
         "description": "Web links are objects that point to URLs. These objects\nare also known as bookmarks within the Box web application.\n\nWeb link objects are treated similarly to file objects,\nthey will also support most actions that apply to regular files.",
         "x-box-reference-category": "web_links",
