@@ -4463,6 +4463,245 @@
         }
       }
     },
+    "/metadata_cascade_policies": {
+      "get": {
+        "operationId": "get_metadata_cascade_policies",
+        "summary": "Get all metadata cascade policies",
+        "tags": [
+          "Metadata Cascade Policies (Beta)"
+        ],
+        "x-box-reference-category": "metadata_cascade_policies",
+        "description": "Retrieve a collection of metadata cascade policies\nwithin a given folder for the current enterprise.",
+        "parameters": [
+          {
+            "name": "folder_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "31232",
+            "description": "Specifies which folder to return policies for.\n\nThis is not required if the user making the API call\nhas admin permissions. In that case, this endpoints\nreturns all cascade policies in the enterprise."
+          },
+          {
+            "name": "owner_enterprise_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "31232",
+            "description": "The ID of the enterprise ID for which to find metadata\ncascade policies. If not specified, it defaults to the\ncurrent enterprise."
+          },
+          {
+            "name": "marker",
+            "description": "The position marker at which to begin the response.",
+            "in": "query",
+            "required": false,
+            "example": 1234,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "offset",
+            "description": "The offset of the item at which to begin the response.",
+            "in": "query",
+            "required": false,
+            "example": 1000,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a list of metadata cascade policies",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MetadataCascadePolicies"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "post_metadata_cascade_policies",
+        "summary": "Create metadata cascade policy",
+        "tags": [
+          "Metadata Cascade Policies (Beta)"
+        ],
+        "x-box-reference-category": "metadata_cascade_policies",
+        "description": "Creates a new metadata cascade policy that applies a given\nmetadata template to a given folder and automatically\ncascades it down to its children.\n\nIn order for the policy to work, a metadata instance must first\nbe applied to the folder.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "folder_id",
+                  "scope",
+                  "template_key"
+                ],
+                "properties": {
+                  "folder_id": {
+                    "type": "string",
+                    "description": "The ID of the folder to assign the template to.",
+                    "example": "12321"
+                  },
+                  "scope": {
+                    "description": "The scope of the metadata template",
+                    "example": "enterprise_27335",
+                    "type": "string",
+                    "enum": [
+                      "global",
+                      "enterprise_<id>"
+                    ]
+                  },
+                  "templateKey": {
+                    "type": "string",
+                    "example": "productInfo",
+                    "description": "The identifier of the metadata template."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Returns a new of metadata cascade policy",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MetadataCascadePolicy"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/metadata_cascade_policies/{metadata_cascade_policy_id}": {
+      "get": {
+        "operationId": "get_metadata_cascade_policies_id",
+        "summary": "Get metadata cascade policy",
+        "tags": [
+          "Metadata Cascade Policies (Beta)"
+        ],
+        "x-box-reference-category": "metadata_cascade_policies",
+        "description": "Retrieve a metadata cascade policy.",
+        "parameters": [
+          {
+            "name": "metadata_cascade_policy_id",
+            "description": "The ID of the metadata cascade policy.",
+            "example": "324324",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a list of metadata cascade policies",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MetadataCascadePolicy"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "delete_metadata_cascade_policies_id",
+        "summary": "Delete metadata cascade policy",
+        "tags": [
+          "Metadata Cascade Policies (Beta)"
+        ],
+        "x-box-reference-category": "metadata_cascade_policies",
+        "description": "Deletes a metadata cascade policy.",
+        "parameters": [
+          {
+            "name": "metadata_cascade_policy_id",
+            "description": "The ID of the metadata cascade policy.",
+            "example": "324324",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Returns an empty response when the policy\nis successfully deleted."
+          }
+        }
+      }
+    },
+    "/metadata_cascade_policies/{metadata_cascade_policy_id}/apply": {
+      "post": {
+        "operationId": "post_metadata_cascade_policies_id_apply",
+        "summary": "Force apply a metadata cascade policy",
+        "tags": [
+          "Metadata Cascade Policies (Beta)"
+        ],
+        "x-box-reference-category": "metadata_cascade_policies",
+        "description": "If a policy already exists on a folder, this will apply that policy\nto all existing files and sub-folders within the target folder.",
+        "parameters": [
+          {
+            "name": "metadata_cascade_policy_id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the cascade policy.",
+            "example": "21312"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "conflict_resolution"
+                ],
+                "properties": {
+                  "conflict_resolution": {
+                    "type": "string",
+                    "enum": [
+                      "none",
+                      "overwrite"
+                    ],
+                    "description": "The desired behavior for conflict-resolution if a template already\nexists on a given file or folder.\n\n* `none` will preserve the existing value on the file\n* `overwrite` will force-apply the templates values over\n  any existing values.",
+                    "example": "overwrite"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Returns the metadata cascade policy when the policy has been\napplied.\n\nThe metadata cascade operation will be kicked off asynchronously.\nThe API call will return right away but before the cascade operation\nis complete. There is currently no way to check for when this\noperation has finished.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MetadataCascadePolicy"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/comments/{comment_id}": {
       "get": {
         "operationId": "get_comments_id",
@@ -13329,6 +13568,26 @@
           }
         }
       },
+      "MetadataCascadePolicies": {
+        "x-box-resource-id": "metadata_cascade_policies",
+        "x-box-reference-category": "metadata_cascade_policies",
+        "description": "A list of metadata cascade policies.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/MarkerPagination"
+          },
+          {
+            "properties": {
+              "entries": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/MetadataCascadePolicy"
+                }
+              }
+            }
+          }
+        ]
+      },
       "MetadataFilter": {
         "x-box-resource-id": "metadata_filter",
         "description": "A metadata filter used for searching by metadata\ntemplate",
@@ -15591,6 +15850,10 @@
     {
       "name": "Metadata Templates",
       "x-box-reference-category": "metadata_templates"
+    },
+    {
+      "name": "Metadata Cascade Policies (Beta)",
+      "x-box-reference-category": "metadata_cascade_policies"
     },
     {
       "name": "Search",
