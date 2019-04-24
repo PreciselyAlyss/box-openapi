@@ -14126,7 +14126,7 @@
       },
       "RealtimeServer": {
         "x-box-resource-id": "realtime_server",
-        "description": "A realtime server that can be used for\nlong polling user events",
+        "description": "A real-time server that can be used for\nlong polling user events",
         "properties": {
           "type": {
             "description": "`realtime_server`",
