@@ -231,6 +231,105 @@
           }
         }
       },
+      "post": {
+        "operationId": "post_files_id",
+        "summary": "Restore a file",
+        "tags": [
+          "Trash",
+          "Files"
+        ],
+        "x-box-reference-category": "trash",
+        "description": "Restores an file that has been moved to the trash.",
+        "parameters": [
+          {
+            "name": "file_id",
+            "description": "The ID of the file.",
+            "example": "12345",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.",
+            "in": "query",
+            "example": "id,type,name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "name": {
+                    "description": "An optional new name for the file.",
+                    "example": "Restored.docx",
+                    "type": "string"
+                  },
+                  "parent": {
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/Parent"
+                      },
+                      {
+                        "description": "The optional parent folder to restore the file to.\n\nUse this if the original parent folder no longer\nexists, or the user no longer has access to the\noriginal parent folder."
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Returns a file object when the file has been restored.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/File"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returns an error if the user does not have access to the folder\nthe file is being restored to, or the user does not have permission\nto restore files from the trash.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returns an error if the file is not in the trash.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returns an error if there is an file with the same name\nin the folder the file is being restored to.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          }
+        }
+      },
       "put": {
         "operationId": "put_files_id",
         "summary": "Update a file",
@@ -503,6 +602,114 @@
             }
           }
         }
+      },
+      "post": {
+        "operationId": "post_files_id_content",
+        "tags": [
+          "File Uploads"
+        ],
+        "x-box-reference-category": "file_uploads",
+        "summary": "Upload a file version",
+        "description": "Update a file's content. For file sizes over 50MB we recommend\nusing the Chunk Upload APIs.",
+        "servers": [
+          {
+            "url": "https://upload.box.com/api/2.0",
+            "description": "Server for file uploads"
+          }
+        ],
+        "parameters": [
+          {
+            "name": "file_id",
+            "description": "The ID of the file.",
+            "example": "12345",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "If-Match",
+            "description": "Ensure this item hasn't recently changed\nby ensuring the item's current `etag` matches the\n`etag` passed into this header.",
+            "in": "header",
+            "required": false,
+            "example": 1,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.",
+            "in": "query",
+            "example": "id,type,name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Content-MD5",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "134b65991ed521fcfe4724b7d814ab8ded5185dc",
+            "in": "header",
+            "description": "An optional header containing the SHA-1 hash of the file to\nensure that the file was not corrupted in transit."
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "attributes",
+                  "files"
+                ],
+                "properties": {
+                  "attributes": {
+                    "description": "The JSON attributes of this request.",
+                    "type": "object",
+                    "required": [
+                      "name"
+                    ],
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "An optional new name for the file. If specified, the file\nwill be renamed when the new version is uploaded.",
+                        "example": "Photo 2.0.png"
+                      },
+                      "content_modified_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2012-12-12T10:53:43-08:00",
+                        "description": "Defines the time the file was last modified at.\n\nIf not set, the upload time will be used."
+                      }
+                    }
+                  },
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "The content of the file to upload to Box."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns the new file object in a list.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Files"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/files/content": {
@@ -568,6 +775,605 @@
           },
           "default": {
             "description": "A generic client error can occur when incorrect file\npermissions were passed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "post_files_content",
+        "tags": [
+          "File Uploads"
+        ],
+        "x-box-reference-category": "file_uploads",
+        "summary": "Upload a file",
+        "description": "Uploads a small file to Box. For file sizes over 50MB we recommend\nusing the Chunk Upload APIs.",
+        "servers": [
+          {
+            "url": "https://upload.box.com/api/2.0",
+            "description": "Server for file uploads"
+          }
+        ],
+        "parameters": [
+          {
+            "name": "fields",
+            "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.",
+            "in": "query",
+            "example": "id,type,name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Content-MD5",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "134b65991ed521fcfe4724b7d814ab8ded5185dc",
+            "in": "header",
+            "description": "An optional header containing the SHA-1 hash of the file to\nensure that the file was not corrupted in transit."
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "attributes",
+                  "files"
+                ],
+                "properties": {
+                  "attributes": {
+                    "description": "The JSON attributes of this request.",
+                    "type": "object",
+                    "required": [
+                      "name",
+                      "parent"
+                    ],
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "The name of the file",
+                        "example": "Photo.png"
+                      },
+                      "parent": {
+                        "type": "object",
+                        "description": "The parent folder to upload the file to",
+                        "required": [
+                          "id"
+                        ],
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "example": "124132",
+                            "description": "The id of the parent folder. Use\n`0` for the user's root folder."
+                          }
+                        }
+                      },
+                      "content_created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2012-12-12T10:53:43-08:00",
+                        "description": "Defines the time the file was originally created at.\n\nIf not set, the upload time will be used."
+                      },
+                      "content_modified_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2012-12-12T10:53:43-08:00",
+                        "description": "Defines the time the file was last modified at.\n\nIf not set, the upload time will be used."
+                      }
+                    }
+                  },
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "The content of the file to upload to Box."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Returns the new file object in a list.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Files"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returns an error if the file already exists,\nor the account has run out of disk space.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/files/upload_sessions": {
+      "post": {
+        "operationId": "post_files_upload_sessions",
+        "summary": "Create upload session",
+        "tags": [
+          "Chunked Uploads"
+        ],
+        "x-box-reference-category": "chunked_uploads",
+        "description": "Creates an upload session for a new file.",
+        "servers": [
+          {
+            "url": "https://upload.box.com/api/2.0",
+            "description": "Server for file uploads"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "folder_id",
+                  "file_size",
+                  "file_name"
+                ],
+                "properties": {
+                  "folder_id": {
+                    "description": "The ID of the folder to upload the new file to.",
+                    "type": "string",
+                    "example": "0"
+                  },
+                  "file_size": {
+                    "description": "The total number of bytes of the file to be uploaded",
+                    "example": 104857600,
+                    "type": "integer",
+                    "format": "int64"
+                  },
+                  "file_name": {
+                    "description": "The name of new file",
+                    "example": "Project.mov",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Returns a new upload session.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UploadSession"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returns an error if the file already exists,\nor the account has run out of disk space.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/files/{file_id}/upload_sessions": {
+      "post": {
+        "operationId": "post_files_id_upload_sessions",
+        "summary": "Create upload session for existing file",
+        "tags": [
+          "Chunked Uploads"
+        ],
+        "x-box-reference-category": "chunked_uploads",
+        "description": "Creates an upload session for an existing file.",
+        "servers": [
+          {
+            "url": "https://upload.box.com/api/2.0",
+            "description": "Server for file uploads"
+          }
+        ],
+        "parameters": [
+          {
+            "name": "file_id",
+            "description": "The ID of the file.",
+            "example": "12345",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "file_size"
+                ],
+                "properties": {
+                  "file_size": {
+                    "description": "The total number of bytes of the file to be uploaded",
+                    "example": 104857600,
+                    "type": "integer",
+                    "format": "int64"
+                  },
+                  "file_name": {
+                    "description": "The optional new name of new file",
+                    "example": "Project.mov",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Returns a new upload session.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UploadSession"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returns an error if the file already exists,\nor the account has run out of disk space.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/files/upload_sessions/{upload_session_id}": {
+      "get": {
+        "operationId": "get_files_upload_sessions_id",
+        "summary": "Get upload session",
+        "tags": [
+          "Chunked Uploads"
+        ],
+        "description": "Return information about an upload session.",
+        "x-box-reference-category": "chunked_uploads",
+        "parameters": [
+          {
+            "name": "upload_session_id",
+            "description": "The ID of the upload session.",
+            "example": "D5E3F7A",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns an upload session object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UploadSession"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "put_files_upload_sessions_id",
+        "summary": "Upload a chunk",
+        "tags": [
+          "Chunked Uploads"
+        ],
+        "x-box-reference-category": "chunked_uploads",
+        "description": "Updates a chunk of an upload session for a file.",
+        "servers": [
+          {
+            "url": "https://upload.box.com/api/2.0",
+            "description": "Server for file uploads"
+          }
+        ],
+        "parameters": [
+          {
+            "name": "upload_session_id",
+            "description": "The ID of the upload session.",
+            "example": "D5E3F7A",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Digest",
+            "description": "The [RFC3230][1] message digest of the chunk uploaded.\n\nOnly SHA-1 is supported. The SHA-1 digest must be Base64\nencoded. The format of this header is as\n`sha=BASE64_ENCODED_DIGEST`.\n\n[1]: https://tools.ietf.org/html/rfc3230",
+            "example": "sha=fpRyg5eVQletdZqEKaFlqwBXJzM=",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Content-Range",
+            "description": "The byte range of the chunk.\n\nMust not overlap with the range of a part already\nuploaded this session.",
+            "example": "8388608-16777215/445856194",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/octet-stream": {
+              "schema": {
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Chunk has been uploaded successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UploadPart"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returns an error if the chunk conflicts with another\nchunk previously uploaded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Returns an error if a precondition failed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          },
+          "416": {
+            "description": "Returns an error if the content range does not match a specified range\nfor the session.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "delete_files_upload_sessions_id",
+        "summary": "Abort upload session",
+        "tags": [
+          "Chunked Uploads"
+        ],
+        "description": "Abort an upload session and discard all data uploaded.\n\nThis cannot be reversed.",
+        "x-box-reference-category": "chunked_uploads",
+        "parameters": [
+          {
+            "name": "upload_session_id",
+            "description": "The ID of the upload session.",
+            "example": "D5E3F7A",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "A blank response is returned if the session was\nsuccessfully aborted."
+          }
+        }
+      }
+    },
+    "/files/upload_sessions/{upload_session_id}/parts": {
+      "get": {
+        "operationId": "get_files_upload_sessions_id_parts",
+        "summary": "List chunks",
+        "tags": [
+          "Chunked Uploads"
+        ],
+        "x-box-reference-category": "chunked_uploads",
+        "description": "Return a list of the chunks uploaded to the upload\nsession so far.",
+        "parameters": [
+          {
+            "name": "upload_session_id",
+            "description": "The ID of the upload session.",
+            "example": "D5E3F7A",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "description": "The offset of the item at which to begin the response.",
+            "in": "query",
+            "required": false,
+            "example": 1000,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": 0
+            }
+          },
+          {
+            "name": "limit",
+            "description": "The maximum number of items to return per page.",
+            "in": "query",
+            "required": false,
+            "example": 1000,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": 100,
+              "maximum": 1000
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a list of parts that have been uploaded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UploadParts"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/files/upload_sessions/{upload_session_id}/commit": {
+      "post": {
+        "operationId": "post_files_upload_sessions_id_commit",
+        "summary": "Commit upload session",
+        "tags": [
+          "Chunked Uploads"
+        ],
+        "x-box-reference-category": "chunked_uploads",
+        "description": "Close an upload session and create a file from the\nuploaded chunks.",
+        "parameters": [
+          {
+            "name": "upload_session_id",
+            "description": "The ID of the upload session.",
+            "example": "D5E3F7A",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Digest",
+            "description": "The [RFC3230][1] message digest of the whole file.\n\nOnly SHA-1 is supported. The SHA-1 digest must be Base64\nencoded. The format of this header is as\n`sha=BASE64_ENCODED_DIGEST`.\n\n[1]: https://tools.ietf.org/html/rfc3230",
+            "in": "header",
+            "example": "sha=fpRyg5eVQletdZqEKaFlqwBXJzM=",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "If-Match",
+            "description": "Ensure this item hasn't recently changed\nby ensuring the item's current `etag` matches the\n`etag` passed into this header.",
+            "in": "header",
+            "required": false,
+            "example": 1,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "If-None-Match",
+            "description": "Ensures the changes are only applied if the\nitem's `etag` does not match the provided\n`etag`, ensuring that the item is only updated\nif the content has changed.",
+            "in": "header",
+            "required": false,
+            "example": 1,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "parts"
+                ],
+                "properties": {
+                  "parts": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/UploadPart--Mini"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Returns the file object in a list.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Files"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Returns when all chunks have been uploaded but not yet processed.\n\nInspect the upload session to get more information about the\nprogress of processing the chunks, then retry committing the file\nwhen all chunks have processed.",
+            "headers": {
+              "Retry-After": {
+                "description": "Indicates the number of seconds the client should wait before\nattempting their commit request again.",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returns an error if there is already a file with the same name\nin the target folder.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Returns an error if the `If-Match` or `If-None-Match` conditions fail.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1080,8 +1886,8 @@
           "Files",
           "Trash"
         ],
-        "x-box-reference-category": "files",
-        "description": "Permanently deletes a file in the trash. The item will no longer\nexist in Box. This action cannot be undone.",
+        "x-box-reference-category": "trash",
+        "description": "Permanently deletes a file that is in the trash.\nThis action cannot be undone.",
         "parameters": [
           {
             "name": "file_id",
@@ -1096,10 +1902,10 @@
         ],
         "responses": {
           "204": {
-            "description": "An empty `204 No Content` response will be returned upon successful\ndeletion."
+            "description": "Returns an empty response when the file was\npermanently deleted."
           },
-          "default": {
-            "description": "Generic file error",
+          "404": {
+            "description": "Returns an error if the file is not in the trash.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1970,6 +2776,105 @@
           }
         }
       },
+      "post": {
+        "operationId": "post_folders_id",
+        "summary": "Restore a folder",
+        "tags": [
+          "Trash",
+          "Folders"
+        ],
+        "x-box-reference-category": "trash",
+        "description": "Restores an folder that has been moved to the trash.",
+        "parameters": [
+          {
+            "name": "folder_id",
+            "description": "The ID of the folder.\n\nThe root folder of a Box account is\nalways represented by the id `\"0\"`.",
+            "example": "12345",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.",
+            "in": "query",
+            "example": "id,type,name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "name": {
+                    "description": "An optional new name for the folder.",
+                    "example": "Restored Photos",
+                    "type": "string"
+                  },
+                  "parent": {
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/Parent"
+                      },
+                      {
+                        "description": "The optional parent folder to restore the folder to.\n\nUse this if the original parent folder no longer\nexists, or the user no longer has access to the\noriginal parent folder."
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Returns a folder object when the folder has been restored.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Folder"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returns an error if the user does not have access to the folder\nthe folder is being restored to, or the user does not have permission\nto restore folders from the trash.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returns an error if the folder is not in the trash.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returns an error if there is an folder with the same name\nin the folder the folder is being restored to.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          }
+        }
+      },
       "put": {
         "operationId": "put_folders_id",
         "summary": "Update a folder",
@@ -2564,8 +3469,8 @@
           "Folders",
           "Trash"
         ],
-        "x-box-reference-category": "folders",
-        "description": "Permanently deletes a folder in the trash. The item will no longer\nexist in Box. This action cannot be undone.",
+        "x-box-reference-category": "trash",
+        "description": "Permanently deletes a folder that is in the trash.\nThis action cannot be undone.",
         "parameters": [
           {
             "name": "folder_id",
@@ -2580,10 +3485,10 @@
         ],
         "responses": {
           "204": {
-            "description": "An empty `204 No Content` response will be returned upon successful\ndeletion."
+            "description": "Returns an empty response when the folder was\npermanently deleted."
           },
-          "default": {
-            "description": "Generic client error",
+          "404": {
+            "description": "Returns an error if the folder is not in the trash.",
             "content": {
               "application/json": {
                 "schema": {
@@ -4795,6 +5700,41 @@
         }
       }
     },
+    "/shared_items": {
+      "get": {
+        "operationId": "get_shared_items",
+        "summary": "Get a shared item",
+        "tags": [
+          "Shared Links"
+        ],
+        "x-box-reference-category": "shared_links",
+        "description": "Return the file or folder represented by a shared link.\n\nShared items are any files or folders that are represented by a shared link,\nwhich can originate within the current enterprise or within another one.\n\nThis endpoint allows an application to retrieve information about a\nshared item when only given a shared link.",
+        "parameters": [
+          {
+            "name": "BoxApi",
+            "description": "A header containing the shared link and optional password for the\nshared link.\n\nThe format for this header is as follows.\n\n`shared_link=[link]&shared_link_password=[password]`",
+            "example": "shared_link=https://cloud.box.com/shared/static/gjasdasjhasd&\\\nshared_link_password=letmein",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a full file or folder object if the shared link is valid and\nthe user has access to it.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Item"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/web_links": {
       "post": {
         "operationId": "post_web_links",
@@ -4885,6 +5825,105 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/WebLink"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "post_web_links_id",
+        "summary": "Restore a web link",
+        "tags": [
+          "Trash",
+          "Web Links"
+        ],
+        "x-box-reference-category": "trash",
+        "description": "Restores an web link that has been moved to the trash.",
+        "parameters": [
+          {
+            "name": "web_link_id",
+            "description": "The ID of the web link.",
+            "example": "12345",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.",
+            "in": "query",
+            "example": "id,type,name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "name": {
+                    "description": "An optional new name for the web link.",
+                    "example": "Restored.docx",
+                    "type": "string"
+                  },
+                  "parent": {
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/Parent"
+                      },
+                      {
+                        "description": "The optional parent folder to restore the web link to.\n\nUse this if the original parent folder no longer\nexists, or the user no longer has access to the\noriginal parent folder."
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Returns a web link object when it has been restored.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebLink"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returns an error if the user does not have access to the folder\nthe web link is being restored to, or the user does not have permission\nto restore web link from the trash.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returns an error if the web link is not in the trash.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returns an error if there is an web link with the same name\nin the folder the web link is being restored to.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
                 }
               }
             }
@@ -4982,6 +6021,99 @@
         "responses": {
           "204": {
             "description": "An empty response will be returned when the web link\nwas successfully deleted."
+          }
+        }
+      }
+    },
+    "/web_links/{web_link_id}/trash": {
+      "get": {
+        "operationId": "get_web_links_id_trash",
+        "summary": "Get a trashed web link",
+        "tags": [
+          "Web Links",
+          "Trash"
+        ],
+        "x-box-reference-category": "trash",
+        "description": "Retrieves a web link that has been moved to the trash.",
+        "parameters": [
+          {
+            "name": "web_link_id",
+            "description": "The ID of the web link.",
+            "example": "12345",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.",
+            "in": "query",
+            "example": "id,type,name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the web link that was trashed,\nincluding information about when the it\nwas moved to the trash.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Folder"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returns an error if the web link is not in the trash.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "delete_web_links_id_trash",
+        "summary": "Permanently delete web link",
+        "tags": [
+          "Folders",
+          "Trash"
+        ],
+        "x-box-reference-category": "trash",
+        "description": "Permanently deletes a web link that is in the trash.\nThis action cannot be undone.",
+        "parameters": [
+          {
+            "name": "web_link_id",
+            "description": "The ID of the web link.",
+            "example": "12345",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Returns an empty response when the web link was\npermanently deleted."
+          },
+          "404": {
+            "description": "Returns an error if the web link is not in the trash.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientError"
+                }
+              }
+            }
           }
         }
       }
@@ -8165,7 +9297,155 @@
         }
       }
     },
-    "/file_version_legal_holds/{file_id}": {
+    "/file_version_retentions/{file_version_retention_id}": {
+      "get": {
+        "operationId": "get_file_version_retentions_id",
+        "tags": [
+          "Retention Policies"
+        ],
+        "x-box-reference-category": "retention_policies",
+        "summary": "Get a file version retention",
+        "description": "Returns information about a file version retention.",
+        "parameters": [
+          {
+            "name": "file_version_retention_id",
+            "description": "The ID of the file version retention",
+            "in": "path",
+            "required": true,
+            "example": "3424234",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a file version retention object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileVersionRetention"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/file_version_retentions": {
+      "get": {
+        "operationId": "get_file_version_retentions",
+        "tags": [
+          "Retention Policies"
+        ],
+        "x-box-reference-category": "retention_policies",
+        "summary": "Get all file version retentions",
+        "description": "Retrieves all file version retentions for the given enterprise.",
+        "parameters": [
+          {
+            "name": "file_id",
+            "description": "Filters results by files with this ID.",
+            "in": "query",
+            "example": "43123123",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "file_version_id",
+            "description": "Filters results by file versions with this ID.",
+            "in": "query",
+            "example": "1",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "policy_id",
+            "description": "Filters results by the retention policy with this ID.",
+            "in": "query",
+            "required": false,
+            "example": "982312",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "disposition_action",
+            "description": "Filters results by the retention policy with this disposition\naction.",
+            "in": "query",
+            "required": false,
+            "example": "permanently_delete",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "permanently_delete",
+                "remove_retention"
+              ]
+            }
+          },
+          {
+            "name": "disposition_before",
+            "description": "Filters results by files that will have their disposition\ncome into effect before this date.",
+            "in": "query",
+            "required": false,
+            "example": "2012-12-12T10:53:43-08:00",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "disposition_after",
+            "description": "Filters results by files that will have their disposition\ncome into effect after this date.",
+            "in": "query",
+            "required": false,
+            "example": "2012-12-19T10:34:23-08:00",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "description": "The maximum number of items to return per page.",
+            "in": "query",
+            "required": false,
+            "example": 1000,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": 100,
+              "maximum": 1000
+            }
+          },
+          {
+            "name": "marker",
+            "description": "The position marker at which to begin the response.",
+            "in": "query",
+            "required": false,
+            "example": 1234,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a list of all file version retentions for the enterprise.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileVersionRetentions"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/file_version_legal_holds/{file_version_legal_hold_id}": {
       "get": {
         "operationId": "get_file_version_legal_holds_id",
         "summary": "Get a file version's legal hold",
@@ -8176,11 +9456,11 @@
         "description": "Retrieves information about the legal hold policies\nassigned to a file version.",
         "parameters": [
           {
-            "name": "file_id",
-            "description": "The ID of the file.",
-            "example": "12345",
+            "name": "file_version_legal_hold_id",
+            "description": "The ID of the file version legal hold",
             "in": "path",
             "required": true,
+            "example": "2348213",
             "schema": {
               "type": "string"
             }
@@ -8192,7 +9472,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LegalHold"
+                  "$ref": "#/components/schemas/FileVersionLegalHold"
                 }
               }
             }
@@ -8251,7 +9531,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LegalHolds"
+                  "$ref": "#/components/schemas/FileVersionLegalHolds"
                 }
               }
             }
@@ -10514,6 +11794,25 @@
           }
         ]
       },
+      "Files": {
+        "x-box-resource-id": "files",
+        "description": "A list of files",
+        "x-box-reference-category": "file_uploads",
+        "properties": {
+          "total_count": {
+            "description": "The number of files.",
+            "example": 1,
+            "type": "integer",
+            "format": "int64"
+          },
+          "entries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/File"
+            }
+          }
+        }
+      },
       "File--Standard": {
         "x-box-resource-id": "file--standard",
         "description": "A standard representation of a file, as returned from any\nfile API endpoints by default",
@@ -10816,6 +12115,73 @@
           }
         ]
       },
+      "FileVersionLegalHold": {
+        "x-box-resource-id": "file_version_legal_hold",
+        "x-box-reference-category": "legal_hold_policies",
+        "description": "File-Version-Legal-Hold is an entity representing all\nholds on a File Version.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Reference"
+          },
+          {
+            "properties": {
+              "file_version": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/FileVersion--Mini"
+                  },
+                  {
+                    "description": "The file version that is held"
+                  }
+                ]
+              },
+              "file": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/File--Mini"
+                  },
+                  {
+                    "description": "The file for the file version held.\nNote that there is no guarantee that the current\nversion of this file is held."
+                  }
+                ]
+              },
+              "legal_hold_policy_assignments": {
+                "description": "List of assignments contributing to this Hold.",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/LegalHoldPolicyAssignment"
+                }
+              },
+              "deleted_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "Time that this File-Version-Legal-Hold was\ndeleted.",
+                "example": "2012-12-12T10:53:43-08:00"
+              }
+            }
+          }
+        ]
+      },
+      "FileVersionLegalHolds": {
+        "x-box-resource-id": "file_version_legal_holds",
+        "x-box-reference-category": "legal_hold_policies",
+        "description": "A list of file version legal holds.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/MarkerPagination"
+          },
+          {
+            "properties": {
+              "entries": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/FileVersionLegalHold"
+                }
+              }
+            }
+          }
+        ]
+      },
       "FileVersionRetention": {
         "x-box-resource-id": "file_version_retention",
         "description": "A retention policy blocks permanent deletion of content\nfor a specified amount of time. Admins can apply policies to\nspecified folders, or an entire enterprise. A file version retention\nis a  record for a retained file version. To use this feature,\nyou must  have the manage retention policies scope enabled for your\nAPI key via  your application management console. For more information\nabout retention policies, please visit our help documentation",
@@ -10866,6 +12232,26 @@
                     "description": "The winning retention policy applied to this file\nversion retention. A file version can have multiple\nretention policies applied."
                   }
                 ]
+              }
+            }
+          }
+        ]
+      },
+      "FileVersionRetentions": {
+        "x-box-resource-id": "file_version_retentions",
+        "x-box-reference-category": "retention_policies",
+        "description": "A list of file version retentions.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/MarkerPagination"
+          },
+          {
+            "properties": {
+              "entries": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/FileVersionRetention"
+                }
               }
             }
           }
@@ -11447,73 +12833,6 @@
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/Item"
-                }
-              }
-            }
-          }
-        ]
-      },
-      "LegalHold": {
-        "x-box-resource-id": "file_version_legal_hold",
-        "x-box-reference-category": "legal_hold_policies",
-        "description": "File-Version-Legal-Hold is an entity representing all\nholds on a File Version.",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Reference"
-          },
-          {
-            "properties": {
-              "file_version": {
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/FileVersion--Mini"
-                  },
-                  {
-                    "description": "The file version that is held"
-                  }
-                ]
-              },
-              "file": {
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/File--Mini"
-                  },
-                  {
-                    "description": "The file for the file version held.\nNote that there is no guarantee that the current\nversion of this file is held."
-                  }
-                ]
-              },
-              "legal_hold_policy_assignments": {
-                "description": "List of assignments contributing to this Hold.",
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/LegalHoldPolicyAssignment"
-                }
-              },
-              "deleted_at": {
-                "type": "string",
-                "format": "date-time",
-                "description": "Time that this File-Version-Legal-Hold was\ndeleted.",
-                "example": "2012-12-12T10:53:43-08:00"
-              }
-            }
-          }
-        ]
-      },
-      "LegalHolds": {
-        "x-box-resource-id": "file_version_legal_holds",
-        "x-box-reference-category": "legal_hold_policies",
-        "description": "A list of file version legal holds.",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/MarkerPagination"
-          },
-          {
-            "properties": {
-              "entries": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/LegalHold"
                 }
               }
             }
@@ -13480,9 +14799,145 @@
           }
         }
       },
+      "UploadPart": {
+        "x-box-resource-id": "upload_part",
+        "description": "A chunk of a file uploaded as part of\nan upload session.",
+        "x-box-reference-category": "chunked_uploads",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/UploadPart--Mini"
+          },
+          {
+            "properties": {
+              "sha1": {
+                "description": "The SHA1 hash of the chunk.",
+                "type": "string",
+                "example": "134b65991ed521fcfe4724b7d814ab8ded5185dc"
+              }
+            }
+          }
+        ]
+      },
+      "UploadPart--Mini": {
+        "x-box-resource-id": "upload_part--mini",
+        "description": "The basic representation of an upload\nsession chunk.",
+        "properties": {
+          "part_id": {
+            "description": "The unique ID of the chunk.",
+            "type": "string",
+            "example": "6F2D3486"
+          },
+          "offset": {
+            "description": "The offset of the chunk within the file\nin bytes. The lower bound of the position\nof the chunk within the file.",
+            "type": "integer",
+            "format": "int64",
+            "example": 16777216
+          },
+          "size": {
+            "description": "The size of the chunk in bytes.",
+            "type": "integer",
+            "format": "int64",
+            "example": 3222784
+          }
+        }
+      },
+      "UploadParts": {
+        "x-box-resource-id": "upload_parts",
+        "x-box-reference-category": "chunked_uploads",
+        "description": "A list of uploaded chunks for an upload\nsession.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Pagination"
+          },
+          {
+            "properties": {
+              "entries": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/UploadPart"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "UploadSession": {
+        "x-box-resource-id": "upload_session",
+        "description": "An upload session for chunk uploading a file.",
+        "x-box-reference-category": "chunked_uploads",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Reference"
+          },
+          {
+            "properties": {
+              "session_expires_at": {
+                "description": "The date and time when this session expires.",
+                "type": "string",
+                "format": "date-time",
+                "example": "2012-12-12T10:53:43-08:00"
+              },
+              "part_size": {
+                "type": "integer",
+                "format": "int64",
+                "example": 1024,
+                "description": "The  size in bytes that must be used for all parts of of the\nupload.\n\nOnly the last part is allowed to be of a smaller size."
+              },
+              "total_parts": {
+                "type": "integer",
+                "format": "int32",
+                "example": 1000,
+                "description": "The total number of parts expected in this upload session,\nas determined by the file size and part size."
+              },
+              "num_parts_processed": {
+                "type": "integer",
+                "format": "int32",
+                "example": 455,
+                "description": "The number of parts that have been uploaded and processed\nby the server. This starts at `0`.\n\nWhen committing a file files, inspecting this property can\nprovide insight if all parts have been uploaded correctly."
+              },
+              "session_endpoints": {
+                "type": "object",
+                "description": "A list of endpoints for this session.",
+                "properties": {
+                  "upload_part": {
+                    "type": "string",
+                    "description": "The URL to upload parts to",
+                    "example": "https://upload.box.com/api/2.0/files/upload_sessions/D5E3F7A"
+                  },
+                  "commit": {
+                    "type": "string",
+                    "description": "The URL used to commit the file",
+                    "example": "https://upload.box.com/api/2.0/files/upload_sessions/D5E3F7A/commit"
+                  },
+                  "abort": {
+                    "type": "string",
+                    "description": "The URL for used to abort the session.",
+                    "example": "https://upload.box.com/api/2.0/files/upload_sessions/D5E3F7A"
+                  },
+                  "list_parts": {
+                    "type": "string",
+                    "description": "The URL users to list all parts.",
+                    "example": "https://upload.box.com/api/2.0/files/upload_sessions/D5E3F7A/parts"
+                  },
+                  "status": {
+                    "type": "string",
+                    "description": "The URL used to get the status of the upload.",
+                    "example": "https://upload.box.com/api/2.0/files/upload_sessions/D5E3F7A"
+                  },
+                  "log_event": {
+                    "type": "string",
+                    "description": "The URL used to get the upload log from.",
+                    "example": "https://upload.box.com/api/2.0/files/upload_sessions/D5E3F7A/log"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
       "UploadUrl": {
         "x-box-resource-id": "upload_url",
-        "x-box-reference-category": "files",
+        "x-box-reference-category": "file_uploads",
         "description": "The details for the upload session for the file.",
         "properties": {
           "upload_url": {
@@ -14069,6 +15524,14 @@
       "x-box-reference-category": "files"
     },
     {
+      "name": "File Uploads",
+      "x-box-reference-category": "file_uploads"
+    },
+    {
+      "name": "Chunked Uploads",
+      "x-box-reference-category": "chunked_uploads"
+    },
+    {
       "name": "File Versions",
       "x-box-reference-category": "file_versions"
     },
@@ -14103,6 +15566,10 @@
     {
       "name": "Tasks",
       "x-box-reference-category": "tasks"
+    },
+    {
+      "name": "Shared Links",
+      "x-box-reference-category": "shared_links"
     },
     {
       "name": "Web Links",
