@@ -7033,6 +7033,51 @@
         }
       }
     },
+    "/invites/{invite_id}": {
+      "get": {
+        "operationId": "get_invites_id",
+        "summary": "Get status of user invite",
+        "tags": [
+          "Users"
+        ],
+        "description": "Returns the status of a user invite.",
+        "x-box-reference-category": "users",
+        "parameters": [
+          {
+            "name": "invite_id",
+            "description": "The ID of an invite.",
+            "example": "213723",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.",
+            "in": "query",
+            "example": "id,type,name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns an invite object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Invite"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/groups": {
       "get": {
         "operationId": "get_groups",
