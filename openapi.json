@@ -2711,7 +2711,7 @@
       },
       "delete": {
         "operationId": "delete_files_id_watermark",
-        "summary": "Remove watermark from file",
+        "summary": "Remove file watermark",
         "tags": [
           "Watermark"
         ],
@@ -4061,7 +4061,7 @@
       },
       "delete": {
         "operationId": "delete_folders_id_watermark",
-        "summary": "Remove watermark from folder",
+        "summary": "Remove fodler watermark",
         "tags": [
           "Watermark"
         ],
@@ -4099,7 +4099,7 @@
     "/metadata_templates/{scope}/{template_key}/schema": {
       "get": {
         "operationId": "get_metadata_templates_id_id_schema",
-        "summary": "Get metadata template by name",
+        "summary": "Get template by name",
         "tags": [
           "Metadata Templates"
         ],
@@ -4324,7 +4324,7 @@
     "/metadata_templates/{template_id}": {
       "get": {
         "operationId": "get_metadata_templates_id",
-        "summary": "Get metadata template by ID",
+        "summary": "Get a template by ID",
         "tags": [
           "Metadata Templates"
         ],
@@ -4369,7 +4369,7 @@
     "/metadata_templates/enterprise": {
       "get": {
         "operationId": "get_metadata_templates_enterprise",
-        "summary": "Get enterprise metadata templates",
+        "summary": "Get enterprise templates",
         "tags": [
           "Metadata Templates"
         ],
@@ -4490,9 +4490,9 @@
     "/metadata_cascade_policies": {
       "get": {
         "operationId": "get_metadata_cascade_policies",
-        "summary": "Get all metadata cascade policies",
+        "summary": "Get all cascade policies",
         "tags": [
-          "Metadata Cascade Policies (Beta)"
+          "Cascade Policies (Beta)"
         ],
         "x-box-reference-category": "metadata_cascade_policies",
         "description": "Retrieve a collection of metadata cascade policies\nwithin a given folder for the current enterprise.",
@@ -4554,9 +4554,9 @@
       },
       "post": {
         "operationId": "post_metadata_cascade_policies",
-        "summary": "Create metadata cascade policy",
+        "summary": "Create cascade policy",
         "tags": [
-          "Metadata Cascade Policies (Beta)"
+          "Cascade Policies (Beta)"
         ],
         "x-box-reference-category": "metadata_cascade_policies",
         "description": "Creates a new metadata cascade policy that applies a given\nmetadata template to a given folder and automatically\ncascades it down to its children.\n\nIn order for the policy to work, a metadata instance must first\nbe applied to the folder.",
@@ -4611,9 +4611,9 @@
     "/metadata_cascade_policies/{metadata_cascade_policy_id}": {
       "get": {
         "operationId": "get_metadata_cascade_policies_id",
-        "summary": "Get metadata cascade policy",
+        "summary": "Get a cascade policy",
         "tags": [
-          "Metadata Cascade Policies (Beta)"
+          "Cascade Policies (Beta)"
         ],
         "x-box-reference-category": "metadata_cascade_policies",
         "description": "Retrieve a metadata cascade policy.",
@@ -4644,9 +4644,9 @@
       },
       "delete": {
         "operationId": "delete_metadata_cascade_policies_id",
-        "summary": "Delete metadata cascade policy",
+        "summary": "Delete cascade policy",
         "tags": [
-          "Metadata Cascade Policies (Beta)"
+          "Cascade Policies (Beta)"
         ],
         "x-box-reference-category": "metadata_cascade_policies",
         "description": "Deletes a metadata cascade policy.",
@@ -4672,9 +4672,9 @@
     "/metadata_cascade_policies/{metadata_cascade_policy_id}/apply": {
       "post": {
         "operationId": "post_metadata_cascade_policies_id_apply",
-        "summary": "Force apply a metadata cascade policy",
+        "summary": "Force apply a cascade policy",
         "tags": [
-          "Metadata Cascade Policies (Beta)"
+          "Cascade Policies (Beta)"
         ],
         "x-box-reference-category": "metadata_cascade_policies",
         "description": "If a policy already exists on a folder, this will apply that policy\nto all existing files and sub-folders within the target folder.",
@@ -5770,7 +5770,7 @@
     "/task_assignments": {
       "post": {
         "operationId": "post_task_assignments",
-        "summary": "Create task assignment",
+        "summary": "Assign a task",
         "tags": [
           "Tasks"
         ],
@@ -5938,7 +5938,7 @@
       },
       "delete": {
         "operationId": "delete_task_assignments_id",
-        "summary": "Delete task assignment",
+        "summary": "Unassign a task",
         "tags": [
           "Tasks"
         ],
@@ -6657,7 +6657,7 @@
       "get": {
         "operationId": "get_users_id",
         "x-box-reference-category": "users",
-        "summary": "Get authenticated user",
+        "summary": "Get a user",
         "tags": [
           "Users"
         ],
@@ -7778,12 +7778,12 @@
     "/group_memberships": {
       "post": {
         "operationId": "post_group_memberships",
-        "summary": "Create group membership",
+        "summary": "Add user to group",
         "tags": [
           "Groups"
         ],
         "x-box-reference-category": "groups",
-        "description": "Adds a user to a group.",
+        "description": "Creates a group membership",
         "parameters": [
           {
             "name": "fields",
@@ -7875,7 +7875,7 @@
     "/group_memberships/{group_membership_id}": {
       "get": {
         "operationId": "get_group_memberships_id",
-        "summary": "Get group membership",
+        "summary": "Get a group membership",
         "tags": [
           "Groups"
         ],
@@ -7918,7 +7918,7 @@
       },
       "put": {
         "operationId": "put_group_memberships_id",
-        "summary": "Update group membership",
+        "summary": "Update a user's membership",
         "tags": [
           "Groups"
         ],
@@ -7991,7 +7991,7 @@
       },
       "delete": {
         "operationId": "delete_group_memberships_id",
-        "summary": "Delete group membership",
+        "summary": "Remove user from group",
         "tags": [
           "Groups"
         ],
@@ -8999,7 +8999,7 @@
     "/retention_policies/{retention_policy_id}": {
       "get": {
         "operationId": "get_retention_policies_id",
-        "summary": "Get retention policy",
+        "summary": "Get a retention policy",
         "tags": [
           "Retention Policies"
         ],
@@ -9119,7 +9119,7 @@
     "/retention_policies/{retention_policy_id}/assignments": {
       "get": {
         "operationId": "get_retention_policies_id_assignments",
-        "summary": "Get a retention policy's assignments",
+        "summary": "Get a policy's assignments",
         "tags": [
           "Retention Policies"
         ],
@@ -9202,7 +9202,7 @@
     "/retention_policy_assignments": {
       "post": {
         "operationId": "post_retention_policy_assignments",
-        "summary": "Create retention policy assignment",
+        "summary": "Assign a retention policy",
         "tags": [
           "Retention Policies"
         ],
@@ -9299,7 +9299,7 @@
     "/retention_policy_assignments/{retention_policy_assignment_id}": {
       "get": {
         "operationId": "get_retention_policy_assignments_id",
-        "summary": "Get retention policy assignment",
+        "summary": "Get policy assignment",
         "tags": [
           "Retention Policies"
         ],
@@ -9620,7 +9620,7 @@
     "/legal_hold_policy_assignments": {
       "get": {
         "operationId": "get_legal_hold_policy_assignments",
-        "summary": "Get legal hold policy's assignments",
+        "summary": "Get a policy's assignments",
         "tags": [
           "Legal Hold Policies"
         ],
@@ -9701,7 +9701,7 @@
       },
       "post": {
         "operationId": "post_legal_hold_policy_assignments",
-        "summary": "Create legal hold policy assignment",
+        "summary": "Assign a legal hold policy",
         "tags": [
           "Legal Hold Policies"
         ],
@@ -9769,7 +9769,7 @@
     "/legal_hold_policy_assignments/{legal_hold_policy_assignment_id}": {
       "get": {
         "operationId": "get_legal_hold_policy_assignments_id",
-        "summary": "Get legal hold policy assignment",
+        "summary": "Get policy assignment",
         "tags": [
           "Legal Hold Policies"
         ],
@@ -9806,7 +9806,7 @@
         "tags": [
           "Legal Hold Policies"
         ],
-        "summary": "Delete legal hold policy assignment",
+        "summary": "Unassign a legal hold policy",
         "description": "Remove a legal hold from an item.\n\nThis is an asynchronous process. The policy will not be\nfully removed yet when the response returns.",
         "parameters": [
           {
@@ -9834,7 +9834,7 @@
           "Retention Policies"
         ],
         "x-box-reference-category": "retention_policies",
-        "summary": "Get a file version retention",
+        "summary": "Get a retention for a file",
         "description": "Returns information about a file version retention.",
         "parameters": [
           {
@@ -9869,7 +9869,7 @@
           "Retention Policies"
         ],
         "x-box-reference-category": "retention_policies",
-        "summary": "Get all file version retentions",
+        "summary": "Get all retentions on files",
         "description": "Retrieves all file version retentions for the given enterprise.",
         "parameters": [
           {
@@ -9978,7 +9978,7 @@
     "/file_version_legal_holds/{file_version_legal_hold_id}": {
       "get": {
         "operationId": "get_file_version_legal_holds_id",
-        "summary": "Get a file version's legal hold",
+        "summary": "Get a legal hold",
         "tags": [
           "Legal Hold Policies"
         ],
@@ -10013,7 +10013,7 @@
     "/file_version_legal_holds": {
       "get": {
         "operationId": "get_file_version_legal_holds",
-        "summary": "Get list of file version legal holds for a policy",
+        "summary": "Get legal holds for a policy",
         "tags": [
           "Legal Hold Policies"
         ],
@@ -10444,7 +10444,7 @@
       },
       "post": {
         "operationId": "post_terms_of_service_user_statuses",
-        "summary": "Set user's terms of service status",
+        "summary": "Set terms status for user",
         "tags": [
           "Terms of Service"
         ],
@@ -10533,7 +10533,7 @@
     "/terms_of_service_user_statuses/{terms_of_service_user_status_id}": {
       "put": {
         "operationId": "put_terms_of_service_user_statuses_id",
-        "summary": "Update user's terms of service status",
+        "summary": "Update terms status for user",
         "tags": [
           "Terms of Service"
         ],
@@ -10586,7 +10586,7 @@
     "/collaboration_whitelist_entries": {
       "get": {
         "operationId": "get_collaboration_whitelist_entries",
-        "summary": "Get collaboration whitelist entries",
+        "summary": "Get whitelist entries",
         "tags": [
           "Collaboration Whitelist"
         ],
@@ -10633,7 +10633,7 @@
       },
       "post": {
         "operationId": "post_collaboration_whitelist_entries",
-        "summary": "Create collaboration whitelist entry",
+        "summary": "Create whitelist entry",
         "tags": [
           "Collaboration Whitelist"
         ],
@@ -10685,7 +10685,7 @@
     "/collaboration_whitelist_entries/{collaboration_whitelist_entry_id}": {
       "get": {
         "operationId": "get_collaboration_whitelist_entries_id",
-        "summary": "Get collaboration whitelist entry",
+        "summary": "Get whitelist entry",
         "tags": [
           "Collaboration Whitelist"
         ],
@@ -10718,7 +10718,7 @@
       },
       "delete": {
         "operationId": "delete_collaboration_whitelist_entries_id",
-        "summary": "Delete collaboration whitelist entry",
+        "summary": "Delete whitelist entry",
         "tags": [
           "Collaboration Whitelist"
         ],
@@ -10746,7 +10746,7 @@
     "/collaboration_whitelist_exempt_targets": {
       "get": {
         "operationId": "get_collaboration_whitelist_exempt_targets",
-        "summary": "Get collaboration whitelist excemptions",
+        "summary": "Get whitelist excemptions",
         "tags": [
           "Collaboration Whitelist"
         ],
@@ -10793,7 +10793,7 @@
       },
       "post": {
         "operationId": "post_collaboration_whitelist_exempt_targets",
-        "summary": "Create collaboration whitelist exemption",
+        "summary": "Create whitelist exemption",
         "tags": [
           "Collaboration Whitelist"
         ],
@@ -10843,7 +10843,7 @@
     "/collaboration_whitelist_exempt_targets/{collaboration_whitelist_exempt_target_id}": {
       "get": {
         "operationId": "get_collaboration_whitelist_exempt_targets_id",
-        "summary": "Get collaboration whitelist excemption",
+        "summary": "Get whitelist excemption",
         "tags": [
           "Collaboration Whitelist"
         ],
@@ -10876,7 +10876,7 @@
       },
       "delete": {
         "operationId": "delete_collaboration_whitelist_exempt_targets_id",
-        "summary": "Delete collaboration whitelist exemption",
+        "summary": "Delete whitelist exemption",
         "tags": [
           "Collaboration Whitelist"
         ],
@@ -10998,7 +10998,7 @@
     "/storage_policy_assignments": {
       "get": {
         "operationId": "get_storage_policy_assignments",
-        "summary": "Get storage policy assignments",
+        "summary": "Get all policy assignments",
         "tags": [
           "Multi Zones"
         ],
@@ -11056,7 +11056,7 @@
       },
       "post": {
         "operationId": "post_storage_policy_assignments",
-        "summary": "Create storage policy assignment",
+        "summary": "Assign storage policy",
         "tags": [
           "Multi Zones"
         ],
@@ -11140,7 +11140,7 @@
     "/storage_policy_assignments/{storage_policy_assignment_id}": {
       "get": {
         "operationId": "get_storage_policy_assignments_id",
-        "summary": "Get storage policy assignment",
+        "summary": "Get policy assignment",
         "tags": [
           "Multi Zones"
         ],
@@ -11173,7 +11173,7 @@
       },
       "put": {
         "operationId": "put_storage_policy_assignments_id",
-        "summary": "Update storage policy assignment",
+        "summary": "Update policy assignment",
         "tags": [
           "Multi Zones"
         ],
@@ -11243,7 +11243,7 @@
       },
       "delete": {
         "operationId": "delete_storage_policy_assignments_id",
-        "summary": "Delete storage policy assignment",
+        "summary": "Unassign storage policy",
         "tags": [
           "Multi Zones"
         ],
@@ -11438,6 +11438,14 @@
           },
           {
             "properties": {
+              "type": {
+                "type": "string",
+                "description": "`collaboration`",
+                "example": "collaboration",
+                "enum": [
+                  "collaboration"
+                ]
+              },
               "item": {
                 "allOf": [
                   {
@@ -11545,7 +11553,6 @@
         "x-box-resource-display-name": "Collaborations",
         "x-box-resource-id": "collaborations",
         "description": "A list of collaborations",
-        "x-box-reference-category": "collaborations",
         "allOf": [
           {
             "$ref": "#/components/schemas/Pagination"
@@ -11573,6 +11580,14 @@
           },
           {
             "properties": {
+              "type": {
+                "type": "string",
+                "description": "`collaboration_whitelist_entry`",
+                "example": "collaboration_whitelist_entry",
+                "enum": [
+                  "collaboration_whitelist_entry"
+                ]
+              },
               "domain": {
                 "type": "string",
                 "example": "example.com",
@@ -11611,7 +11626,6 @@
       "CollaborationWhitelistEntries": {
         "x-box-resource-display-name": "Collaboration Whitelist Entries",
         "x-box-resource-id": "collaboration_whitelist_entries",
-        "x-box-reference-category": "collaboration_whitelist",
         "description": "A list of collaboration whitelist entries.",
         "allOf": [
           {
@@ -11630,7 +11644,7 @@
         ]
       },
       "CollaborationWhitelistExemptTarget": {
-        "x-box-resource-display-name": "Collaboration Whitelist Exempt Target",
+        "x-box-resource-display-name": "Whitelist Exempt Target",
         "x-box-resource-id": "collaboration_whitelist_exempt_target",
         "x-box-reference-category": "collaboration_whitelist",
         "description": "The record that represents a target user that is exempt from the\ncollaboration whitelist.",
@@ -11640,6 +11654,14 @@
           },
           {
             "properties": {
+              "type": {
+                "type": "string",
+                "description": "`collaboration_whitelist`",
+                "example": "collaboration_whitelist",
+                "enum": [
+                  "collaboration_whitelist"
+                ]
+              },
               "enterprise": {
                 "allOf": [
                   {
@@ -11677,9 +11699,8 @@
         ]
       },
       "CollaborationWhitelistExemptTargets": {
-        "x-box-resource-display-name": "Collaboration Whitelist Exempt Targets",
+        "x-box-resource-display-name": "Whitelist Exempt Targets",
         "x-box-resource-id": "collaboration_whitelist_exempt_targets",
-        "x-box-reference-category": "collaboration_whitelist",
         "description": "A list of collaboration whitelist exemptions.",
         "allOf": [
           {
@@ -11708,6 +11729,14 @@
           },
           {
             "properties": {
+              "type": {
+                "type": "string",
+                "description": "`collection`",
+                "example": "collection",
+                "enum": [
+                  "collection"
+                ]
+              },
               "name": {
                 "type": "string",
                 "description": "The name of the collection. The only collection\navailable is named `Favorites`.",
@@ -11732,7 +11761,6 @@
         "x-box-resource-display-name": "Collections",
         "x-box-resource-id": "collections",
         "description": "A list of collections",
-        "x-box-reference-category": "collections",
         "allOf": [
           {
             "$ref": "#/components/schemas/Pagination"
@@ -11774,7 +11802,6 @@
         "x-box-resource-display-name": "Comments",
         "x-box-resource-id": "comments",
         "description": "A list of comments",
-        "x-box-reference-category": "comments",
         "allOf": [
           {
             "$ref": "#/components/schemas/Pagination"
@@ -11792,7 +11819,7 @@
         ]
       },
       "Comment--Standard": {
-        "x-box-resource-display-name": "Comment Standard",
+        "x-box-resource-display-name": "Comment (Standard)",
         "x-box-resource-id": "comment--standard",
         "description": "Standard representation of a comment, as returned by the\ncomment API endpoints and when nested within other resources.",
         "x-box-reference-hide": true,
@@ -11803,6 +11830,14 @@
           },
           {
             "properties": {
+              "type": {
+                "type": "string",
+                "description": "`comment`",
+                "example": "comment",
+                "enum": [
+                  "comment"
+                ]
+              },
               "is_reply_comment": {
                 "type": "boolean",
                 "description": "Whether or not this comment is a reply to another\ncomment",
@@ -11898,6 +11933,14 @@
           },
           {
             "properties": {
+              "type": {
+                "type": "string",
+                "description": "`device_pinner`",
+                "example": "device_pinner",
+                "enum": [
+                  "device_pinner"
+                ]
+              },
               "owned_by": {
                 "allOf": [
                   {
@@ -11933,7 +11976,6 @@
         "x-box-resource-display-name": "Device Pinners",
         "x-box-resource-id": "device_pinners",
         "description": "A list of device pins",
-        "x-box-reference-category": "device_pins",
         "allOf": [
           {
             "$ref": "#/components/schemas/MarkerPagination"
@@ -11960,6 +12002,14 @@
           },
           {
             "properties": {
+              "type": {
+                "type": "string",
+                "description": "`enterprise`",
+                "example": "enterprise",
+                "enum": [
+                  "enterprise"
+                ]
+              },
               "name": {
                 "description": "The name of the enterprise",
                 "example": "Acme Inc.",
@@ -11981,6 +12031,14 @@
           },
           {
             "properties": {
+              "type": {
+                "type": "string",
+                "description": "`email_alias`",
+                "example": "email_alias",
+                "enum": [
+                  "email_alias"
+                ]
+              },
               "email": {
                 "type": "string",
                 "description": "The email address",
@@ -11999,7 +12057,6 @@
         "x-box-resource-display-name": "Email Aliases",
         "x-box-resource-id": "email_aliases",
         "description": "A list of email aliases",
-        "x-box-reference-category": "users",
         "properties": {
           "total_count": {
             "description": "The number of email aliases.",
@@ -12085,7 +12142,6 @@
         "x-box-resource-display-name": "Events",
         "x-box-resource-id": "events",
         "description": "A list of event objects",
-        "x-box-reference-category": "events",
         "properties": {
           "chunk_size": {
             "description": "The number of pages of events remaining.",
@@ -12377,7 +12433,6 @@
         "x-box-resource-display-name": "Files",
         "x-box-resource-id": "files",
         "description": "A list of files",
-        "x-box-reference-category": "file_uploads",
         "properties": {
           "total_count": {
             "description": "The number of files.",
@@ -12394,7 +12449,7 @@
         }
       },
       "File--Standard": {
-        "x-box-resource-display-name": "File Standard",
+        "x-box-resource-display-name": "File (Standard)",
         "x-box-resource-id": "file--standard",
         "description": "A standard representation of a file, as returned from any\nfile API endpoints by default",
         "x-box-reference-hide": true,
@@ -12534,7 +12589,7 @@
         ]
       },
       "File--Mini": {
-        "x-box-resource-display-name": "File Mini",
+        "x-box-resource-display-name": "File (Mini)",
         "x-box-resource-id": "file--mini",
         "description": "A mini representation of a file, used when\nnested under another resource.",
         "x-box-reference-hide": true,
@@ -12664,7 +12719,6 @@
         "x-box-resource-display-name": "File Versions",
         "x-box-resource-id": "file_versions",
         "description": "A list of file versions",
-        "x-box-reference-category": "file_versions",
         "allOf": [
           {
             "$ref": "#/components/schemas/Pagination"
@@ -12682,7 +12736,7 @@
         ]
       },
       "FileVersion--Mini": {
-        "x-box-resource-display-name": "File Version Mini",
+        "x-box-resource-display-name": "File Version (Mini)",
         "x-box-resource-id": "file_version--mini",
         "description": "A mini representation of a file version, used when\nnested under another resource.",
         "x-box-reference-hide": true,
@@ -12692,6 +12746,14 @@
           },
           {
             "properties": {
+              "type": {
+                "type": "string",
+                "description": "`file_version`",
+                "example": "file_version",
+                "enum": [
+                  "file_version"
+                ]
+              },
               "sha1": {
                 "type": "string",
                 "description": "The SHA1 hash of this file.",
@@ -12702,7 +12764,7 @@
         ]
       },
       "FileVersionLegalHold": {
-        "x-box-resource-display-name": "File Version Legal Hold",
+        "x-box-resource-display-name": "Legal Hold",
         "x-box-resource-id": "file_version_legal_hold",
         "x-box-reference-category": "legal_hold_policies",
         "description": "File-Version-Legal-Hold is an entity representing all\nholds on a File Version.",
@@ -12712,6 +12774,14 @@
           },
           {
             "properties": {
+              "type": {
+                "type": "string",
+                "description": "`file_version_legal_hold`",
+                "example": "file_version_legal_hold",
+                "enum": [
+                  "file_version_legal_hold"
+                ]
+              },
               "file_version": {
                 "allOf": [
                   {
@@ -12750,9 +12820,8 @@
         ]
       },
       "FileVersionLegalHolds": {
-        "x-box-resource-display-name": "File Version Legal Holds",
+        "x-box-resource-display-name": "Legal Holds",
         "x-box-resource-id": "file_version_legal_holds",
-        "x-box-reference-category": "legal_hold_policies",
         "description": "A list of file version legal holds.",
         "allOf": [
           {
@@ -12771,8 +12840,9 @@
         ]
       },
       "FileVersionRetention": {
-        "x-box-resource-display-name": "File Version Retention",
+        "x-box-resource-display-name": "Retention",
         "x-box-resource-id": "file_version_retention",
+        "x-box-reference-category": "retention_policies",
         "description": "A retention policy blocks permanent deletion of content\nfor a specified amount of time. Admins can apply policies to\nspecified folders, or an entire enterprise. A file version retention\nis a  record for a retained file version. To use this feature,\nyou must  have the manage retention policies scope enabled for your\nAPI key via  your application management console. For more information\nabout retention policies, please visit our help documentation",
         "allOf": [
           {
@@ -12780,6 +12850,14 @@
           },
           {
             "properties": {
+              "type": {
+                "type": "string",
+                "description": "`file_version_retention`",
+                "example": "file_version_retention",
+                "enum": [
+                  "file_version_retention"
+                ]
+              },
               "file_version": {
                 "allOf": [
                   {
@@ -12827,9 +12905,8 @@
         ]
       },
       "FileVersionRetentions": {
-        "x-box-resource-display-name": "File Version Retentions",
+        "x-box-resource-display-name": "Retentions",
         "x-box-resource-id": "file_version_retentions",
-        "x-box-reference-category": "retention_policies",
         "description": "A list of file version retentions.",
         "allOf": [
           {
@@ -12952,7 +13029,7 @@
         ]
       },
       "Folder--Standard": {
-        "x-box-resource-display-name": "Folder Standard",
+        "x-box-resource-display-name": "Folder (Standard)",
         "x-box-resource-id": "folder--standard",
         "description": "A standard representation of a folder, as returned from any\nfolder API endpoints by default",
         "x-box-reference-hide": true,
@@ -13109,7 +13186,7 @@
         ]
       },
       "Folder--Mini": {
-        "x-box-resource-display-name": "Folder Mini",
+        "x-box-resource-display-name": "Folder (Mini)",
         "x-box-resource-id": "folder--mini",
         "description": "A mini representation of a file version, used when\nnested under another resource.",
         "x-box-reference-hide": true,
@@ -13210,7 +13287,6 @@
       "Groups": {
         "x-box-resource-display-name": "Groups",
         "x-box-resource-id": "groups",
-        "x-box-reference-category": "groups",
         "description": "A list of groups.",
         "allOf": [
           {
@@ -13229,7 +13305,7 @@
         ]
       },
       "Group--Standard": {
-        "x-box-resource-display-name": "Group Standard",
+        "x-box-resource-display-name": "Group (Standard)",
         "x-box-resource-id": "group--standard",
         "description": "A standard representation of a group, as returned from any\ngroup API endpoints by default",
         "x-box-reference-hide": true,
@@ -13256,7 +13332,7 @@
         ]
       },
       "Group--Mini": {
-        "x-box-resource-display-name": "Group Mini",
+        "x-box-resource-display-name": "Group (Mini)",
         "x-box-resource-id": "group--mini",
         "type": "object",
         "description": "Mini representation of a group, including id and name of\ngroup.",
@@ -13267,6 +13343,14 @@
           },
           {
             "properties": {
+              "type": {
+                "type": "string",
+                "description": "`group`",
+                "example": "group",
+                "enum": [
+                  "group"
+                ]
+              },
               "name": {
                 "type": "string",
                 "description": "The name of the group",
@@ -13277,7 +13361,7 @@
         ]
       },
       "GroupMembership": {
-        "x-box-resource-display-name": "Group Membership",
+        "x-box-resource-display-name": "Membership",
         "x-box-resource-id": "group_membership",
         "x-box-reference-category": "groups",
         "description": "Membership is used to signify that a user is part of a\ngroup.",
@@ -13287,6 +13371,14 @@
           },
           {
             "properties": {
+              "type": {
+                "type": "string",
+                "description": "`group_membership`",
+                "example": "group_membership",
+                "enum": [
+                  "group_membership"
+                ]
+              },
               "user": {
                 "allOf": [
                   {
@@ -13333,9 +13425,8 @@
         ]
       },
       "GroupMemberships": {
-        "x-box-resource-display-name": "Group Memberships",
+        "x-box-resource-display-name": "Memberships",
         "x-box-resource-id": "group_memberships",
-        "x-box-reference-category": "groups",
         "description": "A list of group memberships.",
         "allOf": [
           {
@@ -13363,6 +13454,14 @@
           },
           {
             "properties": {
+              "type": {
+                "type": "string",
+                "description": "`invite`",
+                "example": "invite",
+                "enum": [
+                  "invite"
+                ]
+              },
               "invited_to": {
                 "$ref": "#/components/schemas/Enterprise"
               },
@@ -13403,6 +13502,11 @@
           },
           {
             "properties": {
+              "type": {
+                "description": "The type of this item",
+                "type": "string",
+                "example": "file"
+              },
               "sequence_id": {
                 "type": "string",
                 "example": "1",
@@ -13539,7 +13643,6 @@
       "LegalHoldPolicies": {
         "x-box-resource-display-name": "Legal Hold Policies",
         "x-box-resource-id": "legal_hold_policies",
-        "x-box-reference-category": "legal_hold_policies",
         "description": "A list of legal hold policies.",
         "allOf": [
           {
@@ -13558,7 +13661,7 @@
         ]
       },
       "LegalHoldPolicy--Mini": {
-        "x-box-resource-display-name": "Legal Hold Policy Mini",
+        "x-box-resource-display-name": "Legal Hold Policy (Mini)",
         "x-box-resource-id": "legal_hold_policy--mini",
         "description": "A mini legal hold policy",
         "x-box-reference-hide": true,
@@ -13567,7 +13670,16 @@
             "$ref": "#/components/schemas/Reference"
           },
           {
-            "properties": {}
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "`legal_hold_policy`",
+                "example": "legal_hold_policy",
+                "enum": [
+                  "legal_hold_policy"
+                ]
+              }
+            }
           }
         ]
       },
@@ -13582,6 +13694,14 @@
           },
           {
             "properties": {
+              "type": {
+                "type": "string",
+                "description": "`legal_hold_policy_assignment`",
+                "example": "legal_hold_policy_assignment",
+                "enum": [
+                  "legal_hold_policy_assignment"
+                ]
+              },
               "legal_hold_policy": {
                 "allOf": [
                   {
@@ -13631,7 +13751,6 @@
       "LegalHoldPolicyAssignments": {
         "x-box-resource-display-name": "Legal Hold Policy Assignments",
         "x-box-resource-id": "legal_hold_policy_assignments",
-        "x-box-reference-category": "legal_hold_policies",
         "description": "A list of legal hold policies assignments.",
         "allOf": [
           {
@@ -13659,6 +13778,14 @@
           },
           {
             "properties": {
+              "type": {
+                "type": "string",
+                "description": "`lock`",
+                "example": "lock",
+                "enum": [
+                  "lock"
+                ]
+              },
               "created_by": {
                 "allOf": [
                   {
@@ -13799,7 +13926,6 @@
         "x-box-resource-display-name": "Metadatas",
         "x-box-resource-id": "metadatas",
         "description": "A list of metadata",
-        "x-box-reference-category": "metadata",
         "properties": {
           "entries": {
             "type": "array",
@@ -13848,6 +13974,7 @@
       "MetadataCascadePolicy": {
         "x-box-resource-display-name": "Metadata Cascade Policy",
         "x-box-resource-id": "metadata_cascade_policy",
+        "x-box-reference-category": "metadata_cascade_policies",
         "description": "A cascade policy that applies to metadata policy template\nto a folder",
         "properties": {
           "id": {
@@ -13902,7 +14029,6 @@
       "MetadataCascadePolicies": {
         "x-box-resource-display-name": "Metadata Cascade Policies",
         "x-box-resource-id": "metadata_cascade_policies",
-        "x-box-reference-category": "metadata_cascade_policies",
         "description": "A list of metadata cascade policies.",
         "allOf": [
           {
@@ -13978,7 +14104,6 @@
         "x-box-resource-display-name": "Metadata Templates",
         "x-box-resource-id": "metadata_templates",
         "description": "A list of metadata templates",
-        "x-box-reference-category": "metadata_templates",
         "allOf": [
           {
             "$ref": "#/components/schemas/MarkerPagination"
@@ -13996,7 +14121,7 @@
         ]
       },
       "MetadataTemplate--Writable": {
-        "x-box-resource-display-name": "Metadata Template Writable",
+        "x-box-resource-display-name": "Metadata Template (Writable)",
         "x-box-resource-id": "metadata_template--writable",
         "description": "The writable parts of a metadata template that can be\napplied to files and folders",
         "properties": {
@@ -14596,7 +14721,6 @@
         "x-box-resource-display-name": "Recent Items",
         "x-box-resource-id": "recent_items",
         "description": "A list of recent items.",
-        "x-box-reference-category": "recent_items",
         "allOf": [
           {
             "$ref": "#/components/schemas/MarkerPagination"
@@ -14622,47 +14746,13 @@
             "type": "string",
             "description": "The ID of the object",
             "example": "11446498"
-          },
-          "type": {
-            "type": "string",
-            "description": "The type of object, defaults to `folder`",
-            "example": "file",
-            "enum": [
-              "folder",
-              "file",
-              "user",
-              "file_version",
-              "lock",
-              "collaboration",
-              "comment",
-              "task",
-              "web_link",
-              "collection",
-              "task_assignment",
-              "event",
-              "realtime_server",
-              "webhook_event",
-              "webhook",
-              "enterprise",
-              "invite",
-              "email_alias",
-              "group",
-              "group_membership",
-              "device_pinner",
-              "retention_policy",
-              "retention_policy_assignment",
-              "file_version_retention",
-              "legal_hold_policy",
-              "legal_hold_policy_assignment",
-              "legal_hold",
-              "upload_session"
-            ]
           }
         }
       },
       "RetentionPolicy": {
         "x-box-resource-display-name": "Retention Policy",
         "x-box-resource-id": "retention_policy",
+        "x-box-reference-category": "retention_policies",
         "title": "Retention Policy Object",
         "description": "A retention policy blocks permanent deletion of content\nfor a specified amount of time. Admins can create retention\npolicies and then later assign them to specific folders\nor their entire enterprise.  To use this feature, you must\nhave the manage retention policies scope enabled\nfor your API key via your application management console.",
         "allOf": [
@@ -14734,7 +14824,6 @@
         "x-box-resource-display-name": "Retention Policies",
         "x-box-resource-id": "retention_policies",
         "description": "A list of retention policies",
-        "x-box-reference-category": "retention_policies",
         "properties": {
           "total_count": {
             "description": "The number of retention policies.",
@@ -14751,7 +14840,7 @@
         }
       },
       "RetentionPolicy--Mini": {
-        "x-box-resource-display-name": "Retention Policy Mini",
+        "x-box-resource-display-name": "Retention Policy (Mini)",
         "x-box-resource-id": "retention_policy--mini",
         "description": "Mini representation of the retention policy",
         "x-box-reference-hide": true,
@@ -14761,6 +14850,14 @@
           },
           {
             "properties": {
+              "type": {
+                "type": "string",
+                "description": "`retention_policy`",
+                "example": "retention_policy",
+                "enum": [
+                  "retention_policy"
+                ]
+              },
               "policy_name": {
                 "type": "string",
                 "description": "The name given to the retention policy",
@@ -14773,6 +14870,7 @@
       "RetentionPolicyAssignment": {
         "x-box-resource-display-name": "Retention Policy Assignment",
         "x-box-resource-id": "retention_policy_assignment",
+        "x-box-reference-category": "retention_policies",
         "description": "The retention policy assignment endpoint provides a way\nfor admins to apply a retention policy on a per-folder\nbasis, or place a blanket policy over the entire\nenterprise.",
         "allOf": [
           {
@@ -14780,6 +14878,14 @@
           },
           {
             "properties": {
+              "type": {
+                "type": "string",
+                "description": "`retention_policy_assignment`",
+                "example": "retention_policy_assignment",
+                "enum": [
+                  "retention_policy_assignment"
+                ]
+              },
               "retention_policy": {
                 "allOf": [
                   {
@@ -14831,7 +14937,6 @@
         "x-box-resource-display-name": "Retention Policy Assignments",
         "x-box-resource-id": "retention_policy_assignments",
         "description": "A list of retention policy assignments",
-        "x-box-reference-category": "retention_policies",
         "allOf": [
           {
             "$ref": "#/components/schemas/MarkerPagination"
@@ -14927,7 +15032,7 @@
         }
       },
       "SharedLink--Writable": {
-        "x-box-resource-display-name": "Shared Link Writable",
+        "x-box-resource-display-name": "Shared Link (Writable)",
         "x-box-resource-id": "shared_link--writable",
         "type": "object",
         "description": "The writable attributes for a Shared Link.",
@@ -14976,6 +15081,14 @@
           },
           {
             "properties": {
+              "type": {
+                "type": "string",
+                "description": "`skill`",
+                "example": "skill",
+                "enum": [
+                  "skill"
+                ]
+              },
               "name": {
                 "type": "string",
                 "description": "The name of the skill",
@@ -15000,6 +15113,14 @@
           },
           {
             "properties": {
+              "type": {
+                "type": "string",
+                "description": "`skill_invocation`",
+                "example": "skill_invocation",
+                "enum": [
+                  "skill_invocation"
+                ]
+              },
               "id": {
                 "type": "string",
                 "description": "Unique identifier for the invocation request.",
@@ -15134,7 +15255,6 @@
       "StoragePolicies": {
         "x-box-resource-display-name": "Storage Policies",
         "x-box-resource-id": "storage_policies",
-        "x-box-reference-category": "multizones",
         "description": "A list of storage policies.",
         "allOf": [
           {
@@ -15153,7 +15273,7 @@
         ]
       },
       "StoragePolicy--Mini": {
-        "x-box-resource-display-name": "Storage Policy Mini",
+        "x-box-resource-display-name": "Storage Policy (Mini)",
         "x-box-resource-id": "storage_policy--mini",
         "description": "A mini description of a Storage Policy object",
         "x-box-reference-hide": true,
@@ -15162,7 +15282,16 @@
             "$ref": "#/components/schemas/Reference"
           },
           {
-            "properties": {}
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "`storage_policy`",
+                "example": "storage_policy",
+                "enum": [
+                  "storage_policy"
+                ]
+              }
+            }
           }
         ]
       },
@@ -15204,7 +15333,6 @@
       "StoragePolicyAssignments": {
         "x-box-resource-display-name": "Storage Policy Assignments",
         "x-box-resource-id": "storage_policy_assignments",
-        "x-box-reference-category": "multizones",
         "description": "A list of storage policy assignments.",
         "allOf": [
           {
@@ -15233,6 +15361,14 @@
           },
           {
             "properties": {
+              "type": {
+                "type": "string",
+                "description": "`task`",
+                "example": "task",
+                "enum": [
+                  "task"
+                ]
+              },
               "item": {
                 "allOf": [
                   {
@@ -15301,7 +15437,6 @@
         "x-box-resource-display-name": "Tasks",
         "x-box-resource-id": "tasks",
         "description": "A list of tasks",
-        "x-box-reference-category": "tasks",
         "properties": {
           "total_count": {
             "description": "One greater than the offset of the last entry in the entire collection.\nThe total number of entries in the collection may be less than\n`total_count`.",
@@ -15328,6 +15463,14 @@
           },
           {
             "properties": {
+              "type": {
+                "type": "string",
+                "description": "`task_assignment`",
+                "example": "task_assignment",
+                "enum": [
+                  "task_assignment"
+                ]
+              },
               "item": {
                 "allOf": [
                   {
@@ -15399,7 +15542,6 @@
       "TaskAssignments": {
         "x-box-resource-display-name": "Task Assignments",
         "x-box-resource-id": "task_assignments",
-        "x-box-reference-category": "tasks",
         "type": "object",
         "description": "A list of task assignments",
         "allOf": [
@@ -15480,8 +15622,8 @@
       "TermsOfServices": {
         "x-box-resource-display-name": "Terms Of Services",
         "x-box-resource-id": "terms_of_services",
-        "description": "A list of terms of services",
         "x-box-reference-category": "terms_of_services",
+        "description": "A list of terms of services",
         "properties": {
           "total_count": {
             "description": "The total number of objects.",
@@ -15498,7 +15640,7 @@
         }
       },
       "TermsOfService--Mini": {
-        "x-box-resource-display-name": "Terms Of Service Mini",
+        "x-box-resource-display-name": "Terms Of Service (Mini)",
         "x-box-resource-id": "terms_of_service--mini",
         "description": "The root-level record that is supposed to represent a\nsingle Terms of Service.",
         "x-box-reference-hide": true,
@@ -15507,12 +15649,21 @@
             "$ref": "#/components/schemas/Reference"
           },
           {
-            "properties": {}
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "`terms_of_service`",
+                "example": "terms_of_service",
+                "enum": [
+                  "terms_of_service"
+                ]
+              }
+            }
           }
         ]
       },
       "TermsOfServiceUserStatus": {
-        "x-box-resource-display-name": "Terms Of Service User Status",
+        "x-box-resource-display-name": "ToS User Status",
         "x-box-resource-id": "terms_of_service_user_status",
         "x-box-reference-category": "terms_of_services",
         "description": "The association between a Terms of Service and a user",
@@ -15522,6 +15673,14 @@
           },
           {
             "properties": {
+              "type": {
+                "type": "string",
+                "description": "`terms_of_service_user_status`",
+                "example": "terms_of_service_user_status",
+                "enum": [
+                  "terms_of_service_user_status"
+                ]
+              },
               "tos": {
                 "allOf": [
                   {
@@ -15564,10 +15723,9 @@
         ]
       },
       "TermsOfServiceUserStatuses": {
-        "x-box-resource-display-name": "Terms Of Service User Statuses",
+        "x-box-resource-display-name": "ToS User Statuses",
         "x-box-resource-id": "terms_of_services_user_statuses",
         "description": "A list of terms of service user statuses",
-        "x-box-reference-category": "terms_of_services",
         "properties": {
           "total_count": {
             "description": "The total number of objects.",
@@ -15714,7 +15872,7 @@
         ]
       },
       "UploadPart--Mini": {
-        "x-box-resource-display-name": "Upload Part Mini",
+        "x-box-resource-display-name": "Upload Part (Mini)",
         "x-box-resource-id": "upload_part--mini",
         "description": "The basic representation of an upload\nsession chunk.",
         "properties": {
@@ -15740,7 +15898,6 @@
       "UploadParts": {
         "x-box-resource-display-name": "Upload Parts",
         "x-box-resource-id": "upload_parts",
-        "x-box-reference-category": "chunked_uploads",
         "description": "A list of uploaded chunks for an upload\nsession.",
         "allOf": [
           {
@@ -15769,6 +15926,14 @@
           },
           {
             "properties": {
+              "type": {
+                "type": "string",
+                "description": "`upload_session`",
+                "example": "upload_session",
+                "enum": [
+                  "upload_session"
+                ]
+              },
               "session_expires_at": {
                 "description": "The date and time when this session expires.",
                 "type": "string",
@@ -15944,7 +16109,6 @@
       "Users": {
         "x-box-resource-display-name": "Users",
         "x-box-resource-id": "users",
-        "x-box-reference-category": "users",
         "description": "A list of users.",
         "allOf": [
           {
@@ -15963,7 +16127,7 @@
         ]
       },
       "User--Standard": {
-        "x-box-resource-display-name": "User Standard",
+        "x-box-resource-display-name": "User (Standard)",
         "x-box-resource-id": "user--standard",
         "description": "A standard representation of a user, as returned from any\nuser API endpoints by default",
         "x-box-reference-hide": true,
@@ -16051,7 +16215,7 @@
         ]
       },
       "User--Mini": {
-        "x-box-resource-display-name": "User Mini",
+        "x-box-resource-display-name": "User (Mini)",
         "x-box-resource-id": "user--mini",
         "description": "A mini representation of a user, used when\nnested under another resource.",
         "x-box-reference-hide": true,
@@ -16061,6 +16225,14 @@
           },
           {
             "properties": {
+              "type": {
+                "type": "string",
+                "description": "`user`",
+                "example": "user",
+                "enum": [
+                  "user"
+                ]
+              },
               "name": {
                 "type": "string",
                 "description": "The name of the user",
@@ -16079,6 +16251,7 @@
       "Watermark": {
         "x-box-resource-display-name": "Watermark",
         "x-box-resource-id": "watermark",
+        "x-box-reference-category": "watermarks",
         "description": "A watermark is a semi-transparent overlay on an embedded file\npreview that displays a viewer's email address or user ID\nand the time of access over a file's content",
         "properties": {
           "watermark": {
@@ -16123,15 +16296,33 @@
           },
           {
             "properties": {
-              "target": {
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/Reference"
-                  },
-                  {
-                    "description": "A reference to the item that will be monitored\nand webhooks created for"
-                  }
+              "type": {
+                "type": "string",
+                "description": "`webhook`",
+                "example": "webhook",
+                "enum": [
+                  "webhook"
                 ]
+              },
+              "target": {
+                "type": "object",
+                "description": "The item that will trigger the webhook",
+                "properties": {
+                  "id": {
+                    "description": "The ID of the item to trigger a webhook",
+                    "type": "string",
+                    "example": "1231232"
+                  },
+                  "type": {
+                    "description": "The type of item to trigger a webhook",
+                    "type": "string",
+                    "example": "file",
+                    "enum": [
+                      "file",
+                      "folder"
+                    ]
+                  }
+                }
               },
               "created_by": {
                 "allOf": [
@@ -16171,7 +16362,6 @@
       "Webhooks": {
         "x-box-resource-display-name": "Webhooks",
         "x-box-resource-id": "webhooks",
-        "x-box-reference-category": "webhooks",
         "description": "A list of webhooks.",
         "allOf": [
           {
@@ -16199,6 +16389,14 @@
           },
           {
             "properties": {
+              "type": {
+                "type": "string",
+                "description": "`webhook_event`",
+                "example": "webhook_event",
+                "enum": [
+                  "webhook_event"
+                ]
+              },
               "webhook": {
                 "allOf": [
                   {
@@ -16458,7 +16656,7 @@
       "x-box-reference-category": "metadata_templates"
     },
     {
-      "name": "Metadata Cascade Policies (Beta)",
+      "name": "Cascade Policies (Beta)",
       "x-box-reference-category": "metadata_cascade_policies"
     },
     {
