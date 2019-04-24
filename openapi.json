@@ -8381,6 +8381,122 @@
         }
       }
     },
+    "/events": {
+      "options": {
+        "operationId": "options_events",
+        "summary": "Get a long poll endpoint",
+        "tags": [
+          "Events"
+        ],
+        "x-box-reference-category": "events",
+        "description": "Returns a list of real-time servers that can be used for long-polling updates\nto the [event stream](#get-events).\n\nLong polling is the concept where a HTTP request is kept open until the\nserver sends a response, then repeating the process over and over to receive\nupdated responses.\n\nLong polling the event stream can only be used for user events, not for\nenterprise events.\n\nTo use long polling, first use this endpoint to retrieve a list of long poll\nURLs. Next, make a long poll request to any of the provided URLs.\n\nWhen an event occurs in monitored account a response with the value\n`new_change` will be sent. The response contains no other details as\nit simply serves as a prompt to take further action such as sending a\nrequest to the [events endpoint](#get-events) with the last known\n`stream_position`.\n\nAfter the server sends this response it closes the connection. You must now\nrepeat the long poll process to begin listening for events again.\n\nIf no events occur for a while and the connection times out you will\nreceive a response with the value `reconnect`. When you receive this response\nyou’ll make another call to this endpoint to restart the process.\n\nIf you receive no events in `retry_timeout` seconds then you will need to\nmake another request to the real-time server (one of the URLs in the response\nfor this endpoint). This might be necessary due to network errors.\n\nFinally, if you receive a `max_retries` error when making a request to the\nreal-time server, you should start over by making a call to this endpoint\nfirst.",
+        "responses": {
+          "200": {
+            "description": "Returns a paginated array of servers that can be used\ninstead of the regular endpoints for long-polling events.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RealtimeServers"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "get_events",
+        "summary": "Get user and enterprise events",
+        "tags": [
+          "Events"
+        ],
+        "x-box-reference-category": "events",
+        "description": "Returns up to a year of past events for a given user\nor for the entire enterprise.\n\nBy default this returns events for the authenticated user. To retrieve\nevents for the entire enterprise, set the `stream_type` to `admin_logs`.\nThe user making the API call will need to have admin privileges, and\nthe application will need to have the permission to access the event feed\nto get the enterprise event feed.",
+        "parameters": [
+          {
+            "name": "stream_type",
+            "description": "Defines the type of events that are returned\n\n* `all` returns everything for a user and is the default\n* `changes` returns events that may cause file tree changes\n  such as file updates or collaborations.\n* `sync` is similar to `changes` but only applies to synced folders\n* `admin_logs` returns all events for an entire enterprise and\n  requires the user making the API call to have admin permissions.",
+            "in": "query",
+            "example": "all",
+            "schema": {
+              "type": "string",
+              "default": "all",
+              "enum": [
+                "all",
+                "changes",
+                "sync",
+                "admin_logs"
+              ]
+            }
+          },
+          {
+            "name": "stream_position",
+            "description": "The location in the event stream to start receiving events from.\n\nSet this value to `now` to fetch an empty list events and\nthe latest stream position for initialization.\n\nSet this value to `0`, or don't set this value to get\n all events.",
+            "example": "1348790499819",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "description": "Limits the number of events returned",
+            "in": "query",
+            "example": 50,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": 100,
+              "maximum": 500
+            }
+          },
+          {
+            "name": "event_type",
+            "description": "A comma-separated list of events to filter by.",
+            "in": "query",
+            "example": "ADD_LOGIN_ACTIVITY_DEVICE",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/EventType"
+              }
+            }
+          },
+          {
+            "name": "created_after",
+            "description": "The lower bound date and time to return events for.",
+            "in": "query",
+            "example": "2012-12-12T10:53:43-08:00",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "created_before",
+            "description": "The upper bound date and time to return events for.",
+            "in": "query",
+            "required": false,
+            "example": "2013-12-12T10:53:43-08:00",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a list of event objects.\n\nEvents objects are returned in pages, with each page (chunk)\nincluding a list of event objects. The response also includes a\n`chunk_size` parameter indicating how many\nchunks are left, as well as the next `stream_position` that can be\nqueried.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Events"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/collections": {
       "get": {
         "operationId": "get_collections",
@@ -11813,6 +11929,30 @@
           }
         }
       },
+      "Events": {
+        "x-box-resource-id": "events",
+        "description": "A list of event objects",
+        "x-box-reference-category": "events",
+        "properties": {
+          "chunk_size": {
+            "description": "The number of pages of events remaining.",
+            "example": 2,
+            "type": "integer",
+            "format": "int64"
+          },
+          "next_stream_position": {
+            "description": "The stream position of the start of the next page\nof events.",
+            "example": "1152922976252290886",
+            "type": "string"
+          },
+          "entries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Events"
+            }
+          }
+        }
+      },
       "EventType": {
         "x-box-resource-id": "event_type",
         "example": "FILE_MARKED_MALICIOUS",
@@ -13984,6 +14124,56 @@
           }
         }
       },
+      "RealtimeServer": {
+        "x-box-resource-id": "realtime_server",
+        "description": "A realtime server that can be used for\nlong polling user events",
+        "properties": {
+          "type": {
+            "description": "`realtime_server`",
+            "type": "string",
+            "example": "realtime_server"
+          },
+          "url": {
+            "type": "string",
+            "example": "http://2.realtime.services.box.net/\\\nsubscribe\\?channel=cc807c9c4869ffb1c81a&stream_type=all",
+            "description": "The URL for the server."
+          },
+          "ttl": {
+            "description": "he time in minutes for which this server is available",
+            "type": "integer",
+            "example": 10
+          },
+          "max_retries": {
+            "description": "The maximum number of retries this server will\nallow before a new long poll should be started by\ngetting a [new list of server](#options-events).",
+            "type": "integer",
+            "example": 10
+          },
+          "retry_timeout": {
+            "description": "The maximum number of seconds without a response\nafter which you should retry the long poll connection.\n\nThis helps to overcome network issues where the long\npoll looks to be working but no packages are coming\nthrough.",
+            "type": "integer",
+            "example": 610
+          }
+        }
+      },
+      "RealtimeServers": {
+        "x-box-resource-id": "realtime_servers",
+        "description": "A list of real-time servers that can\nbe used for long-polling.",
+        "x-box-reference-category": "events",
+        "properties": {
+          "chunk_size": {
+            "description": "The number of pages of servers remaining.",
+            "example": 1,
+            "type": "integer",
+            "format": "int64"
+          },
+          "entries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RealtimeServer"
+            }
+          }
+        }
+      },
       "RecentItem": {
         "x-box-resource-id": "recent_item",
         "description": "A recent item accessed by a user.",
@@ -15898,6 +16088,10 @@
     {
       "name": "Webhooks",
       "x-box-reference-category": "webhooks"
+    },
+    {
+      "name": "Events",
+      "x-box-reference-category": "events"
     },
     {
       "name": "Collections",
