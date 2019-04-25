@@ -12599,6 +12599,14 @@
           },
           {
             "properties": {
+              "type": {
+                "type": "string",
+                "description": "`file`",
+                "example": "file",
+                "enum": [
+                  "file"
+                ]
+              },
               "sequence_id": {
                 "type": "string",
                 "example": "1",
@@ -13196,6 +13204,14 @@
           },
           {
             "properties": {
+              "type": {
+                "type": "string",
+                "description": "`folder`",
+                "example": "folder",
+                "enum": [
+                  "folder"
+                ]
+              },
               "sequence_id": {
                 "type": "string",
                 "example": "1",
@@ -16510,6 +16526,14 @@
           },
           {
             "properties": {
+              "type": {
+                "type": "string",
+                "description": "`web_link`",
+                "example": "web_link",
+                "enum": [
+                  "web_link"
+                ]
+              },
               "parent": {
                 "allOf": [
                   {
