@@ -47,6 +47,7 @@
             "required": true,
             "schema": {
               "type": "string",
+              "format": "token",
               "enum": [
                 "code"
               ]
@@ -69,7 +70,8 @@
             "example": "http://example.com/auth/callback",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "format": "url"
             }
           },
           {
@@ -10953,11 +10955,13 @@
             "properties": {
               "refresh_token": {
                 "type": "string",
+                "format": "token",
                 "example": "c3FIOG9vSGV4VHo4QzAyg5T1JvNnJoZ3ExaVNyQWw6WjRsanRKZG5lQk9qUE1BVQ",
                 "description": "The refresh token for this access token, which can be used\nto request a new access token when the current one expires."
               },
               "issued_token_type": {
                 "type": "string",
+                "format": "urn",
                 "example": "urn:ietf:params:oauth:token-type:access_token",
                 "enum": [
                   "urn:ietf:params:oauth:token-type:access_token"
@@ -10976,6 +10980,7 @@
         "properties": {
           "access_token": {
             "type": "string",
+            "format": "token",
             "example": "c3FIOG9vSGV4VHo4QzAyg5T1JvNnJoZ3ExaVNyQWw6WjRsanRKZG5lQk9qUE1BVQ",
             "description": "The requested access token."
           },
@@ -12110,6 +12115,7 @@
             "properties": {
               "sha1": {
                 "type": "string",
+                "format": "digest",
                 "example": "85136C79CBF9FE36BB9D05D0639C70C265C18D37",
                 "description": "The SHA1 hash of the file."
               },
@@ -15457,6 +15463,7 @@
         "properties": {
           "grant_type": {
             "type": "string",
+            "format": "urn",
             "example": "authorization_code",
             "description": "The type of request being made, either using a client-side obtained\nauthorization code, a refresh token, a JWT assertion, or another access\ntoken for the purpose of downscoping a token.",
             "enum": [
@@ -15478,11 +15485,13 @@
           },
           "code": {
             "type": "string",
+            "format": "token",
             "description": "The client-side authorization code passed to your application by\nBox in the browser redirect after the user has successfully\ngranted your application permission to make API calls on their\nbehalf.\n\nUsed in combination with `authorization_code` as the `grant_type`.",
             "example": "n22JPxrh18m4Y0wIZPIqYZK7VRrsMTWW"
           },
           "refresh_token": {
             "type": "string",
+            "format": "token",
             "description": "A refresh token used to get a new access token with.\n\nUsed in combination with `refresh_token` as the `grant_type`.",
             "example": "c3FIOG9vSGV4VHo4QzAyg5T1JvNnJoZ3ExaVNyQWw6WjRsanRKZG5lQk9qUE1BVQ"
           },
@@ -15494,6 +15503,7 @@
           },
           "subject_token": {
             "type": "string",
+            "format": "token",
             "description": "The token to exchange for a downscoped token. This can be a regular\naccess token, a JWT assertion, or an app token.\n\nUsed in combination with `urn:ietf:params:oauth:grant-type:token-exchange`\nas the `grant_type`.",
             "example": "c3FIOG9vSGV4VHo4QzAyg5T1JvNnJoZ3ExaVNyQWw6WjRsanRKZG5lQk9qUE1BVQ"
           },
@@ -15507,11 +15517,13 @@
           },
           "actor_token": {
             "type": "string",
+            "format": "token",
             "description": "The actor token used to create an annotator token.\nThis is a JWT assertion.\n\nUsed in combination with `urn:ietf:params:oauth:grant-type:token-exchange`\nas the `grant_type`.",
             "example": "c3FIOG9vSGV4VHo4QzAyg5T1JvNnJoZ3ExaVNyQWw6WjRsanRKZG5lQk9qUE1BVQ"
           },
           "actor_token_type": {
             "type": "string",
+            "format": "urn",
             "example": "urn:ietf:params:oauth:token-type:id_token",
             "description": "The type of `actor_token` passed in.\n\nUsed in combination with `urn:ietf:params:oauth:grant-type:token-exchange`\nas the `grant_type`.",
             "enum": [
@@ -15526,7 +15538,7 @@
           },
           "resource": {
             "type": "string",
-            "format": "uri",
+            "format": "url",
             "description": "Full URL for the file that the token should be generated for.",
             "example": "https://api.box.com/2.0/files/123456"
           }
@@ -15552,6 +15564,7 @@
           },
           "token": {
             "type": "string",
+            "format": "token",
             "description": "The access token to revoke.",
             "example": "n22JPxrh18m4Y0wIZPIqYZK7VRrsMTWW"
           }
