@@ -111,7 +111,7 @@
     "/oauth2/token": {
       "post": {
         "operationId": "post_oauth2_token",
-        "summary": "Request an Access Token",
+        "summary": "Request an access token",
         "description": "Request an Access Token using either a client-side obtained OAuth2\nauthorization code or a server-side JWT assertion.\n\nAn Access Token is a string that enables Box to verify that a\nrequest belongs to an authorized session. In the normal order of\noperations you will begin by requesting authentication from the\n[authorize](#get-authorize) endpoint and Box will send you an\nauthorization code.\n\nYou will then send this code to this endpoint to exchange it for\nan Access Token. The returned Access Token can then be used to to make\nBox API calls.",
         "tags": [
           "Authorization"
@@ -129,7 +129,7 @@
         },
         "responses": {
           "200": {
-            "description": "Returns a new Access Token that can be used to make authenticated\nAPI calls by passing along the token in a authorization header as\nfollows `Authorization: Bearer <Token>`",
+            "description": "Returns a new Access Token that can be used to make authenticated\nAPI calls by passing along the token in a authorization header as\nfollows `Authorization: Bearer <Token>`.",
             "content": {
               "application/json": {
                 "schema": {
@@ -139,7 +139,7 @@
             }
           },
           "400": {
-            "description": "A generic authentication error",
+            "description": "An authentication error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -154,7 +154,7 @@
     "/oauth2/revoke": {
       "post": {
         "operationId": "post_oauth2_revoke",
-        "summary": "Revoke an Access Token",
+        "summary": "Revoke an access token",
         "description": "Revoke an active Access Token, effectively logging a user out\nthat has been previously authenticated.",
         "tags": [
           "Authorization"
@@ -175,7 +175,7 @@
             "description": "Returns an empty response when the token was successfully revoked."
           },
           "400": {
-            "description": "An OAuth2 error",
+            "description": "An authentication error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -190,7 +190,7 @@
     "/files/{file_id}": {
       "get": {
         "operationId": "get_files_id",
-        "summary": "Get file information",
+        "summary": "Get a file",
         "tags": [
           "Files"
         ],
@@ -233,7 +233,7 @@
       },
       "post": {
         "operationId": "post_files_id",
-        "summary": "Restore a file",
+        "summary": "Restore file",
         "tags": [
           "Trash",
           "Files"
@@ -417,19 +417,14 @@
                     ]
                   },
                   "permissions": {
-                    "description": "Whether the shared link allows downloads",
-                    "type": "object",
-                    "properties": {
-                      "can_download": {
-                        "description": "Who is allowed to download this file",
-                        "type": "string",
-                        "example": "open",
-                        "enum": [
-                          "open",
-                          "company"
-                        ]
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/Permissions--Writable"
+                      },
+                      {
+                        "description": "Describes if a file can be downloaded and by who."
                       }
-                    }
+                    ]
                   },
                   "tags": {
                     "type": "array",
@@ -453,16 +448,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/File"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "A client error can occur of the user does not have access to the file,\nthe file does not exists, or incorrect parameters are passed in the\nrequest.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClientError"
                 }
               }
             }
@@ -505,16 +490,6 @@
           },
           "412": {
             "description": "If the `If-Match` header was sent and the file has since changed, the\nAPI will return a `412 Precondition Failed` error.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClientError"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Generic file error",
             "content": {
               "application/json": {
                 "schema": {
@@ -769,16 +744,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ConflictError"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "A generic client error can occur when incorrect file\npermissions were passed in",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClientError"
                 }
               }
             }
@@ -1092,7 +1057,7 @@
       },
       "put": {
         "operationId": "put_files_upload_sessions_id",
-        "summary": "Upload a chunk",
+        "summary": "Upload a part",
         "tags": [
           "Chunked Uploads"
         ],
@@ -1225,7 +1190,7 @@
     "/files/upload_sessions/{upload_session_id}/parts": {
       "get": {
         "operationId": "get_files_upload_sessions_id_parts",
-        "summary": "List chunks",
+        "summary": "List parts",
         "tags": [
           "Chunked Uploads"
         ],
@@ -1484,16 +1449,6 @@
                 }
               }
             }
-          },
-          "default": {
-            "description": "A client error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClientError"
-                }
-              }
-            }
           }
         }
       }
@@ -1636,16 +1591,6 @@
                 }
               }
             }
-          },
-          "default": {
-            "description": "A client error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClientError"
-                }
-              }
-            }
           }
         }
       }
@@ -1714,16 +1659,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Collaborations"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "A client error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClientError"
                 }
               }
             }
@@ -1798,16 +1733,6 @@
                 }
               }
             }
-          },
-          "default": {
-            "description": "A client error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClientError"
-                }
-              }
-            }
           }
         }
       }
@@ -1851,7 +1776,7 @@
     "/files/{file_id}/trash": {
       "get": {
         "operationId": "get_files_id_trash",
-        "summary": "Get a trashed file",
+        "summary": "Get trashed file",
         "tags": [
           "Files",
           "Trash"
@@ -1944,7 +1869,7 @@
     "/files/{file_id}/versions": {
       "get": {
         "operationId": "get_files_id_versions",
-        "summary": "Get all file versions",
+        "summary": "List all file versions",
         "tags": [
           "Files",
           "File Versions"
@@ -2008,16 +1933,6 @@
                 }
               }
             }
-          },
-          "default": {
-            "description": "Generic client error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClientError"
-                }
-              }
-            }
           }
         }
       }
@@ -2074,22 +1989,12 @@
                 }
               }
             }
-          },
-          "default": {
-            "description": "Generic client error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClientError"
-                }
-              }
-            }
           }
         }
       },
       "delete": {
         "operationId": "delete_files_id_versions_id",
-        "summary": "Delete a file version",
+        "summary": "Delete file version",
         "tags": [
           "Files",
           "File Versions"
@@ -2131,16 +2036,6 @@
         "responses": {
           "204": {
             "description": "Returns an empty response when the file has been successfully\ndeleted."
-          },
-          "default": {
-            "description": "Generic client error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClientError"
-                }
-              }
-            }
           }
         }
       }
@@ -2148,7 +2043,7 @@
     "/files/{file_id}/versions/current": {
       "post": {
         "operationId": "post_files_id_versions_current",
-        "summary": "Revert to file version",
+        "summary": "Revert file version",
         "tags": [
           "Files",
           "File Versions"
@@ -2211,16 +2106,6 @@
                 }
               }
             }
-          },
-          "default": {
-            "description": "Generic client error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClientError"
-                }
-              }
-            }
           }
         }
       }
@@ -2228,7 +2113,7 @@
     "/files/{file_id}/metadata": {
       "get": {
         "operationId": "get_files_id_metadata",
-        "summary": "Get all file metadata",
+        "summary": "List file's metadata",
         "tags": [
           "File & Folder Metadata"
         ],
@@ -2256,16 +2141,6 @@
                 }
               }
             }
-          },
-          "default": {
-            "description": "Generic client error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClientError"
-                }
-              }
-            }
           }
         }
       }
@@ -2273,7 +2148,7 @@
     "/files/{file_id}/metadata/{scope}/{template_key}": {
       "get": {
         "operationId": "get_files_id_metadata_id_id",
-        "summary": "Get a specific file metadata",
+        "summary": "Get specific file metadata",
         "tags": [
           "Files & Folder Metadata"
         ],
@@ -2328,16 +2203,6 @@
           },
           "404": {
             "description": "Returned if the metadata template specified\nwas not applied to this file.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClientError"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Generic client error",
             "content": {
               "application/json": {
                 "schema": {
@@ -2428,22 +2293,12 @@
                 }
               }
             }
-          },
-          "default": {
-            "description": "Generic client error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClientError"
-                }
-              }
-            }
           }
         }
       },
       "put": {
         "operationId": "put_files_id_metadata_id_id",
-        "summary": "Update metadata on file",
+        "summary": "Update file metadata",
         "tags": [
           "File & Folder Metadata"
         ],
@@ -2518,22 +2373,12 @@
                 }
               }
             }
-          },
-          "default": {
-            "description": "Generic client error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClientError"
-                }
-              }
-            }
           }
         }
       },
       "delete": {
         "operationId": "delete_files_id_metadata_id_id",
-        "summary": "Delete metadata on file",
+        "summary": "Delete file metadata",
         "tags": [
           "File & Folder Metadata"
         ],
@@ -2578,16 +2423,6 @@
         "responses": {
           "204": {
             "description": "Returns an empty response when the metadata is\nsuccessfully deleted."
-          },
-          "default": {
-            "description": "A client error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClientError"
-                }
-              }
-            }
           }
         }
       }
@@ -2595,7 +2430,7 @@
     "/files/{file_id}/watermark": {
       "get": {
         "operationId": "get_files_id_watermark",
-        "summary": "Get watermark on file",
+        "summary": "Get file watermark",
         "tags": [
           "Watermarks"
         ],
@@ -2749,7 +2584,7 @@
     "/folders/{folder_id}": {
       "get": {
         "operationId": "get_folders_id",
-        "summary": "Get folder information",
+        "summary": "Get a folder",
         "tags": [
           "Folders"
         ],
@@ -2787,22 +2622,12 @@
                 }
               }
             }
-          },
-          "default": {
-            "description": "A client error can occur of the user does not have access to the folder,\nthe folder does not exists, or incorrect parameters are passed in the\nrequest.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClientError"
-                }
-              }
-            }
           }
         }
       },
       "post": {
         "operationId": "post_folders_id",
-        "summary": "Restore a folder",
+        "summary": "Restore folder",
         "tags": [
           "Trash",
           "Folders"
@@ -3046,16 +2871,6 @@
                 }
               }
             }
-          },
-          "default": {
-            "description": "A client error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClientError"
-                }
-              }
-            }
           }
         }
       },
@@ -3102,16 +2917,6 @@
         "responses": {
           "204": {
             "description": "Returns an empty response when the folder is successfully deleted\nor moved to the trash."
-          },
-          "default": {
-            "description": "A client error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClientError"
-                }
-              }
-            }
           }
         }
       }
@@ -3119,7 +2924,7 @@
     "/folders/{folder_id}/items": {
       "get": {
         "operationId": "get_folders_id_items",
-        "summary": "Get folder items",
+        "summary": "Get items in folder",
         "tags": [
           "Folders",
           "Files"
@@ -3183,16 +2988,6 @@
                 }
               }
             }
-          },
-          "default": {
-            "description": "A client error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClientError"
-                }
-              }
-            }
           }
         }
       }
@@ -3250,16 +3045,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Folder"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Client error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClientError"
                 }
               }
             }
@@ -3336,16 +3121,6 @@
                 }
               }
             }
-          },
-          "default": {
-            "description": "A client error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClientError"
-                }
-              }
-            }
           }
         }
       }
@@ -3417,16 +3192,6 @@
                 }
               }
             }
-          },
-          "default": {
-            "description": "A client error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClientError"
-                }
-              }
-            }
           }
         }
       }
@@ -3434,7 +3199,7 @@
     "/folders/{folder_id}/trash": {
       "get": {
         "operationId": "get_folders_id_trash",
-        "summary": "Get a trashed folder",
+        "summary": "Get trashed folder",
         "tags": [
           "Folders",
           "Trash"
@@ -3527,7 +3292,7 @@
     "/folders/{folder_id}/metadata": {
       "get": {
         "operationId": "get_folders_id_metadata",
-        "summary": "Get all folder metadata",
+        "summary": "List folder's metadata",
         "tags": [
           "File & Folder Metadata"
         ],
@@ -3562,7 +3327,7 @@
     "/folders/{folder_id}/metadata/{scope}/{template_key}": {
       "get": {
         "operationId": "get_folders_id_metadata_id_id",
-        "summary": "Get a specific folder metadata",
+        "summary": "Get specific folder metadata",
         "tags": [
           "File & Folder Metadata"
         ],
@@ -3617,16 +3382,6 @@
           },
           "404": {
             "description": "Returned if the metadata template specified\nwas not applied to this folder.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClientError"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Generic client error",
             "content": {
               "application/json": {
                 "schema": {
@@ -3717,22 +3472,12 @@
                 }
               }
             }
-          },
-          "default": {
-            "description": "Generic client error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClientError"
-                }
-              }
-            }
           }
         }
       },
       "put": {
         "operationId": "put_folders_id_metadata_id_id",
-        "summary": "Update metadata on folder",
+        "summary": "Update folder metadata",
         "tags": [
           "File & Folder Metadata"
         ],
@@ -3807,22 +3552,12 @@
                 }
               }
             }
-          },
-          "default": {
-            "description": "Generic client error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClientError"
-                }
-              }
-            }
           }
         }
       },
       "delete": {
         "operationId": "delete_folders_id_metadata_id_id",
-        "summary": "Delete metadata on folder",
+        "summary": "Delete folder metadata",
         "tags": [
           "File & Folder Metadata"
         ],
@@ -3867,16 +3602,6 @@
         "responses": {
           "204": {
             "description": "Returns an empty response when the metadata is\nsuccessfully deleted."
-          },
-          "default": {
-            "description": "A client error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClientError"
-                }
-              }
-            }
           }
         }
       }
@@ -3884,7 +3609,7 @@
     "/folders/trash/items": {
       "get": {
         "operationId": "get_folders_trash_items",
-        "summary": "Get all trashed items",
+        "summary": "List trashed items",
         "tags": [
           "Folders",
           "Trash"
@@ -3945,7 +3670,7 @@
     "/folders/{folder_id}/watermark": {
       "get": {
         "operationId": "get_folders_id_watermark",
-        "summary": "Get watermark on folder",
+        "summary": "Get folder watermark",
         "tags": [
           "Watermarks"
         ],
@@ -4061,7 +3786,7 @@
       },
       "delete": {
         "operationId": "delete_folders_id_watermark",
-        "summary": "Remove fodler watermark",
+        "summary": "Remove folder watermark",
         "tags": [
           "Watermark"
         ],
@@ -4141,16 +3866,6 @@
                 }
               }
             }
-          },
-          "default": {
-            "description": "Generic client error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClientError"
-                }
-              }
-            }
           }
         }
       },
@@ -4160,7 +3875,7 @@
           "Metadata Templates"
         ],
         "x-box-reference-category": "metadata_templates",
-        "summary": "Update a metadata template",
+        "summary": "Update metadata template",
         "description": "Updates a metadata template.\n\nThe metadata template can only be updated if the template\nalready exists.\n\nThe update is applied atomically. If any errors occur during the\napplication of the operations, the metadata template remains unchanged.",
         "parameters": [
           {
@@ -4237,16 +3952,6 @@
                 }
               }
             }
-          },
-          "default": {
-            "description": "Generic client error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClientError"
-                }
-              }
-            }
           }
         }
       },
@@ -4307,16 +4012,6 @@
                 }
               }
             }
-          },
-          "default": {
-            "description": "A client error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClientError"
-                }
-              }
-            }
           }
         }
       }
@@ -4352,16 +4047,6 @@
                 }
               }
             }
-          },
-          "default": {
-            "description": "Generic client error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClientError"
-                }
-              }
-            }
           }
         }
       }
@@ -4369,7 +4054,7 @@
     "/metadata_templates/enterprise": {
       "get": {
         "operationId": "get_metadata_templates_enterprise",
-        "summary": "Get enterprise templates",
+        "summary": "List enterprise templates",
         "tags": [
           "Metadata Templates"
         ],
@@ -4408,16 +4093,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/MetadataTemplates"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Generic client error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClientError"
                 }
               }
             }
@@ -4473,16 +4148,6 @@
                 }
               }
             }
-          },
-          "default": {
-            "description": "Create Metadata template error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClientError"
-                }
-              }
-            }
           }
         }
       }
@@ -4490,7 +4155,7 @@
     "/metadata_cascade_policies": {
       "get": {
         "operationId": "get_metadata_cascade_policies",
-        "summary": "Get all cascade policies",
+        "summary": "List cascade policies",
         "tags": [
           "Metadata Cascade (Beta)"
         ],
@@ -4611,7 +4276,7 @@
     "/metadata_cascade_policies/{metadata_cascade_policy_id}": {
       "get": {
         "operationId": "get_metadata_cascade_policies_id",
-        "summary": "Get a cascade policy",
+        "summary": "Get cascade policy",
         "tags": [
           "Metadata Cascade (Beta)"
         ],
@@ -4672,7 +4337,7 @@
     "/metadata_cascade_policies/{metadata_cascade_policy_id}/apply": {
       "post": {
         "operationId": "post_metadata_cascade_policies_id_apply",
-        "summary": "Force apply a cascade policy",
+        "summary": "Force apply cascade policy",
         "tags": [
           "Metadata Cascade (Beta)"
         ],
@@ -4729,7 +4394,7 @@
     "/comments/{comment_id}": {
       "get": {
         "operationId": "get_comments_id",
-        "summary": "Get a comment",
+        "summary": "Get comment",
         "tags": [
           "Comments"
         ],
@@ -4767,22 +4432,12 @@
                 }
               }
             }
-          },
-          "default": {
-            "description": "A client error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClientError"
-                }
-              }
-            }
           }
         }
       },
       "put": {
         "operationId": "put_comments_id",
-        "summary": "Update a comment",
+        "summary": "Update comment",
         "tags": [
           "Comments"
         ],
@@ -4835,22 +4490,12 @@
                 }
               }
             }
-          },
-          "default": {
-            "description": "A client error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClientError"
-                }
-              }
-            }
           }
         }
       },
       "delete": {
         "operationId": "delete_comments_id",
-        "summary": "Delete a comment",
+        "summary": "Delete comment",
         "tags": [
           "Comments"
         ],
@@ -4882,7 +4527,7 @@
           "Comments"
         ],
         "x-box-reference-category": "comments",
-        "summary": "Create a comment",
+        "summary": "Create comment",
         "description": "Adds a comment comment by the user to a specific file, or\nas a reply to an other comment.",
         "parameters": [
           {
@@ -4960,7 +4605,7 @@
     "/collaborations/{collaboration_id}": {
       "get": {
         "operationId": "get_collaborations_id",
-        "summary": "Get a collaboration",
+        "summary": "Get collaboration",
         "x-box-reference-category": "collaborations",
         "tags": [
           "Collaborations"
@@ -5007,7 +4652,7 @@
           "Collaborations"
         ],
         "x-box-reference-category": "collaborations",
-        "summary": "Updates a collaboration",
+        "summary": "Update collaboration",
         "description": "Updates a collaboration.\n\nCan be used to change the owner of an item, or to\naccept collaboration invites.",
         "parameters": [
           {
@@ -5095,7 +4740,7 @@
       },
       "delete": {
         "operationId": "delete_collaborations_id",
-        "summary": "Delete a collaboration",
+        "summary": "Delete collaboration",
         "tags": [
           "Collaborations"
         ],
@@ -5123,7 +4768,7 @@
     "/collaborations": {
       "get": {
         "operationId": "get_collaborations",
-        "summary": "Get pending collaborations",
+        "summary": "List pending collaborations",
         "tags": [
           "Collaborations"
         ],
@@ -5198,7 +4843,7 @@
           "Collaborations"
         ],
         "x-box-reference-category": "collaborations",
-        "summary": "Creates a collaboration",
+        "summary": "Create collaboration",
         "description": "Adds a collaboration for a single user or a single group to a file\nor folder.\n\nCollaborations can be created using email address, user IDs, or a\ngroup IDs.\n\nIf a collaboration is being created with a group, access to\nthis endpoint is dependent on the group's ability to be invited.",
         "parameters": [
           {
@@ -5532,7 +5177,7 @@
         "tags": [
           "Tasks"
         ],
-        "summary": "Create a task",
+        "summary": "Create task",
         "x-box-reference-category": "tasks",
         "description": "Creates a single task on a file.",
         "requestBody": {
@@ -5608,7 +5253,7 @@
     "/tasks/{task_id}": {
       "get": {
         "operationId": "get_tasks_id",
-        "summary": "Get a task",
+        "summary": "Get task",
         "tags": [
           "Tasks"
         ],
@@ -5644,7 +5289,7 @@
         "tags": [
           "Tasks"
         ],
-        "summary": "Update a task",
+        "summary": "Update task",
         "x-box-reference-category": "tasks",
         "description": "Updates a specific task.",
         "parameters": [
@@ -5710,7 +5355,7 @@
         "tags": [
           "Tasks"
         ],
-        "summary": "Delete a task",
+        "summary": "Delete task",
         "x-box-reference-category": "tasks",
         "description": "Deletes a specific task.",
         "parameters": [
@@ -5735,7 +5380,7 @@
     "/tasks/{task_id}/assignments": {
       "get": {
         "operationId": "get_tasks_id_assignments",
-        "summary": "Get task assignments",
+        "summary": "List task's assignments",
         "tags": [
           "Tasks"
         ],
@@ -5770,7 +5415,7 @@
     "/task_assignments": {
       "post": {
         "operationId": "post_task_assignments",
-        "summary": "Assign a task",
+        "summary": "Assign task",
         "tags": [
           "Tasks"
         ],
@@ -5938,7 +5583,7 @@
       },
       "delete": {
         "operationId": "delete_task_assignments_id",
-        "summary": "Unassign a task",
+        "summary": "Unassign task",
         "tags": [
           "Tasks"
         ],
@@ -5966,7 +5611,7 @@
     "/shared_items": {
       "get": {
         "operationId": "get_shared_items",
-        "summary": "Get a shared item",
+        "summary": "Find item for shared link",
         "tags": [
           "Shared Links"
         ],
@@ -6001,7 +5646,7 @@
     "/web_links": {
       "post": {
         "operationId": "post_web_links",
-        "summary": "Create a web link",
+        "summary": "Create web link",
         "tags": [
           "Web Links"
         ],
@@ -6063,7 +5708,7 @@
     "/web_links/{web_link_id}": {
       "get": {
         "operationId": "get_web_links_id",
-        "summary": "Get a web link",
+        "summary": "Get web link",
         "tags": [
           "Web Links"
         ],
@@ -6096,7 +5741,7 @@
       },
       "post": {
         "operationId": "post_web_links_id",
-        "summary": "Restore a web link",
+        "summary": "Restore web link",
         "tags": [
           "Trash",
           "Web Links"
@@ -6195,7 +5840,7 @@
       },
       "put": {
         "operationId": "put_web_links_id",
-        "summary": "Update a web link",
+        "summary": "Update web link",
         "tags": [
           "Web Links"
         ],
@@ -6263,7 +5908,7 @@
       },
       "delete": {
         "operationId": "delete_web_links_id",
-        "summary": "Delete a web link",
+        "summary": "Delete web link",
         "tags": [
           "Web Links"
         ],
@@ -6291,7 +5936,7 @@
     "/web_links/{web_link_id}/trash": {
       "get": {
         "operationId": "get_web_links_id_trash",
-        "summary": "Get a trashed web link",
+        "summary": "Get trashed web link",
         "tags": [
           "Web Links",
           "Trash"
@@ -6385,7 +6030,7 @@
       "get": {
         "operationId": "get_users",
         "x-box-reference-category": "users",
-        "summary": "Get enterprise users",
+        "summary": "List enterprise users",
         "tags": [
           "Users"
         ],
@@ -6467,7 +6112,7 @@
       },
       "post": {
         "operationId": "post_users",
-        "summary": "Create a user",
+        "summary": "Create user",
         "tags": [
           "Users"
         ],
@@ -6657,7 +6302,7 @@
       "get": {
         "operationId": "get_users_id",
         "x-box-reference-category": "users",
-        "summary": "Get a user",
+        "summary": "Get user",
         "tags": [
           "Users"
         ],
@@ -6699,7 +6344,7 @@
       },
       "put": {
         "operationId": "put_users_id",
-        "summary": "Update a user",
+        "summary": "Update user",
         "tags": [
           "Users"
         ],
@@ -6864,7 +6509,7 @@
       "delete": {
         "operationId": "delete_users_id",
         "x-box-reference-category": "users",
-        "summary": "Delete a user",
+        "summary": "Delete user",
         "tags": [
           "Users"
         ],
@@ -6947,7 +6592,7 @@
       "put": {
         "operationId": "put_users_id_folders_id",
         "x-box-reference-category": "users",
-        "summary": "Move owned items",
+        "summary": "Transfer owned folders",
         "tags": [
           "Users"
         ],
@@ -7038,7 +6683,7 @@
     "/users/{user_id}/email_aliases": {
       "get": {
         "operationId": "get_users_id_email_aliases",
-        "summary": "Get a user's email aliases",
+        "summary": "List user's email aliases",
         "tags": [
           "Users"
         ],
@@ -7072,7 +6717,7 @@
       "post": {
         "operationId": "post_users_id_email_aliases",
         "x-box-reference-category": "users",
-        "summary": "Create an email alias",
+        "summary": "Create email alias",
         "tags": [
           "Users"
         ],
@@ -7125,7 +6770,7 @@
       "delete": {
         "operationId": "delete_users_id_email_aliases_id",
         "x-box-reference-category": "users",
-        "summary": "Remove an email alias",
+        "summary": "Remove email alias",
         "tags": [
           "Users"
         ],
@@ -7162,7 +6807,7 @@
     "/users/{user_id}/memberships": {
       "get": {
         "operationId": "get_users_id_memberships",
-        "summary": "Get user's memberships",
+        "summary": "List user's groups",
         "x-box-reference-category": "groups",
         "tags": [
           "Groups"
@@ -7222,7 +6867,7 @@
     "/invites": {
       "post": {
         "operationId": "post_invites",
-        "summary": "Invite a user",
+        "summary": "Invite user",
         "tags": [
           "Users"
         ],
@@ -7299,7 +6944,7 @@
     "/invites/{invite_id}": {
       "get": {
         "operationId": "get_invites_id",
-        "summary": "Get status of user invite",
+        "summary": "Get user invite status",
         "tags": [
           "Users"
         ],
@@ -7344,7 +6989,7 @@
     "/groups": {
       "get": {
         "operationId": "get_groups",
-        "summary": "Get enterprise groups",
+        "summary": "List enterprise groups",
         "x-box-reference-category": "groups",
         "tags": [
           "Groups"
@@ -7402,7 +7047,7 @@
       },
       "post": {
         "operationId": "post_groups",
-        "summary": "Create a group",
+        "summary": "Create group",
         "tags": [
           "Groups"
         ],
@@ -7492,7 +7137,7 @@
     "/groups/{group_id}": {
       "get": {
         "operationId": "get_groups_id",
-        "summary": "Get a group",
+        "summary": "Get group",
         "tags": [
           "Groups"
         ],
@@ -7535,7 +7180,7 @@
       },
       "put": {
         "operationId": "put_groups_id",
-        "summary": "Update a group",
+        "summary": "Update group",
         "tags": [
           "Groups"
         ],
@@ -7630,7 +7275,7 @@
       },
       "delete": {
         "operationId": "delete_groups_id",
-        "summary": "Delete a group",
+        "summary": "Delete group",
         "tags": [
           "Groups"
         ],
@@ -7658,7 +7303,7 @@
     "/groups/{group_id}/memberships": {
       "get": {
         "operationId": "get_groups_id_memberships",
-        "summary": "Get group's memberships",
+        "summary": "Lis group's members",
         "x-box-reference-category": "groups",
         "tags": [
           "Groups"
@@ -7718,7 +7363,7 @@
     "/groups/{group_id}/collaborations": {
       "get": {
         "operationId": "get_groups_id_collaborations",
-        "summary": "Get group's collaborations",
+        "summary": "List group's collaborations",
         "x-box-reference-category": "groups",
         "tags": [
           "Groups"
@@ -7850,6 +7495,7 @@
                     "description": "Custom configuration for the permissions an admin\nif a group will receive. This option has no effect\non members with a role of `member`.\n\nSetting these permissions overwrites the default\naccess levels of an admin.\n\nSpecifying a value of \"null\" for this object will disable\nall configurable permissions. Specifying permissions will set\nthem accordingly, omitted permissions will be enabled by default.",
                     "additionalProperties": {
                       "type": "boolean",
+                      "description": "A key value pair of custom permissions.",
                       "example": true
                     }
                   }
@@ -7875,7 +7521,7 @@
     "/group_memberships/{group_membership_id}": {
       "get": {
         "operationId": "get_group_memberships_id",
-        "summary": "Get a group membership",
+        "summary": "Get group membership",
         "tags": [
           "Groups"
         ],
@@ -7918,7 +7564,7 @@
       },
       "put": {
         "operationId": "put_group_memberships_id",
-        "summary": "Update a user's membership",
+        "summary": "Update user's membership",
         "tags": [
           "Groups"
         ],
@@ -7968,6 +7614,7 @@
                     "description": "Custom configuration for the permissions an admin\nif a group will receive. This option has no effect\non members with a role of `member`.\n\nSetting these permissions overwrites the default\naccess levels of an admin.\n\nSpecifying a value of \"null\" for this object will disable\nall configurable permissions. Specifying permissions will set\nthem accordingly, omitted permissions will be enabled by default.",
                     "additionalProperties": {
                       "type": "boolean",
+                      "description": "A key value pair of custom permissions.",
                       "example": true
                     }
                   }
@@ -8019,7 +7666,7 @@
     "/webhooks": {
       "get": {
         "operationId": "get_webhooks",
-        "summary": "Get all webhooks",
+        "summary": "List all webhooks",
         "tags": [
           "Webhooks"
         ],
@@ -8076,7 +7723,7 @@
       },
       "post": {
         "operationId": "post_webhooks",
-        "summary": "Create a webhooks",
+        "summary": "Create webhook",
         "tags": [
           "Webhooks"
         ],
@@ -8193,7 +7840,7 @@
           "Webhooks"
         ],
         "x-box-reference-category": "webhooks",
-        "summary": "Get a webhook",
+        "summary": "Get webhook",
         "description": "Retrieves a specific webhook",
         "parameters": [
           {
@@ -8242,7 +7889,7 @@
       },
       "put": {
         "operationId": "put_webhooks_id",
-        "summary": "Update a webhooks",
+        "summary": "Update webhook",
         "tags": [
           "Webhooks"
         ],
@@ -8360,7 +8007,7 @@
       },
       "delete": {
         "operationId": "delete_webhooks_id",
-        "summary": "Delete a webhook",
+        "summary": "Delete webhook",
         "tags": [
           "Webhooks"
         ],
@@ -8408,7 +8055,7 @@
     "/skill_invocations/{skill_invocation_id}": {
       "put": {
         "operationId": "put_skill_invocations_id",
-        "summary": "Update a skill invocation",
+        "summary": "Update skill invocation",
         "tags": [
           "Skills"
         ],
@@ -8630,7 +8277,7 @@
     "/collections": {
       "get": {
         "operationId": "get_collections",
-        "summary": "Get all collections",
+        "summary": "List all collections",
         "tags": [
           "Collections"
         ],
@@ -8690,7 +8337,7 @@
     "/collections/{collection_id}/items": {
       "get": {
         "operationId": "get_collections_id_items",
-        "summary": "Get collection items",
+        "summary": "List collection items",
         "tags": [
           "Collections"
         ],
@@ -8760,7 +8407,7 @@
     "/recent_items": {
       "get": {
         "operationId": "get_recent_items",
-        "summary": "Get recent items",
+        "summary": "List recent items",
         "tags": [
           "Recent Items"
         ],
@@ -8819,7 +8466,7 @@
     "/retention_policies": {
       "get": {
         "operationId": "get_retention_policies",
-        "summary": "Get all retention policies",
+        "summary": "List retention policies",
         "tags": [
           "Retention Policies"
         ],
@@ -8999,7 +8646,7 @@
     "/retention_policies/{retention_policy_id}": {
       "get": {
         "operationId": "get_retention_policies_id",
-        "summary": "Get a retention policy",
+        "summary": "Get retention policy",
         "tags": [
           "Retention Policies"
         ],
@@ -9119,7 +8766,7 @@
     "/retention_policies/{retention_policy_id}/assignments": {
       "get": {
         "operationId": "get_retention_policies_id_assignments",
-        "summary": "Get a policy's assignments",
+        "summary": "List policy's assignments",
         "tags": [
           "Retention Policies"
         ],
@@ -9202,7 +8849,7 @@
     "/retention_policy_assignments": {
       "post": {
         "operationId": "post_retention_policy_assignments",
-        "summary": "Assign a retention policy",
+        "summary": "Assign retention policy",
         "tags": [
           "Retention Policies"
         ],
@@ -9334,7 +8981,7 @@
     "/legal_hold_policies": {
       "get": {
         "operationId": "get_legal_hold_policies",
-        "summary": "Get all legal hold policies",
+        "summary": "List all legal hold policies",
         "tags": [
           "Legal Hold Policies"
         ],
@@ -9521,7 +9168,7 @@
       },
       "put": {
         "operationId": "put_legal_hold_policies_id",
-        "summary": "Update a legal hold policy",
+        "summary": "Update legal hold policy",
         "tags": [
           "Legal Hold Policies"
         ],
@@ -9620,7 +9267,7 @@
     "/legal_hold_policy_assignments": {
       "get": {
         "operationId": "get_legal_hold_policy_assignments",
-        "summary": "Get a policy's assignments",
+        "summary": "List policy's assignments",
         "tags": [
           "Legal Hold Policies"
         ],
@@ -9701,7 +9348,7 @@
       },
       "post": {
         "operationId": "post_legal_hold_policy_assignments",
-        "summary": "Assign a legal hold policy",
+        "summary": "Assign legal hold policy",
         "tags": [
           "Legal Hold Policies"
         ],
@@ -9806,7 +9453,7 @@
         "tags": [
           "Legal Hold Policies"
         ],
-        "summary": "Unassign a legal hold policy",
+        "summary": "Unassign legal hold policy",
         "description": "Remove a legal hold from an item.\n\nThis is an asynchronous process. The policy will not be\nfully removed yet when the response returns.",
         "parameters": [
           {
@@ -9834,7 +9481,7 @@
           "Retention Policies"
         ],
         "x-box-reference-category": "retention_policies",
-        "summary": "Get a retention for a file",
+        "summary": "Get retention for file",
         "description": "Returns information about a file version retention.",
         "parameters": [
           {
@@ -9869,7 +9516,7 @@
           "Retention Policies"
         ],
         "x-box-reference-category": "retention_policies",
-        "summary": "Get all retentions on files",
+        "summary": "List retentions on files",
         "description": "Retrieves all file version retentions for the given enterprise.",
         "parameters": [
           {
@@ -9978,7 +9625,7 @@
     "/file_version_legal_holds/{file_version_legal_hold_id}": {
       "get": {
         "operationId": "get_file_version_legal_holds_id",
-        "summary": "Get a legal hold",
+        "summary": "Inspect legal hold on file",
         "tags": [
           "Legal Hold Policies"
         ],
@@ -10013,7 +9660,7 @@
     "/file_version_legal_holds": {
       "get": {
         "operationId": "get_file_version_legal_holds",
-        "summary": "Get legal holds for a policy",
+        "summary": "List legal holds for policy",
         "tags": [
           "Legal Hold Policies"
         ],
@@ -10133,7 +9780,7 @@
     "/enterprises/{enterprise_id}/device_pinners": {
       "get": {
         "operationId": "get_enterprises_id_device_pinners",
-        "summary": "Get enterprise device pins",
+        "summary": "List enterprise device pins",
         "tags": [
           "Device Pins"
         ],
@@ -10207,7 +9854,7 @@
       "get": {
         "operationId": "get_terms_of_services",
         "x-box-reference-category": "terms_of_services",
-        "summary": "Get all terms of services",
+        "summary": "List terms of services",
         "tags": [
           "Terms of Service"
         ],
@@ -10246,7 +9893,7 @@
         "tags": [
           "Terms of Service"
         ],
-        "summary": "Create a terms of service",
+        "summary": "Create terms of service",
         "x-box-reference-category": "terms_of_services",
         "description": "Creates a terms of service for a given enterprise\nand type of user.",
         "requestBody": {
@@ -10304,7 +9951,7 @@
     "/terms_of_services/{terms_of_service_id}": {
       "get": {
         "operationId": "get_terms_of_services_id",
-        "summary": "Get a terms of service",
+        "summary": "Get terms of service",
         "tags": [
           "Terms of Service"
         ],
@@ -10337,7 +9984,7 @@
       },
       "put": {
         "operationId": "put_terms_of_services_id",
-        "summary": "Update a terms of service",
+        "summary": "Update terms of service",
         "tags": [
           "Terms of Service"
         ],
@@ -10401,7 +10048,7 @@
     "/terms_of_service_user_statuses": {
       "get": {
         "operationId": "get_terms_of_service_user_statuses",
-        "summary": "Get terms of service status",
+        "summary": "List ToS user statuses",
         "tags": [
           "Terms of Service"
         ],
@@ -10444,7 +10091,7 @@
       },
       "post": {
         "operationId": "post_terms_of_service_user_statuses",
-        "summary": "Set terms status for user",
+        "summary": "Set status for new user",
         "tags": [
           "Terms of Service"
         ],
@@ -10533,7 +10180,7 @@
     "/terms_of_service_user_statuses/{terms_of_service_user_status_id}": {
       "put": {
         "operationId": "put_terms_of_service_user_statuses_id",
-        "summary": "Update terms status for user",
+        "summary": "Set status for existing user",
         "tags": [
           "Terms of Service"
         ],
@@ -10586,7 +10233,7 @@
     "/collaboration_whitelist_entries": {
       "get": {
         "operationId": "get_collaboration_whitelist_entries",
-        "summary": "Get whitelist entries",
+        "summary": "List whitelist entries",
         "tags": [
           "Collaboration Whitelist"
         ],
@@ -10746,7 +10393,7 @@
     "/collaboration_whitelist_exempt_targets": {
       "get": {
         "operationId": "get_collaboration_whitelist_exempt_targets",
-        "summary": "Get whitelist excemptions",
+        "summary": "List whitelist excemptions",
         "tags": [
           "Collaboration Whitelist"
         ],
@@ -10876,7 +10523,7 @@
       },
       "delete": {
         "operationId": "delete_collaboration_whitelist_exempt_targets_id",
-        "summary": "Delete whitelist exemption",
+        "summary": "Remove whitelist exemption",
         "tags": [
           "Collaboration Whitelist"
         ],
@@ -10904,7 +10551,7 @@
     "/storage_policies": {
       "get": {
         "operationId": "get_storage_policies",
-        "summary": "Get storage policies",
+        "summary": "List storage policies",
         "tags": [
           "Multi Zones"
         ],
@@ -10998,7 +10645,7 @@
     "/storage_policy_assignments": {
       "get": {
         "operationId": "get_storage_policy_assignments",
-        "summary": "Get all policy assignments",
+        "summary": "List policy assignments",
         "tags": [
           "Multi Zones"
         ],
@@ -12075,6 +11722,7 @@
       "Event": {
         "x-box-resource-display-name": "Event",
         "x-box-resource-id": "event",
+        "x-box-reference-category": "events",
         "description": "The description of an event that happened within Box",
         "properties": {
           "type": {
@@ -12141,6 +11789,7 @@
       "Events": {
         "x-box-resource-display-name": "Events",
         "x-box-resource-id": "events",
+        "x-box-reference-category": "events",
         "description": "A list of event objects",
         "properties": {
           "chunk_size": {
@@ -14635,6 +14284,23 @@
           }
         }
       },
+      "Permissions--Writable": {
+        "x-box-resource-display-name": "Permissions (Writable)",
+        "x-box-resource-id": "permissions--writable",
+        "description": "An object defining if a file can be downloaded.",
+        "type": "object",
+        "properties": {
+          "can_download": {
+            "description": "Describes who is allowed to download this file",
+            "type": "string",
+            "example": "open",
+            "enum": [
+              "open",
+              "company"
+            ]
+          }
+        }
+      },
       "RealtimeServer": {
         "x-box-resource-display-name": "Realtime Server",
         "x-box-resource-id": "realtime_server",
@@ -14915,14 +14581,7 @@
               "assigned_to": {
                 "allOf": [
                   {
-                    "oneOf": [
-                      {
-                        "$ref": "#/components/schemas/Folder--Mini"
-                      },
-                      {
-                        "$ref": "#/components/schemas/Enterprise"
-                      }
-                    ]
+                    "$ref": "#/components/schemas/Reference"
                   },
                   {
                     "description": "The `type` and `id` of the content that is under\nretention. The `type` can either be `folder` or `\nenterprise`."
@@ -14968,6 +14627,44 @@
             }
           }
         ]
+      },
+      "SessionEndpoints": {
+        "x-box-resource-display-name": "Session Endpoints",
+        "x-box-resource-id": "session_endpoints",
+        "x-box-reference-category": "chunked_uploads",
+        "description": "A list of endpoints for a chunked upload session.",
+        "properties": {
+          "upload_part": {
+            "type": "string",
+            "description": "The URL to upload parts to",
+            "example": "https://upload.box.com/api/2.0/files/upload_sessions/D5E3F7A"
+          },
+          "commit": {
+            "type": "string",
+            "description": "The URL used to commit the file",
+            "example": "https://upload.box.com/api/2.0/files/upload_sessions/D5E3F7A/commit"
+          },
+          "abort": {
+            "type": "string",
+            "description": "The URL for used to abort the session.",
+            "example": "https://upload.box.com/api/2.0/files/upload_sessions/D5E3F7A"
+          },
+          "list_parts": {
+            "type": "string",
+            "description": "The URL users to list all parts.",
+            "example": "https://upload.box.com/api/2.0/files/upload_sessions/D5E3F7A/parts"
+          },
+          "status": {
+            "type": "string",
+            "description": "The URL used to get the status of the upload.",
+            "example": "https://upload.box.com/api/2.0/files/upload_sessions/D5E3F7A"
+          },
+          "log_event": {
+            "type": "string",
+            "description": "The URL used to get the upload log from.",
+            "example": "https://upload.box.com/api/2.0/files/upload_sessions/D5E3F7A/log"
+          }
+        }
       },
       "SharedLink": {
         "x-box-resource-display-name": "Shared Link",
@@ -15330,14 +15027,7 @@
           "assigned_to": {
             "allOf": [
               {
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/Enterprise"
-                  },
-                  {
-                    "$ref": "#/components/schemas/User"
-                  }
-                ]
+                "$ref": "#/components/schemas/Reference"
               },
               {
                 "description": "The enterprise or use the policy is assigned to"
@@ -15975,40 +15665,14 @@
                 "description": "The number of parts that have been uploaded and processed\nby the server. This starts at `0`.\n\nWhen committing a file files, inspecting this property can\nprovide insight if all parts have been uploaded correctly."
               },
               "session_endpoints": {
-                "type": "object",
-                "description": "A list of endpoints for this session.",
-                "properties": {
-                  "upload_part": {
-                    "type": "string",
-                    "description": "The URL to upload parts to",
-                    "example": "https://upload.box.com/api/2.0/files/upload_sessions/D5E3F7A"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/SessionEndpoints"
                   },
-                  "commit": {
-                    "type": "string",
-                    "description": "The URL used to commit the file",
-                    "example": "https://upload.box.com/api/2.0/files/upload_sessions/D5E3F7A/commit"
-                  },
-                  "abort": {
-                    "type": "string",
-                    "description": "The URL for used to abort the session.",
-                    "example": "https://upload.box.com/api/2.0/files/upload_sessions/D5E3F7A"
-                  },
-                  "list_parts": {
-                    "type": "string",
-                    "description": "The URL users to list all parts.",
-                    "example": "https://upload.box.com/api/2.0/files/upload_sessions/D5E3F7A/parts"
-                  },
-                  "status": {
-                    "type": "string",
-                    "description": "The URL used to get the status of the upload.",
-                    "example": "https://upload.box.com/api/2.0/files/upload_sessions/D5E3F7A"
-                  },
-                  "log_event": {
-                    "type": "string",
-                    "description": "The URL used to get the upload log from.",
-                    "example": "https://upload.box.com/api/2.0/files/upload_sessions/D5E3F7A/log"
+                  {
+                    "description": "A list of endpoints for this session."
                   }
-                }
+                ]
               }
             }
           }
