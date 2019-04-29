@@ -280,7 +280,7 @@
                         "$ref": "#/components/schemas/Parent"
                       },
                       {
-                        "description": "The optional parent folder to restore the file to.\n\nUse this if the original parent folder no longer\nexists, or the user no longer has access to the\noriginal parent folder."
+                        "description": "The optional parent folder that the item will\nbe restored to.\n\nUse this if the original parent folder no longer\nexists, or the user no longer has access to the\noriginal parent folder."
                       }
                     ]
                   }
@@ -2674,7 +2674,7 @@
                         "$ref": "#/components/schemas/Parent"
                       },
                       {
-                        "description": "The optional parent folder to restore the folder to.\n\nUse this if the original parent folder no longer\nexists, or the user no longer has access to the\noriginal parent folder."
+                        "description": "The optional parent folder that the folder will\nbe restored to.\n\nUse this if the original parent folder no longer\nexists, or the user no longer has access to the\noriginal parent folder."
                       }
                     ]
                   }
@@ -5666,7 +5666,7 @@
                   "url": {
                     "type": "string",
                     "example": "https://box.com",
-                    "description": "The URL that the web link points to. Must start with\n`\"http://\"` or `\"https://\"`."
+                    "description": "The URL that this web link links to. Must start with\n`\"http://\"` or `\"https://\"`."
                   },
                   "parent": {
                     "allOf": [
@@ -5788,7 +5788,7 @@
                         "$ref": "#/components/schemas/Parent"
                       },
                       {
-                        "description": "The optional parent folder to restore the web link to.\n\nUse this if the original parent folder no longer\nexists, or the user no longer has access to the\noriginal parent folder."
+                        "description": "The optional parent folder that the web link will\nbe restored to.\n\nUse this if the original parent folder no longer\nexists, or the user no longer has access to the\noriginal parent folder."
                       }
                     ]
                   }
@@ -5868,7 +5868,7 @@
                   "url": {
                     "type": "string",
                     "example": "https://box.com",
-                    "description": "The new URL that the web link points to. Must start with\n`\"http://\"` or `\"https://\"`."
+                    "description": "The new URL that the web link links to. Must start with\n`\"http://\"` or `\"https://\"`."
                   },
                   "parent": {
                     "allOf": [
@@ -6598,7 +6598,7 @@
         "tags": [
           "Users"
         ],
-        "description": "Move all of the items owned by a user into a\nnew folder in another user’s account.\n\nOnly moving of the root folder, `0`, is supported.\n\nFolders can only be moved across users by users with administrative\npermissions.\n\nThis call will be performed synchronously which might lead to a slow response\nwhen the source user has a large number of items in all of its folders.\n\nIf the destination path has a metadata cascade policy attached to any of\nthe parent folders, a metadata cascade operation will be kicked off\nasynchronously.\n\nThere is currently no way to check for when this operation is finished.",
+        "description": "Move all of the items owned by a user into a\nnew folder in another user’s account.\n\nOnly the root folder (`0`) can be transferred.\n\nFolders can only be moved across users by users with administrative\npermissions.\n\nThis call will be performed synchronously which might lead to a slow response\nwhen the source user has a large number of items in all of its folders.\n\nIf the destination path has a metadata cascade policy attached to any of\nthe parent folders, a metadata cascade operation will be kicked off\nasynchronously.\n\nThere is currently no way to check for when this operation is finished.",
         "parameters": [
           {
             "name": "user_id",
@@ -8209,7 +8209,7 @@
           },
           {
             "name": "stream_position",
-            "description": "The location in the event stream to start receiving events from.\n\nSet this value to `now` to fetch an empty list events and\nthe latest stream position for initialization.\n\nSet this value to `0`, or don't set this value to get\n all events.",
+            "description": "The location in the event stream to start receiving events from.\n\n* `now` will return an empty list events and\nthe latest stream position for initialization.\n* `0` or `null` will return all events.",
             "example": "1348790499819",
             "in": "query",
             "schema": {
@@ -12040,7 +12040,7 @@
               },
               "metadata": {
                 "type": "object",
-                "description": "An associative array of metadata objects within their\nscopes.\n\nTo access the metadata for a file, first use the\n[Metadata](#metadata) endpoints to determine\nthe metadata templates available to your enterprise.\n\nThe use the [Retrieve File](#get-file-id) endpoint with\nthe `fields` query parameter to get the metadata by ID. The\nID for the metadata template will be in the format\n`metadata.<scope>.<templatename>`, for example\n`fields=metadata.global.properties`.",
+                "description": "A list of key-value pairs of metadata objects within their\nscopes.\n\nTo access the metadata for a file, first use the\n[Metadata](#metadata) endpoints to determine\nthe metadata templates available to your enterprise.\n\nThe use the [Retrieve File](#get-file-id) endpoint with\nthe `fields` query parameter to get the metadata by ID. The\nID for the metadata template will be in the format\n`metadata.<scope>.<templatename>`, for example\n`fields=metadata.global.properties`.",
                 "example": {
                   "global": {
                     "marketingCollateral": {
@@ -13389,7 +13389,7 @@
                     "$ref": "#/components/schemas/Item"
                   },
                   {
-                    "description": "The entity that the legal hold policy assignment\nis assigned to. Includes type and ID."
+                    "description": "The item that the the legal hold policy\nis assigned to. Includes type and ID."
                   }
                 ]
               },
@@ -14684,7 +14684,7 @@
           },
           "download_url": {
             "type": "string",
-            "description": "The \"direct Link\" URL to download the item.  If entered in a browser, this\nURL will trigger a download of the item.  This URL includes the file\nextension so that the file will be saved with the right file type.",
+            "description": "The \"direct Link\" URL to download the item. This URL can be used in\na browser to download the file. This URL includes the file\nextension so that the file will be saved with the right file type.",
             "example": "https://www.box.com/shared/static/rh935iit6ewrmw0unyul.jpeg"
           },
           "vanity_url": {
