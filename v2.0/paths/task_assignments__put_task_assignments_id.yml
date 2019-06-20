@@ -46,3 +46,17 @@ responses:
       application/json:
         schema:
           $ref: '#/components/schemas/TaskAssignment'
+  400:
+    description: |-
+      Unable to update the task assignment. Verify that the task assignment ID is correct.
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/TaskAssignment'
+  401:
+    description: |-
+      The access token has expired or was not found.
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/TaskAssignment'  

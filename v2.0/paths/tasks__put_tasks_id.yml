@@ -54,3 +54,17 @@ responses:
       application/json:
         schema:
           $ref: '#/components/schemas/Task'
+  401: 
+    description: |-
+      The access token has expired or was not found.
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/Task'
+  404:
+    description: |-
+      Task not found. 
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/Task'

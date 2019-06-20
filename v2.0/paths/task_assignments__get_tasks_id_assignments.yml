@@ -23,3 +23,10 @@ responses:
       application/json:
         schema:
           $ref: '#/components/schemas/TaskAssignments'
+  500:
+    description: |-
+      Box has encountered an unexpected error. No task assignment ID was used.
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/TaskAssignments'
