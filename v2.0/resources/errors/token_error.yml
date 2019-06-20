@@ -1,0 +1,52 @@
+---
+title: Token Error
+
+x-box-resource-id: token_error
+
+description: |-
+  An error due to the developer token being incorrect or expiring 
+
+properties:
+  type:
+    description: "`error`"
+    example: "error"
+    type: string
+    enum:
+      - error
+    nullable: false
+
+  status:
+    description: The HTTP status of the response.
+    example: 401
+    type: integer
+    format: int32
+    nullable: false
+
+  code:
+    description: A Box-specific error code
+    example: invalid_token
+    type: string
+    enum:
+      - invalid_token
+
+  help_url:
+    description: |-
+      A URL that links to more information about why this error occurred.
+    example: http://developers.box.com/docs/#errors
+    type: string
+    nullable: false
+
+  message:
+    description: |-
+      A short message describing the error.
+    example: Method Not Allowed
+    type: string
+    nullable: false
+
+  request_id:
+    description: |-
+      A unique identifier for this response, which can be used
+      when contacting Box support.
+    type: string
+    example: 'abcdef123456'
+    nullable: false
